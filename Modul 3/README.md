@@ -662,7 +662,203 @@ void search(Dictionary dict[], int size, string key) {
     cout << "Key tidak ditemukan" << endl;
 }
 ```
-## <b>Hasing</b>
+## <b>Hashing</b>
 <a name="hashing"></a>
 
-// sini nath
+### Terminologi
+
+- Hash Table: Struktur data yang menyimpan pasangan kunci-nilai (key-value) untuk pencarian efisien.
+- Hash Function: Fungsi yang mengubah kunci menjadi indeks array.
+- Collision: Kejadian ketika dua kunci berbeda menghasilkan indeks yang sama.
+- Chaining: Metode resolusi collision menggunakan linked list di setiap bucket.
+- Load Factor: Rasio jumlah elemen terhadap ukuran tabel (count / size).
+
+### Definisi
+
+Hash Table adalah struktur data yang menggunakan hash function untuk memetakan kunci ke indeks dalam array, memungkinkan akses data dalam waktu rata-rata O(1). Jika terjadi collision (dua kunci berbeda diindeks ke posisi yang sama), teknik chaining digunakan untuk menyimpan beberapa elemen dalam satu bucket. Contoh penerapan dari hashtable yaitu database (cepat untuk mencari data), cache, atau penyimpanan password terenkripsi. 
+
+Di C++, terdapat STL yang berbentuk Hash Table di std::unordered_map, tetapi itu tidak dipakai untuk sekarang.
+
+![Contoh Hash Table](images/HashMap.png)
+
+### Aplikasi Hash Table
+
+Hash Table digunakan dalam berbagai aplikasi yang memerlukan pencarian cepat:
+
+1. **Database Indexing** - Hash table dapat mempercepat pencarian record dalam database yang besar.
+2. **Caching** - Browser dan sistem operasi menggunakan hash table untuk menyimpan cache.
+3. **Implementasi Set dan Map** - Struktur data seperti HashSet dan HashMap diimplementasikan menggunakan hash table.
+4. **Password Storage** - Password tidak disimpan secara langsung, melainkan dalam bentuk hash untuk keamanan.
+5. **Compiler Operation** - Compiler menggunakan hash table untuk menyimpan identifier dari kode sumber.
+6. **Spell Checking** - Aplikasi spell checker menggunakan hash table untuk menyimpan kamus kata.
+
+Sebagai contoh, implementasi sederhana kamus kata menggunakan hash table:
+```
+Kata "apple" -> hash("apple") = 42 -> bucket[42] = "buah apel"
+Kata "book" -> hash("book") = 17 -> bucket[17] = "buku"
+Kata "pencil" -> hash("pencil") = 42 -> bucket[42] -> linked list -> "pensil"
+```
+
+### Contoh Implementasi
+
+[code/hash_table.cpp](code/hash_table.cpp)
+
+Implementasi hash table menggunakan metode chaining untuk menangani collision, di mana setiap bucket berisi linked list.
+
+_Kompleksitas waktu operasi pada Hash Table: Average case O(1), Worst case O(n) ketika terjadi banyak collision._
+
+#### Representasi Node
+
+```c
+typedef struct HashNode {
+    int key;
+    int value;
+    struct HashNode *next;
+} HashNode;
+```
+
+#### Struktur HashTable
+
+```c
+typedef struct HashTable {
+    HashNode **buckets;  // Array of linked lists
+    unsigned size;       // Ukuran array
+    unsigned count;      // Jumlah elemen
+} HashTable;
+```
+
+### Operasi
+
+#### hash_init()
+Fungsi ini digunakan untuk menginisialisasi hash table dengan ukuran tertentu. Semua bucket awalnya diatur ke NULL.
+
+```c
+void hash_init(HashTable *ht, unsigned size) {
+    ht->size = size;
+    ht->count = 0;
+    ht->buckets = (HashNode**) malloc(size * sizeof(HashNode*));
+    for (unsigned i = 0; i < size; i++) {
+        ht->buckets[i] = NULL;
+    }
+}
+```
+
+#### hash_function()
+Fungsi hash sederhana yang memetakan kunci ke indeks dengan operasi modulo.
+
+```c
+unsigned hash_function(HashTable *ht, int key) {
+    return key % ht->size;
+}
+```
+
+#### hash_insert()
+Memasukkan pasangan key-value ke dalam hash table. Jika key sudah ada, nilai akan diperbarui.
+
+```c
+void hash_insert(HashTable *ht, int key, int value) {
+    unsigned index = hash_function(ht, key);
+    HashNode *current = ht->buckets[index];
+
+    // Cek apakah kunci sudah ada
+    while (current != NULL) {
+        if (current->key == key) {
+            current->value = value;  // Update nilai
+            return;
+        }
+        current = current->next;
+    }
+
+    // Buat node baru
+    HashNode *newNode = (HashNode*) malloc(sizeof(HashNode));
+    newNode->key = key;
+    newNode->value = value;
+    newNode->next = ht->buckets[index];  // Sisipkan di awal
+    ht->buckets[index] = newNode;
+    ht->count++;
+}
+```
+
+#### hash_search()
+Mencari nilai berdasarkan kunci tertentu dalam hash table.
+
+```c
+bool hash_search(HashTable *ht, int key, int *value) {
+    unsigned index = hash_function(ht, key);
+    HashNode *current = ht->buckets[index];
+    
+    while (current != NULL) {
+        if (current->key == key) {
+            *value = current->value;
+            return true;  // Ditemukan
+        }
+        current = current->next;
+    }
+    return false;  // Tidak ditemukan
+}
+```
+
+#### hash_delete()
+Menghapus entri berdasarkan kunci dari hash table.
+
+```c
+void hash_delete(HashTable *ht, int key) {
+    unsigned index = hash_function(ht, key);
+    HashNode *current = ht->buckets[index];
+    HashNode *prev = NULL;
+
+    while (current != NULL) {
+        if (current->key == key) {
+            if (prev == NULL) {
+                ht->buckets[index] = current->next;  // Hapus node pertama
+            } else {
+                prev->next = current->next;  // Hapus node tengah/akhir
+            }
+            free(current);
+            ht->count--;
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+}
+```
+
+#### hash_isEmpty()
+Memeriksa apakah hash table kosong atau tidak.
+
+```c
+bool hash_isEmpty(HashTable *ht) {
+    return (ht->count == 0);
+}
+```
+
+### Contoh Penggunaan
+
+```c
+int main() {
+    HashTable ht;
+    hash_init(&ht, 10);  // Inisialisasi dengan 10 bucket
+
+    // Memasukkan data
+    hash_insert(&ht, 5, 100);
+    hash_insert(&ht, 15, 200);  // Collision di bucket 5 (jika size=10)
+    hash_insert(&ht, 25, 300);  // Collision lagi di bucket 5
+
+    // Mencari data
+    int value;
+    if (hash_search(&ht, 15, &value)) {
+        printf("Nilai untuk kunci 15: %d\n", value);  // Output: 200
+    }
+    
+    // Menghapus data
+    hash_delete(&ht, 15);
+    
+    // Mencari setelah dihapus
+    if (!hash_search(&ht, 15, &value)) {
+        printf("Kunci 15 telah dihapus\n");
+    }
+    
+    return 0;
+}
+```
