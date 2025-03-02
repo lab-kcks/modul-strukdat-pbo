@@ -277,7 +277,7 @@ Kompleksitas waktu semua operasi dilakukan secara konstan O(1).
 Deque umumnya digunakan untuk menyelesaikan problem dengan karakteristik Sliding Window. Pada problem Sliding Window, kita perlu untuk menghapus data dari depan dan belakang queue. Contoh problem Sliding Window adalah mencari nilai maksimum dari seluruh subarray dengan size tertentu.
 
 ### Implementasi ADT : `Deque`
-[Link Implementasi Lengkap `Deque` dapat dilihat disini](./google.com)
+[Link Implementasi Lengkap `Deque` dapat dilihat disini](code/deque.cpp)
 
 ![Contoh Deque](https://user-images.githubusercontent.com/83171211/189658945-13029da9-a032-4498-9637-0fd77248d3ac.png)
 
@@ -461,7 +461,7 @@ Priotiry Queue digunakan dalam menyelesaikan beberapa permasalahan sebagai berik
 3. Permasalahan pada queue yang melibatkan prioritas didalamnya.
 
 ### Implementasi ADT : *`PriorityQueue`*
-[Link Implementasi Lengkap `PriorityQueue` dapat dilihat disini](./google.com)
+[Link Implementasi Lengkap `PriorityQueue` dapat dilihat disini](code/priority_queue.cpp)
 
 Implementasi yang disajikan disini adalah implementasi Min-Priority Queue, yakni memprioritaskan bilangan terkecil.
 
