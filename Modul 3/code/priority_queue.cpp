@@ -4,42 +4,48 @@
  * 
  * Dibuat dan ditulis oleh Bayu Laksana
  * -- tanggal 22 Januari 2019
- * Struktur Data 2020
+ * Diubah oleh Steven Figo
+ * -- tanggal 3 Maret 2025
+ * Struktur Data & Pemorograman Berorientasi Objek 2025
  * Implementasi untuk bahasa C++
  * 
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
-struct PQueueNode {
-    int data;
-    PQueueNode *next;
-};
+// Node structure
+class PriorityQueue {
+private:
+    struct PQueueNode {
+        int data;
+        PQueueNode *next;
+        PQueueNode(int value) : data(value), next(nullptr) {}
+    };
 
-// Default priority: minimum
-struct PriorityQueue
-{
     PQueueNode *_top;
     unsigned _size;
 
-    void init()
-    {
-        _top = NULL;
+// Methods
+public:
+    PriorityQueue() {
+        _top = nullptr;
         _size = 0;
     }
 
-    bool isEmpty() {
-        return (_top == NULL);
+    ~PriorityQueue() {
+        while (!isEmpty()) {
+            pop();
+        }
     }
 
-    void push(int value)
-    {
-        PQueueNode *temp = _top;
-        PQueueNode *newNode = \
-            (PQueueNode*) malloc (sizeof(PQueueNode));
-        newNode->data = value;
-        newNode->next = NULL;
+    bool isEmpty() {
+        return (_top == nullptr);
+    }
+
+    void push(int value) {
+        PQueueNode *newNode = new PQueueNode(value);
+        _size++;
 
         if (isEmpty()) {
             _top = newNode;
@@ -49,29 +55,29 @@ struct PriorityQueue
         if (value < _top->data) {
             newNode->next = _top;
             _top = newNode;
-        }
-        else {
-            while ( temp->next != NULL && 
-                    temp->next->data < value)
+        } else {
+            PQueueNode *temp = _top;
+            while (temp->next != nullptr && temp->next->data < value) {
                 temp = temp->next;
+            }
             newNode->next = temp->next;
             temp->next = newNode;
         }
     }
 
-    void pop()
-    {
+    void pop() {
         if (!isEmpty()) {
             PQueueNode *temp = _top;
             _top = _top->next;
-            free(temp);
+            delete temp;
+            _size--;
         }
     }
 
-    int top()
-    {
-        if (!isEmpty()) return _top->data;
-        else exit(-1);
+    int top() {
+        if (!isEmpty())
+            return _top->data;
+        throw runtime_error("PriorityQueue kosong");
     }
 
     unsigned size() {
@@ -79,8 +85,11 @@ struct PriorityQueue
     }
 };
 
-int main(int argc, char const *argv[])
-{
-    
+int main() {
+    PriorityQueue pq;
+
+    // masukkan perintah di sini dengan memanggil fungsi-fungsi yang ada di ADT PriorityQueue
+    // pq.{fungsi}
+
     return 0;
 }

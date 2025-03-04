@@ -177,6 +177,7 @@ _Kompleksitas waktu semua operasi dilakukan secara konstan O(1)._
     struct queueNode_t *next;
   } QueueNode;
   ```
+  
 - #### <b>Struktur Queue</b>
   Keseluruhan queue yang ada dikontrol oleh sebuah struct `Queue` yang menyimpan referensi node terdepan dan node terbelekang menggunakan pointer struct `QueueNode` serta data jumlah node yang ada pada queue menggunakan `unsigned`.
   ```c
@@ -253,6 +254,7 @@ _Kompleksitas waktu semua operasi dilakukan secara konstan O(1)._
   }
   ```
 
+
 ## <b>Deque</b>
 <a name="deque"></a>
 ### Terminologi
@@ -284,34 +286,39 @@ Deque umumnya digunakan untuk menyelesaikan problem dengan karakteristik Sliding
 Implementasi deque dapat dilakukan dengan menggunakan Doubly Linked List dengan menggunakan pointer tail/rear untuk menunjukkan index paling belakang dan head/front untuk menunjukkan index terdepan pada deque.
 
 - #### <b> Representasi Node </b>
-Node dari Deque direpresentasikan oleh node bernama `DListNode` yang menyimpan data int dan referensi untuk node sebelum dan selanjutnya.
-```c
-typedef struct dnode_t {
+Node dari Deque direpresentasikan oleh class `DListNode` yang menyimpan data bertipe `int` dan referensi ke node sebelumnya dan selanjutnya.
+```cpp
+class DListNode {
+public:
     int data;
-    struct dnode_t      \
-        *next,
-        *prev;
-} DListNode;
+    DListNode *next, *prev;
+    DListNode(int value) : data(value), next(nullptr), prev(nullptr) {}
+};
 ```
 
 - #### <b> Struktur Deque </b>
-Deque memiliki dua pointer referensi pada strukturnya yaitu `head` dan `tail`.
-```c
-typedef struct deque_t {
-    DListNode           \
-        *_head, 
-        *_tail;
+Deque direpresentasikan oleh class `Deque` yang memiliki pointer referensi ke `head` dan `tail`, serta atribut `_size` untuk menyimpan ukuran deque.
+```cpp
+class Deque {
+private:
+    DListNode *_head, *_tail;
     unsigned _size;
-} Deque;
 
+public:
+    Deque() : _head(nullptr), _tail(nullptr), _size(0) {}
+
+    //Mengembalikan jumlah elemen dalam queue.
+    unsigned size() {
+        return _size;
+    }
+};
 ```
 
 - #### <b> isEmpty </b>
 Untuk memeriksa apakah deque kosong, cukup dengan memeriksa apakah `tail` dan `tail` deque tersebut bernilai `NULL` atau tidak.
-```c
-bool deq_isEmpty(Deque *deque) {
-    return (deque->_head == NULL && \
-            deque->_tail == NULL);
+```cpp
+bool isEmpty() {
+    return (_head == nullptr && _tail == nullptr);
 }
 ```
 
@@ -319,22 +326,17 @@ bool deq_isEmpty(Deque *deque) {
 Untuk melakukan pushFront, langkah-langkahnya adalah sebagai berikut.
 - Buat node baru.
 - Jika deque kosong, jadikan node baru sebagai `head` dan `tail`.
-- Jika tidak kosong, maka buat next dari node baru ke `head` dan prev dari `head` ke node baru.
-- Kemudian pindah `head` ke node baru.
-```c
-void deq_pushFront(Deque *deque, int value)
-{
-    DListNode *newNode = __dlist_createNode(value);
-    if (newNode) {
-        deque->_size++;
-        if (deq_isEmpty(deque)) {
-            deque->_head = newNode;
-            deque->_tail = newNode;
-            return;
-        }
-        newNode->next = deque->_head;
-        deque->_head->prev = newNode;
-        deque->_head = newNode;
+- Jika tidak, node baru menunjuk ke `head` sebagai next, dan `head` menunjuk ke node baru sebagai prev.
+```cpp
+void pushFront(int value) {
+    DListNode *newNode = new DListNode(value);
+    _size++;
+    if (isEmpty()) {
+        _head = _tail = newNode;
+    } else {
+        newNode->next = _head;
+        _head->prev = newNode;
+        _head = newNode;
     }
 }
 ```
@@ -343,68 +345,59 @@ void deq_pushFront(Deque *deque, int value)
 Untuk melakukan pushBack, langkah-langkahnya adalah sebagai berikut.
 - Buat node baru.
 - Jika deque kosong, jadikan node baru sebagai `head` dan `tail`.
-- Jika tidak kosong, maka buat next dari node baru ke `tail` dan prev dari `tail` ke node baru.
-- Kemudian pindah `tail` ke node baru.
-```c
-void deq_pushBack(Deque *deque, int value)
-{
-    DListNode *newNode = __dlist_createNode(value);
-    if (newNode) {
-        deque->_size++;
-        if (deq_isEmpty(deque)) {
-            deque->_head = newNode;
-            deque->_tail = newNode;
-            return;
-        }
-
-        deque->_tail->next = newNode;
-        newNode->prev = deque->_tail;
-        deque->_tail = newNode;
+- Jika tidak, node baru menunjuk ke `tail` sebagai prev, dan `tail` menunjuk ke node baru sebagai next.
+```cpp
+void pushBack(int value) {
+    DListNode *newNode = new DListNode(value);
+    _size++;
+    if (isEmpty()) {
+        _head = _tail = newNode;
+    } else {
+        _tail->next = newNode;
+        newNode->prev = _tail;
+        _tail = newNode;
     }
 }
 ```
+
 - #### <b> front </b>
-```c
-int deq_front(Deque *deque) {
-    if (!deq_isEmpty(deque)) {
-        return (deque->_head->data);
+Mengembalikan elemen di depan deque.
+```cpp
+int front() {
+    if (!isEmpty()) {
+        return _head->data;
     }
-    return 0;
 }
 ```
 
-- #### <b> rear </b>
-```c
-int deq_back(Deque *deque) {
-    if (!deq_isEmpty(deque)) {
-        return (deque->_tail->data);
+- #### <b> back </b>
+Mengembalikan elemen di belakang deque.
+```cpp
+int front() {
+    if (!isEmpty()) {
+        return _head->data;
     }
-    return 0;
 }
 ```
 
 - #### <b> popFront </b>
 Untuk melakukan popFront, dilakukan langkah langkah berikut.
-- Tampung `head` pada variabel `temp` (temporary).
+- Simpan `head` pada variabel `temp` (temporary).
 - Mengganti `head` dengan referensi next dari `head`.
 - Menghapus node `temp`.
 - Jika `head` kosong, maka `tail` juga kosong.
-```c
-void deq_popFront(Deque *deque)
-{
-    if (!deq_isEmpty(deque)) {
-        DListNode *temp = deque->_head;
-        if (deque->_head == deque->_tail) {
-            deque->_head = NULL;
-            deque->_tail = NULL;
-            free(temp);
+```cpp
+void popFront() {
+    if (!isEmpty()) {
+        DListNode *temp = _head;
+        if (_head == _tail) {
+            _head = _tail = nullptr;
+        } else {
+            _head = _head->next;
+            _head->prev = nullptr;
         }
-        else {
-            deque->_head = deque->_head->next;
-            deque->_head->prev = NULL;
-            free(temp);
-        }
-        deque->_size--;
+        delete temp;
+        _size--;
     }
 }
 ```
@@ -415,24 +408,18 @@ Untuk melakukan popBack, dilakukan langkah langkah berikut.
 - Mengganti `tail` dengan referensi prev dari `tail`.
 - Menghapus node `temp`.
 - Jika `head` kosong, maka `tail` juga kosong.
-```c
-void deq_popBack(Deque *deque)
-{
-    if (!deq_isEmpty(deque)) {
-        DListNode *temp;
-        if (deque->_head == deque->_tail) {
-            temp = deque->_head;
-            deque->_head = NULL;
-            deque->_tail = NULL;
-            free(temp);
+```cpp
+void popBack() {
+    if (!isEmpty()) {
+        DListNode *temp = _tail;
+        if (_head == _tail) {
+            _head = _tail = nullptr;
+        } else {
+            _tail = _tail->prev;
+            _tail->next = nullptr;
         }
-        else {
-            temp = deque->_tail;
-            deque->_tail = deque->_tail->prev;
-            deque->_tail->next = NULL;
-            free(temp);
-        }
-        deque->_size--;
+        delete temp;
+        _size--;
     }
 }
 ```
@@ -472,28 +459,39 @@ Implementasi paling sederhana dari pqueue dapat dilakukan dengan menggunakan Sin
 *Catatan: Implementasi Priority Queue menggunakan Linked List bukanlah implementasi yang paling efisien. Jika ingin priority queue yang lebih efisien, dapat diimplementasikan menggunakan struktur data Heap Tree (yang pasti akan lebih kompleks).*
 
 - #### <b> Representasi Node </b>
-Priority Queue direpresentasikan oleh node bernama PqueueNode yang menyimpan data int dan referensi untuk node selanjutnya.
-```c
-typedef struct pqueueNode_t {
+Node dari Priority Queue direpresentasikan oleh kelas `PQueueNode` yang menyimpan data int dan referensi untuk node selanjutnya.
+```cpp
+class PQueueNode {
+public:
     int data;
-    struct pqueueNode_t *next;
-} PQueueNode;
+    PQueueNode *next;
+    PQueueNode(int value) : data(value), next(nullptr) {}
+};
 ```
 
 - #### <b> Struktur PriorityQueue </b>
-Priority Queue memiliki satu pointer referensi pada strukturnya yaitu top, untuk menunjukkan data yang paling tinggi prioritasnya.
-```c
-typedef struct pqueue_t {
+Priority Queue direpresentasikan oleh kelas `PriorityQueue` yang memiliki pointer referensi `top` untuk menunjukkan data dengan prioritas tertinggi dan variabel `_size` untuk menyimpan jumlah elemen.
+```cpp
+class PriorityQueue {
+private:
     PQueueNode *_top;
     unsigned _size;
-} PriorityQueue;
+
+public:
+    PriorityQueue() : _top(nullptr), _size(0) {}
+
+    //Mengembalikan jumlah elemen dalam queue.
+    unsigned size() {
+        return _size;
+    }
+};
 ```
 
 - #### <b> isEmpty </b>
-Untuk memeriksa apakah Priority Queue kosong, cukup dengan memeriksa apakah top Priority Queue tersebut bernilai `NULL` atau tidak.
-```c
-bool pqueue_isEmpty(PriorityQueue *pqueue) {
-    return (pqueue->_top == NULL);
+Untuk memeriksa apakah Priority Queue kosong, cukup dengan memeriksa apakah `_top` Priority Queue tersebut bernilai `nullptr` atau tidak.
+```cpp
+bool isEmpty() {
+    return (_top == nullptr);
 }
 ```
 
@@ -513,29 +511,25 @@ Untuk melakukan push, langkah-langkahnya adalah sebagai berikut.
 - Arahkan next node baru ke next dari temp.
 - Arahkan next dari temp ke node baru.
 ![Case-2](https://user-images.githubusercontent.com/83171211/189660234-2479ad73-2b95-4d80-8796-41d7b72ef9da.png)
-```c
-void pqueue_push(PriorityQueue *pqueue, int value)
-{
-    PQueueNode *temp = pqueue->_top;
-    PQueueNode *newNode = \
-        (PQueueNode*) malloc (sizeof(PQueueNode));
-    newNode->data = value;
-    newNode->next = NULL;
-    if (pqueue_isEmpty(pqueue)) {
-        pqueue->_top = newNode;
-        return;
+```cpp
+void push(int value) {
+    PQueueNode *newNode = new PQueueNode(value);
+    if (isEmpty()) {
+        _top = newNode;
     }
-    if (value < pqueue->_top->data) {
-        newNode->next = pqueue->_top;
-        pqueue->_top = newNode;
+    else if (value < _top->data) {
+        newNode->next = _top;
+        _top = newNode;
     }
     else {
-        while ( temp->next != NULL && 
-                temp->next->data < value)
+        PQueueNode *temp = _top;
+        while (temp->next != nullptr && temp->next->data < value) {
             temp = temp->next;
+        }
         newNode->next = temp->next;
         temp->next = newNode;
     }
+    _size++;
 }
 ```
 
@@ -546,26 +540,155 @@ Untuk melakukan pop, langkah-langkahnya adalah sebagai berikut.
 - Memindah `top` pqueue ke node selanjutnya.
 - Menghapus node temp yang telah dibuat sebelumnya.
 ```c
-void pqueue_pop(PriorityQueue *pqueue)
-{
-    if (!pqueue_isEmpty(pqueue)) {
-        PQueueNode *temp = pqueue->_top;
-        pqueue->_top = pqueue->_top->next;
-        free(temp);
+void pop() {
+    if (!isEmpty()) {
+        PQueueNode *temp = _top;
+        _top = _top->next;
+        delete temp;
+        _size--;
     }
 }
 ```
 
 - #### <b> top </b>
+Mengembalikan data dari elemen dengan prioritas tertinggi.
 ```c
-int pqueue_top(PriorityQueue *pqueue) {
-    if (!pqueue_isEmpty(pqueue))
-        return pqueue->_top->data;
-    else return 0;
+int top() {
+    if (!isEmpty()) {
+        return _top->data;
+    }
+    throw std::runtime_error("Priority queue is empty");
 }
 ```
 
 ## <b>Dictionary</b>
+<a name="dictionary"></a>
+### Terminologi
+
+- `Key` - Elemen unik yang digunakan untuk mengakses value dalam dictionary.
+- `Value` - Data yang disimpan dan berasosiasi dengan key.
+
+### Definisi
+<p>Dictionary adalah struktur data yang digunakan untuk menyimpan pasangan data berupa key-value. Setiap key bersifat unik dan digunakan untuk mengakses value yang berhubungan.</p>
+
+<img src="images/dictionary.png" width="500"/>
+
+### Aplikasi
+<p>Mencari nomor telepon berdasarkan nama adalah contoh nyata penggunaan dictionary. Misalnya, nomor telepon sebagaikan value dan nama seseorang sebagai key. </p>
+
+Contoh:
+| Nama (Key) | No Telp (Value) |
+|:----------:|:---------------:|
+|   "Anto"   |   081234567xx   |
+|   "Budi"   |   082345678xx   |
+
+1. <p>Misal saya ingin mencari nomor telepon Budi maka akan keluar 082345678xx</p>
+2. <P>Kita juga dapat menambahkan nomor telepon baru dengan nama sebagai penanda misal Citra dengan nomor telepon 083456789xx.</p>
+
+| Nama (Key) | No Telp (Value) |
+|:----------:|:---------------:|
+|   "Anto"   |   081234567xx   |
+|   "Budi"   |   082345678xx   |
+|   "Citra"  |   083456789xx   |
+
+3. <p>Jika misal Citra mengganti nomor telepon, yang diperbarui hanya nomor teleponnya saja, sedangkan namanya tetap sama. </p>
+
+| Nama (Key) | No Telp (Value) |
+|:----------:|:---------------:|
+|   "Anto"   |   081234567xx   |
+|   "Budi"   |   082345678xx   |
+|   "Citra"  |   084567890xx   |
+
+4. <p>Jika hubungan pertemanan dengan Citra sudah berakhir, kita cukup menghapus namanya dari kontak, maka nomor teleponnya juga akan ikut terhapus.</p>
+
+| Nama (Key) | No Telp (Value) |
+|:----------:|:---------------:|
+|   "Anto"   |   081234567xx   |
+|   "Budi"   |   082345678xx   |
+
+### Implementasi
+<p>Dictionary dapat diimplementasikan secara manual menggunakan Array of Struct. Berikut adalah implementasi untuk setiap operasi dasar.</p>
+
+[Kode Lengkap Dapat Dilihat Disini](code/dictionary.cpp)
+- #### <b>Representasi Node</b>
+Node dari Dictionary direpresentasikan oleh struct `Node` yang menyimpan pasangan `key` dan `value` dengan tipe data string.
+```cpp
+struct Node {
+    string key;
+    string value;
+};
+```
+
+- #### <b>Struktur Dictionary</b>
+Dictionary memiliki array `dict` untuk menyimpan node dan variabel `size` untuk menyimpan jumlah elemen.
+```cpp
+class Dictionary {
+private:
+    struct Node {
+        string key;
+        string value;
+    };
+    Node dict[100];
+    int size;
+
+public:
+    Dictionary() {
+        size = 0;
+    }
+    
+    // Operasi dictionary
+    
+};
+```
+
+- #### <b>Insert</b>
+Menambahkan pasangan key-value ke dalam dictionary.
+```cpp
+void insert(string key, string value) {
+    dict[size++] = {key, value};
+}
+```
+
+- #### <b>Update</b>
+Memperbarui nilai yang terkait dengan key tertentu.
+```cpp
+void update(string key, string newValue) {
+    for (int i = 0; i < size; i++) {
+        if (dict[i].key == key) {
+            dict[i].value = newValue;
+            return;
+        }
+    }
+}
+```
+
+- #### <b>Delete</b>
+Menghapus pasangan key-value berdasarkan key tertentu.
+```cpp
+void remove(string key) {
+    for (int i = 0; i < size; i++) {
+        if (dict[i].key == key) {
+            dict[i] = dict[size - 1];
+            size--;
+            return;
+        }
+    }
+}
+```
+
+- #### <b>Search</b>
+Mencari value berdasarkan key tertentu.
+
+```cpp
+void search(string key) {
+    for (int i = 0; i < size; i++) {
+        if (dict[i].key == key) {
+            return;
+        }
+    }
+}
+```
+
 <a name="dictionary"></a>
 ### Terminologi
 
