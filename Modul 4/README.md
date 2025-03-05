@@ -4,7 +4,7 @@
 
 - [Pengenalan Tree](#pengenalan-tree)
 - [Binary Search Tree](#binary-search-tree)
-- [Traversal Binary Search Tree](#traversal-tree)
+- [Traversal Binary Search Tree](#traversal-binary-search-tree)
 - [Self-Balancing Tree](#self-balancing-tree)
 - [AVL Tree](#avl-tree)
 - [AVL Tree (Revised)](#avl-tree-revised)
@@ -24,6 +24,8 @@ Pada tree, setiap node dapat memiliki banyak child (tergantung jenis tree), teta
 ### **Terminologi**
 
 ![Terminologi Tree](img/terminologi_tree.png)
+
+<img src="./img/a.png">
 
 > Sumber Gambar : https://adrianmejia.com/images/tree-parts.jpg (dengan perubahan)
 
