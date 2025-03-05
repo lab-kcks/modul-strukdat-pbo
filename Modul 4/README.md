@@ -23,7 +23,7 @@ Pada tree, setiap node dapat memiliki banyak child (tergantung jenis tree), teta
 
 ### **Terminologi**
 
-![Terminologi Tree](img/terminologi_tree.png)
+<img src="./img/terminologi_tree.png">
 
 > Sumber Gambar : https://adrianmejia.com/images/tree-parts.jpg (dengan perubahan)
 
