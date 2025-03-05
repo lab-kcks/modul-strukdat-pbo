@@ -958,3 +958,5 @@ void avl_remove(AVL *avl, int value) {
 - https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree
 - https://www.geeksforgeeks.org/self-balancing-binary-search-trees-comparisons/
 - https://github.com/lab-kcks/Modul-STRUKDAT/wiki/AVL-Tree-(Revised)
+- http://www.btechsmartclass.com/data_structures/avl-trees.html
+- https://github.com/AlproITS/StrukturData/wiki/Modul-3-(AVL-Tree)
