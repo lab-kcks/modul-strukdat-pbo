@@ -48,7 +48,7 @@ Pada tree, setiap node dapat memiliki banyak child (tergantung jenis tree), teta
 
 Binary tree merupakan struktur data tree yang setiap nodenya memiliki paling banyak 2 child.
 
-![Contoh Binary Tree](img/contoh_tree.png)
+![Contoh Binary Tree](img/contoh_binary_tree.png)
 
 > Sumber Gambar : https://commons.wikimedia.org/wiki/File:Complete_binary2.svg
 
