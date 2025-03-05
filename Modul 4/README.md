@@ -545,11 +545,13 @@ AVL memiliki terminology yang sama seperti pada modul sebelumnya, hanya terdapat
 - Balance Factor : selisih antara height node kiri dengan node kanan
 - Ancestor : seluruh node yang terletak diatas node dan memiliki jalur yang sama
 
-![AVL Tree](img)
+![AVL Tree Terminology](img/avl_tree_terminology.png)
 
 Balance Factor merupakan hasil dari pengurangan height node child kiri dikurang height node child kanan. Dapat juga ditulis sebagai berikut :
 
 $$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan$$
+
+![AVL Tree](img/avl_tree.png)
 
 > Sumber Gambar : https://static.javatpoint.com/ds/images/avl-tree.png
 
@@ -623,7 +625,7 @@ Dari balance factor tersebut kita memiliki 4 kemunkinan kejadian:
 - Apabila tinggi subtree kanan > subtree kiri **(Case right skewed)** -> **Rotasi Left/RR Cased**
 - Apabila tinggi subtree kanan < subtree kiri **(Case right left zigzag)** -> **Rotasi Right Diikuti Rotasi Left**
 
-![AVL Rotate]()
+![AVL Rotate](img/avl_rotate.png)
 
 Terdapat dua macam rotasi yang digunakan, yaitu rotasi kiri dan kanan.
 
@@ -648,6 +650,10 @@ AVLNode* _rightRotate(AVLNode* pivotNode){
 > **`pivotNode`** merupakan current Node kita yang akan kita jadikan patokan rotasi.
 
 Untuk rotasi kanan caranya adalah child sebelah kiri dari pivotNode menjadi parent baru. Kemudian anak sebelah kanan dari parent baru akan menjadi left child dari pivotNode. Kemudian pivotNode akan menjadi right child dari parent baru. Kemudian lakukan update height untuk pivotNode dan newParrent node.
+
+![AVL RR Rotation](img/avl_RR_rotate.png)
+
+> Sumber Gambar : http://www.btechsmartclass.com/data_structures/ds_images/RR%20Rotation.png
 
 **Right rotation** ini bisa menyelesaikan permasalahan untuk **Case Left Skewed**.
 
@@ -677,6 +683,10 @@ AVLNode* _leftRotate(AVLNode* pivotNode){
 
 Pada rotasi kiri caranya adalah right child dari pivotNode akan menjadi menjadi parent baru. Kemudian left child dari newParent akan menjadi right child pivotNode. Kemudian pivotNode akan menjadi right child dari parent baru. Kemudian lakukan update height untuk pivotNode dan newParrent node.
 
+![AVL LL Rotation](img/avl_LL_rotate.png)
+
+> Sumber Gambar : http://www.btechsmartclass.com/data_structures/ds_images/LL%20Rotation.png
+
 **Left Rotation** ini bisa menyelesaikan permasalahan untuk **Case Right Skewed**.
 
 ```c
@@ -696,6 +706,12 @@ AVLNode* _leftRightCaseRotate(AVLNode* node){
 }
 ```
 
+![AVL LR Zig-Zag](img/avl_LR_zigzag_rotate.png)
+
+![AVL LR Rotation](img/avl_LR_rotate.png)
+
+> Sumber Gambar : http://www.btechsmartclass.com/data_structures/ds_images/LR%20Rotation.png
+
 - **Case Right-Left Zig-zag**
 
 ```cpp
@@ -704,6 +720,12 @@ AVLNode* _rightLeftCaseRotate(AVLNode* node){
     return _leftRotate(node);
 }
 ```
+
+![AVL RL Zig-Zag](img/avl_RL_zigzag_rotate.png)
+
+![AVL RL Rotaion](img/avl_RL_rotate.png)
+
+> Sumber Gambar : http://www.btechsmartclass.com/data_structures/ds_images/RL%20Rotation.png
 
 ### **Search dan Insertion**
 
