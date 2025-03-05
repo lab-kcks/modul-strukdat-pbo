@@ -52,6 +52,12 @@ Binary tree merupakan struktur data tree yang setiap nodenya memiliki paling ban
 
 > Sumber Gambar : https://commons.wikimedia.org/wiki/File:Complete_binary2.svg
 
+### **Referensi**
+
+* https://en.wikipedia.org/wiki/Tree_(data_structure)
+* https://www.geeksforgeeks.org/introduction-to-tree-data-structure/
+* https://en.wikipedia.org/wiki/Binary_tree
+
 ## **Binary Search Tree**
 
 ### **Pengertian**
@@ -261,6 +267,11 @@ Contoh Code
 Jika urutan insertion tree yang dilakukan adalah 5,4,3,2,1 maka bentuk tree akan seperti gambar di bawah, dan ini dinamakan Skewed Tree
 
 ![Skewed Tree](img/bst_skewed_tree.png)
+
+### **Referensi**
+
+* https://www.geeksforgeeks.org/binary-search-tree-data-structure/
+* https://courses.engr.illinois.edu/cs225/fa2022/resources/bst/
 
 ## **Traversal Binary Search Tree**
 
