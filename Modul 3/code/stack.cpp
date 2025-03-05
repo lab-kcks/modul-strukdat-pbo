@@ -3,66 +3,74 @@
  * 
  * Dibuat dan ditulis oleh Bayu Laksana
  * -- tanggal 22 Januari 2019
- * Struktur Data 2020
+ * Diubah oleh Nathan Kho Pancras
+ * -- tanggal 5 Maret 2025
+ * Struktur Data & Pemorograman Berorientasi Objek 2025
  * Implementasi untuk bahasa C++
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-
+#include <iostream>
 using namespace std;
 
-// Node structure
-struct StackNode {
-    int data;
-    StackNode *next;
-};
+// Stack class using Linked List
+class Stack {
+private:
+    // Node structure
+    struct StackNode {
+        int data;
+        StackNode *next;
+        StackNode(int value) : data(value), next(nullptr) {}
+    };
 
-/* Structure of Stack using List */
-struct Stack
-{
     StackNode *_top;
     unsigned _size;
 
-    void init() 
-    {
-        _size = 0;
+public:
+    // Constructor
+    Stack() {
         _top = nullptr;
+        _size = 0;
+    }
+
+    // Destructor
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
     }
 
     bool isEmpty() {
         return (_top == nullptr);
     }
 
-    void push(int value)
-    {
-        StackNode *newNode = (StackNode*) malloc(sizeof(StackNode));
+    void push(int value) {
+        StackNode *newNode = new StackNode(value);
         if (newNode) {
             _size++;
-            newNode->data = value;
-
-            if (isEmpty()) newNode->next = NULL;
+            if (isEmpty()) newNode->next = nullptr;
             else newNode->next = _top;
             _top = newNode;
         }
     }
 
-    void pop()
-    {
+    void pop() {
         if (!isEmpty()) {
             StackNode *temp = _top;
             _top = _top->next;
-            free(temp);
+            delete temp;
             _size--;
         }
     }
 
-    int top()
-    {
+    int top() {
         if (!isEmpty())
             return _top->data;
-        exit(-1);
+        throw runtime_error("Stack kosong");
+    }
+
+    unsigned size() {
+        return _size;
     }
 };
 
@@ -70,17 +78,15 @@ int main(int argc, char const *argv[])
 {
     // Buat objek stack
     Stack myStack;
-    // PENTING!! Jangan lupa di-init
-    myStack.init();
 
-    myStack.push(6);
-    myStack.push(7);
-    myStack.push(1);
-    myStack.push(2);
+    myStack.push(63);
+    myStack.push(75);
+    myStack.push(12);
+    myStack.push(24);
 
     // Cetak isi stack
     while (!myStack.isEmpty()) {
-        printf("%d", myStack.top());
+        printf("%d ", myStack.top());
         myStack.pop();
     }
     puts("");

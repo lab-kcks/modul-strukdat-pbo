@@ -1,270 +1,248 @@
-// Simple Hash Table implementation in C++
-// Author: Nathan Kho Pancras
+/**
+ * Implementasi Hash Table
+ * 
+ * Dibuat dan ditulis oleh Nathan Kho Pancras
+ * -- tanggal 5 Maret 2025
+ * Struktur Data & Pemorograman Berorientasi Objek 2025
+ * Implementasi untuk bahasa C++
+ * 
+ */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include <iostream>
+using namespace std;
 
-typedef struct HashNode {
-    int key;
-    int value;
-    struct HashNode *next;
-} HashNode;
+class HashTable {
+private:
+    // Node Structure
+    struct HashNode {
+        int key;
+        int value;
+        HashNode *next;
+        HashNode(int k, int v) : key(k), value(v), next(nullptr) {}
+    };
 
-typedef struct HashTable {
     HashNode **buckets;  // linked lists array
     unsigned size;
     unsigned count;
-} HashTable;
 
-/**
- * @param ht Pointer to Hash Table to be initialized
- * @param size Size of the Hash Table
- */
-void hash_init(HashTable *ht, unsigned size) {
-    ht->size = size;
-    ht->count = 0;
-    ht->buckets = (HashNode**) malloc(size * sizeof(HashNode*));
-    for (unsigned i = 0; i < size; i++) {
-        ht->buckets[i] = NULL;
-    }
-}
-
-/**
- * Map key to index
- * @param ht Pointer to Hash Table
- * @param key Key to be hashed
- * @return Index in the Hash Table
- */
-unsigned hash_function(HashTable *ht, int key) {
-    return key % ht->size;
-}
-
-/**
- * Insert key-value pair into Hash Table
- * @param ht Pointer to Hash Table
- * @param key Key to be inserted
- * @param value Value to be associated with the key
- */
-void hash_insert(HashTable *ht, int key, int value) {
-    unsigned index = hash_function(ht, key);
-    HashNode *current = ht->buckets[index];
-
-    // check if key already exists
-    while (current != NULL) {
-        if (current->key == key) {
-            current->value = value;  // update value
-            return;
-        }
-        current = current->next;
+    // Map key to index
+    unsigned hash_function(int key) {
+        return key % size;
     }
 
-    // create new node
-    HashNode *newNode = (HashNode*) malloc(sizeof(HashNode));
-    newNode->key = key;
-    newNode->value = value;
-    newNode->next = ht->buckets[index];  // insert at beginning
-    ht->buckets[index] = newNode;
-    ht->count++;
-}
-
-/**
- * Search for a value by key
- * @param ht Pointer to Hash Table
- * @param key Key to search for
- * @param value Pointer to store the found value
- * @return true if key found, false otherwise
- */
-bool hash_search(HashTable *ht, int key, int *value) {
-    unsigned index = hash_function(ht, key);
-    HashNode *current = ht->buckets[index];
-    
-    while (current != NULL) {
-        if (current->key == key) {
-            *value = current->value;
-            return true;  // Found
-        }
-        current = current->next;
-    }
-    return false;
-}
-
-/**
- * Delete a key-value pair by key
- * @param ht Pointer to Hash Table
- * @param key Key to be deleted
- */
-void hash_delete(HashTable *ht, int key) {
-    unsigned index = hash_function(ht, key);
-    HashNode *current = ht->buckets[index];
-    HashNode *prev = NULL;
-
-    while (current != NULL) {
-        if (current->key == key) {
-            if (prev == NULL) {
-                ht->buckets[index] = current->next;  // Delete node at the beginning
-            } else {
-                prev->next = current->next;  // Delete node in the middle
-            }
-            free(current);
-            ht->count--;
-            return;
-        }
-        prev = current;
-        current = current->next;
-    }
-}
-
-/**
- * Check if Hash Table is empty
- * @param ht Pointer to Hash Table
- * @return true if empty, false otherwise
- */
-bool hash_isEmpty(HashTable *ht) {
-    return (ht->count == 0);
-}
-
-/**
- * Free memory used by Hash Table
- * @param ht Pointer to Hash Table
- */
-void hash_destroy(HashTable *ht) {
-    for (unsigned i = 0; i < ht->size; i++) {
-        HashNode *current = ht->buckets[i];
-        while (current != NULL) {
-            HashNode *temp = current;
-            current = current->next;
-            free(temp);
+public:
+    // Constructor
+    HashTable(unsigned tableSize) {
+        size = tableSize;
+        count = 0;
+        buckets = new HashNode*[size];
+        for (unsigned i = 0; i < size; i++) {
+            buckets[i] = nullptr;
         }
     }
-    free(ht->buckets);
-    ht->count = 0;
-    ht->size = 0;
-}
 
-/**
- * Display all elements in the hash table
- * @param ht Pointer to Hash Table
- */
-void hash_display(HashTable *ht) {
-    printf("\n===== Hash Table Contents =====\n");
-    if (hash_isEmpty(ht)) {
-        printf("Hash table is empty\n");
-        return;
-    }
-    
-    for (unsigned i = 0; i < ht->size; i++) {
-        HashNode *current = ht->buckets[i];
-        if (current != NULL) {
-            printf("Bucket %u: ", i);
-            while (current != NULL) {
-                printf("[%d:%d] -> ", current->key, current->value);
+    // Destructor
+    ~HashTable() {
+        for (unsigned i = 0; i < size; i++) {
+            HashNode *current = buckets[i];
+            while (current != nullptr) {
+                HashNode *temp = current;
                 current = current->next;
+                delete temp;
             }
-            printf("NULL\n");
+        }
+        delete[] buckets;
+    }
+
+    // Insert key-value pair into Hash Table
+    void insert(int key, int value) {
+        unsigned index = hash_function(key);
+        HashNode *current = buckets[index];
+
+        // check if key already exists
+        while (current != nullptr) {
+            if (current->key == key) {
+                current->value = value;  // update value
+                return;
+            }
+            current = current->next;
+        }
+
+        // create new node
+        HashNode *newNode = new HashNode(key, value);
+        newNode->next = buckets[index];  // insert at beginning
+        buckets[index] = newNode;
+        count++;
+    }
+
+    // Search for a value by key
+    bool search(int key, int *value) {
+        unsigned index = hash_function(key);
+        HashNode *current = buckets[index];
+        
+        while (current != nullptr) {
+            if (current->key == key) {
+                *value = current->value;
+                return true;  // Found
+            }
+            current = current->next;
+        }
+        return false;
+    }
+
+    // Delete a key-value pair by key
+    void remove(int key) {
+        unsigned index = hash_function(key);
+        HashNode *current = buckets[index];
+        HashNode *prev = nullptr;
+
+        while (current != nullptr) {
+            if (current->key == key) {
+                if (prev == nullptr) {
+                    buckets[index] = current->next;  // Delete node at the beginning
+                } else {
+                    prev->next = current->next;  // Delete node in the middle
+                }
+                delete current;
+                count--;
+                return;
+            }
+            prev = current;
+            current = current->next;
         }
     }
-    printf("Total elements: %u\n", ht->count);
-}
+
+    // Check if Hash Table is empty
+    bool isEmpty() {
+        return (count == 0);
+    }
+
+    // Display all elements in the hash table
+    void display() {
+        cout << "\n===== Hash Table Contents =====" << endl;
+        if (isEmpty()) {
+            cout << "Hash table is empty" << endl;
+            return;
+        }
+        
+        for (unsigned i = 0; i < size; i++) {
+            HashNode *current = buckets[i];
+            if (current != nullptr) {
+                cout << "Bucket " << i << ": ";
+                while (current != nullptr) {
+                    cout << "[" << current->key << ":" << current->value << "] -> ";
+                    current = current->next;
+                }
+                cout << "NULL" << endl;
+            }
+        }
+        cout << "Total elements: " << count << endl;
+    }
+
+    // Get count of elements
+    unsigned getCount() {
+        return count;
+    }
+};
 
 int main() {
-    HashTable ht;
     int choice, key, value, size;
+    HashTable *ht = nullptr;
     bool initialized = false;
     
     while (1) {
-        printf("\n===== Hash Table Operations =====\n");
-        printf("1. Initialize a new hash table\n");
-        printf("2. Insert a key-value pair\n");
-        printf("3. Search for a value by key\n");
-        printf("4. Delete a key-value pair\n");
-        printf("5. Check if hash table is empty\n");
-        printf("6. Display all elements\n");
-        printf("7. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+        cout << "\n===== Hash Table Operations =====" << endl;
+        cout << "1. Initialize a new hash table" << endl;
+        cout << "2. Insert a key-value pair" << endl;
+        cout << "3. Search for a value by key" << endl;
+        cout << "4. Delete a key-value pair" << endl;
+        cout << "5. Check if hash table is empty" << endl;
+        cout << "6. Display all elements" << endl;
+        cout << "7. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
         
         switch (choice) {
             case 1:
                 if (initialized) {
-                    printf("Hash table is already initialized. Destroying old one.\n");
-                    hash_destroy(&ht);
+                    cout << "Hash table is already initialized. Destroying old one." << endl;
+                    delete ht;
                 }
-                printf("Enter the size of hash table: ");
-                scanf("%d", &size);
-                hash_init(&ht, size);
+                cout << "Enter the size of hash table: ";
+                cin >> size;
+                ht = new HashTable(size);
                 initialized = true;
-                printf("Hash table initialized with size %d\n", size);
+                cout << "Hash table initialized with size " << size << endl;
                 break;
                 
             case 2:
                 if (!initialized) {
-                    printf("Please initialize the hash table first\n");
+                    cout << "Please initialize the hash table first" << endl;
                     break;
                 }
-                printf("Enter key: ");
-                scanf("%d", &key);
-                printf("Enter value: ");
-                scanf("%d", &value);
-                hash_insert(&ht, key, value);
-                printf("Key-value pair inserted\n");
+                cout << "Enter key: ";
+                cin >> key;
+                cout << "Enter value: ";
+                cin >> value;
+                ht->insert(key, value);
+                cout << "Key-value pair inserted" << endl;
                 break;
                 
             case 3:
                 if (!initialized) {
-                    printf("Please initialize the hash table first\n");
+                    cout << "Please initialize the hash table first" << endl;
                     break;
                 }
-                printf("Enter key to search: ");
-                scanf("%d", &key);
-                if (hash_search(&ht, key, &value)) {
-                    printf("Value found for key %d: %d\n", key, value);
+                cout << "Enter key to search: ";
+                cin >> key;
+                if (ht->search(key, &value)) {
+                    cout << "Value found for key " << key << ": " << value << endl;
                 } else {
-                    printf("Key %d not found\n", key);
+                    cout << "Key " << key << " not found" << endl;
                 }
                 break;
                 
             case 4:
                 if (!initialized) {
-                    printf("Please initialize the hash table first\n");
+                    cout << "Please initialize the hash table first" << endl;
                     break;
                 }
-                printf("Enter key to delete: ");
-                scanf("%d", &key);
-                hash_delete(&ht, key);
-                printf("Key %d deleted (if it existed)\n", key);
+                cout << "Enter key to delete: ";
+                cin >> key;
+                ht->remove(key);
+                cout << "Key " << key << " deleted (if it existed)" << endl;
                 break;
                 
             case 5:
                 if (!initialized) {
-                    printf("Please initialize the hash table first\n");
+                    cout << "Please initialize the hash table first" << endl;
                     break;
                 }
-                if (hash_isEmpty(&ht)) {
-                    printf("Hash table is empty\n");
+                if (ht->isEmpty()) {
+                    cout << "Hash table is empty" << endl;
                 } else {
-                    printf("Hash table is not empty\n");
+                    cout << "Hash table is not empty" << endl;
                 }
                 break;
                 
             case 6:
                 if (!initialized) {
-                    printf("Please initialize the hash table first\n");
+                    cout << "Please initialize the hash table first" << endl;
                     break;
                 }
-                hash_display(&ht);
+                ht->display();
                 break;
                 
             case 7:
                 if (initialized) {
-                    hash_destroy(&ht);
-                    printf("Hash table memory freed\n");
+                    delete ht;
+                    cout << "Hash table memory freed" << endl;
                 }
-                printf("Exiting program. Goodbye!\n");
+                cout << "Exiting program. Goodbye!" << endl;
                 return 0;
                 
             default:
-                printf("Invalid choice. Please try again.\n");
+                cout << "Invalid choice. Please try again." << endl;
         }
     }
     

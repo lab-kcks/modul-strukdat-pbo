@@ -3,75 +3,76 @@
  * 
  * Dibuat dan ditulis oleh Bayu Laksana
  * -- tanggal 22 Januari 2019
- * Struktur Data 2020
+ * Diubah oleh Nathan Kho Pancras
+ * -- tanggal 5 Maret 2025
+ * Struktur Data & Pemorograman Berorientasi Objek 2025
  * Implementasi untuk bahasa C++
  * 
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-
+#include <iostream>
 using namespace std;
 
-// Node Structure
-struct QueueNode {
-    int data;
-    QueueNode *next;
-};
+// Queue class using Linked List
+class Queue {
+private:
+    // Node Structure
+    struct QueueNode {
+        int data;
+        QueueNode *next;
+        QueueNode(int value) : data(value), next(nullptr) {}
+    };
 
-/* Structure of Queue using List */
-struct Queue
-{
     QueueNode *_front, *_rear;
     unsigned _size;
 
-    void init()
-    {
-        _size  = 0;
-        _front = NULL;
-        _rear  = NULL;
+public:
+    // Constructor
+    Queue() {
+        _size = 0;
+        _front = nullptr;
+        _rear = nullptr;
     }
 
-    bool isEmpty() {
-        return (_front == NULL && _rear == NULL);
-    }
-
-    void push(int value)
-    {
-        QueueNode *newNode =\
-            (QueueNode*) malloc(sizeof(QueueNode));
-        if (newNode) {
-            _size++;
-            newNode->data = value;
-            newNode->next = NULL;
-            
-            if (isEmpty())                 
-                _front = _rear = newNode;
-            else {
-                _rear->next = newNode;
-                _rear = newNode;
-            }
+    // Destructor
+    ~Queue() {
+        while (!isEmpty()) {
+            pop();
         }
     }
 
-    void pop()
-    {
+    bool isEmpty() {
+        return (_front == nullptr && _rear == nullptr);
+    }
+
+    void push(int value) {
+        QueueNode *newNode = new QueueNode(value);
+        _size++;
+        
+        if (isEmpty())                 
+            _front = _rear = newNode;
+        else {
+            _rear->next = newNode;
+            _rear = newNode;
+        }
+    }
+
+    void pop() {
         if (!isEmpty()) {
             QueueNode *temp = _front;
             _front = _front->next;
-            free(temp);
+            delete temp;
             
-            if (_front == NULL)
-                _rear = NULL;
+            if (_front == nullptr)
+                _rear = nullptr;
             _size--;
         }
     }
 
-    int front()
-    {
+    int front() {
         if (!isEmpty())
             return _front->data;
-        exit(-1);
+        throw runtime_error("Queue kosong");
     }
 
     unsigned size() {
@@ -83,8 +84,6 @@ int main(int argc, char const *argv[])
 {
     // Buat objek queue
     Queue myQueue;
-    // PENTING!! Jangan lupa di-init()
-    myQueue.init();
 
     myQueue.push(23);
     myQueue.push(11);

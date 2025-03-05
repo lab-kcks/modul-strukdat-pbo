@@ -60,87 +60,109 @@ Salah satu contoh penerapan dari stack adalah `mengubah notasi infix menjadi pos
 
 [Kode Lengkap Dapat Dilihat Disini](code/stack.cpp)
 
-Implentasi stack dapat dilakukan dengan menggunakan Singly Linked List dengan mengubah head pada Singly Linked List menjadi Top.
+Implentasi stack dapat dilakukan dengan menggunakan Singly Linked List dengan menggunakan konsep OOP (Object-Oriented Programming).
 
 _Kompleksitas waktu semua operasi pada stack dilakukan secara konstan O(1)._
 
-- #### <b>Representasi Node</b>
-  Setiap node pada stack dapat direpresentasikan oleh sebuah struct `StackNode` yang menyimpan tipe data `int` dan referensi pada node selanjutnya menggunakan pointer struct `StackNode` inu sendiri.
+- #### <b>Implementasi Stack</b>
+  Stack diimplementasikan sebagai class dengan node sebagai struktur internal. Class ini memiliki atribut pointer ke node teratas dan ukuran stack, serta berbagai metode untuk operasi stack.
 
-  ```c
-  typedef struct stackNode_t {
-    int data;
-    struct stackNode_t *next;
-  } StackNode;
-  ```
-- #### <b>Struktur Stack</b>
-    Keseluruhan stack dapat direpresentasikan oleh sebuah struct `Stack` yang menyimpan referensi node yang berada pada top menggunakan pointer struct `StackNode` serta jumlah elemen yang berada pada node menggunakan `unsigned`.
-    ```c
-    typedef struct stack_t {
+  ```cpp
+  class Stack {
+  private:
+      // Node structure
+      struct StackNode {
+          int data;
+          StackNode *next;
+          StackNode(int value) : data(value), next(nullptr) {}
+      };
+
       StackNode *_top;
       unsigned _size;
-    } Stack;
-    ```
+
+  public:
+      // Constructor
+      Stack() {
+          _top = nullptr;
+          _size = 0;
+      }
+
+      // Destructor
+      ~Stack() {
+          while (!isEmpty()) {
+              pop();
+          }
+      }
+      
+      // Operasi stack lainnya...
+  };
+  ```
+
 - #### <b>Fungsi isEmpty()</b>
-  Fungsi ini digunakan untuk memeriksa apakah stack yang ada kosong atau tidak. Operasinya dilakukan dengan memeriksa apakah `top` dari stack tersebut bernilai `NULL` atau tidak.
-  ```c
-  bool stack_isEmpty(Stack *stack) {
-    return (stack->_top == NULL);
+  Fungsi ini digunakan untuk memeriksa apakah stack yang ada kosong atau tidak. Operasinya dilakukan dengan memeriksa apakah `_top` dari stack tersebut bernilai `nullptr` atau tidak.
+  ```cpp
+  bool isEmpty() {
+      return (_top == nullptr);
   }
   ```
 
 - #### <b>Fungsi push()</b>
   Fungsi ini digunakan untuk menambahkan elemen baru pada stack. Operasinya dilakukan dengan tahap sebagai berikut:
 
-  - Buat node baru dengan struct `StackNode`.
-  - Jika stack sedang kosong, jadikan node baru ini sebagai `top`.
-  - Jika tidak kosong, maka next dari node baru adalah `top` dan jadikan node baru sebagai `top`.
+  - Buat node baru dengan constructor `StackNode`.
+  - Jika stack sedang kosong, jadikan next dari node baru sebagai `nullptr`.
+  - Jika tidak kosong, maka next dari node baru adalah `_top`.
+  - Jadikan node baru sebagai `_top`.
 
-  ```c
-  void stack_push(Stack *stack, int value)
-  {
-    StackNode *newNode = (StackNode*) malloc(sizeof(StackNode));
-    if (newNode) {
-      stack->_size++;
-      newNode->data = value;
-
-      if (stack_isEmpty(stack)) newNode->next = NULL;
-      else newNode->next = stack->_top;
-
-      stack->_top = newNode;
-    }
+  ```cpp
+  void push(int value) {
+      StackNode *newNode = new StackNode(value);
+      if (newNode) {
+          _size++;
+          if (isEmpty()) newNode->next = nullptr;
+          else newNode->next = _top;
+          _top = newNode;
+      }
   }
   ```
-- #### Fungsi pop()
-  Fungsi ini digunakan untuk menghapus / mengambil node yang berada pada `top` stack. Operasinya dilakukan dengan tahap sebagai berikut:
-  - Tampung `top` pada variabel sementara `temp`.
-  - Mengganti `top` dengan referensi next dari `top`.
-  - Menghapus variabel semetara sebelumnya.
-  ```c
-  void stack_pop(Stack *stack)
-  {
-    if (!stack_isEmpty(stack)) {
-      StackNode *temp = stack->_top;
-      stack->_top = stack->_top->next;
-      free(temp);
-      stack->_size--;
-    }
+- #### <b>Fungsi pop()</b>
+  Fungsi ini digunakan untuk menghapus / mengambil node yang berada pada `_top` stack. Operasinya dilakukan dengan tahap sebagai berikut:
+  - Tampung `_top` pada variabel sementara `temp`.
+  - Mengganti `_top` dengan referensi next dari `_top`.
+  - Menghapus variabel sementara sebelumnya menggunakan `delete`.
+  ```cpp
+  void pop() {
+      if (!isEmpty()) {
+          StackNode *temp = _top;
+          _top = _top->next;
+          delete temp;
+          _size--;
+      }
   }
   ```
 
-- #### Fungsi top()
+- #### <b>Fungsi top()</b>
 
   Fungsi ini digunakan untuk mendapatkan data top dari stack. Operasinya dilakukan dengan:
 
-  - Apabila stack tidak kosong, maka return data `top`.
-  - Apabila stack kosong, maka return 0.
+  - Apabila stack tidak kosong, maka return data `_top`.
+  - Apabila stack kosong, maka throw exception.
 
-  ```c
-  int stack_top(Stack *stack)
-  {
-    if (!stack_isEmpty(stack))
-      return stack->_top->data;
-    return 0;
+  ```cpp
+  int top() {
+      if (!isEmpty())
+          return _top->data;
+      throw runtime_error("Stack kosong");
+  }
+  ```
+
+- #### <b>Fungsi size()</b>
+
+  Fungsi ini digunakan untuk mendapatkan jumlah elemen dalam stack.
+
+  ```cpp
+  unsigned size() {
+      return _size;
   }
   ```
 
@@ -164,96 +186,115 @@ Queue biasa digunakan pada `BFS (Breadth First Search) Graph Traversal` yang nan
 
 [Kode Lengkap Dapat Dilihat Disini](code/queue.cpp)
 
-Implementasi queue dapat dilakukan dengan menggunakan Singly Linked List dengan menggunakan pointer `rear` untuk menunjukkan node paling belakang dan `front` untuk menunjukkan node terdepan.
+Implementasi queue dapat dilakukan dengan menggunakan Singly Linked List dengan pendekatan OOP, menggunakan pointer `_rear` untuk menunjukkan node paling belakang dan `_front` untuk menunjukkan node terdepan.
 
 _Kompleksitas waktu semua operasi dilakukan secara konstan O(1)._
 
-- #### <b>Representasi Node</b>
-  Setiap node yang ada pada queue dapat direpresentasikan oleh sebuah struct `QueueNode` yang menyimpan data `int` dan refernsi node selanjutnya menggunakan pointer struct `QueueNode` ini sendiri.
+- #### <b>Implementasi Queue</b>
+  Queue diimplementasikan sebagai class dengan node sebagai struktur internal. Class ini memiliki atribut pointer ke node terdepan dan terbelakang, serta ukuran queue, dan berbagai metode untuk operasi queue.
 
-  ```c
-  typedef struct queueNode_t {
-    int data;
-    struct queueNode_t *next;
-  } QueueNode;
-  ```
-  
-- #### <b>Struktur Queue</b>
-  Keseluruhan queue yang ada dikontrol oleh sebuah struct `Queue` yang menyimpan referensi node terdepan dan node terbelekang menggunakan pointer struct `QueueNode` serta data jumlah node yang ada pada queue menggunakan `unsigned`.
-  ```c
-  typedef struct queue_t {
-    QueueNode   *_front, *_rear;
-    unsigned _size;
-  } Queue;
+  ```cpp
+  class Queue {
+  private:
+      // Node Structure
+      struct QueueNode {
+          int data;
+          QueueNode *next;
+          QueueNode(int value) : data(value), next(nullptr) {}
+      };
+
+      QueueNode *_front, *_rear;
+      unsigned _size;
+
+  public:
+      // Constructor
+      Queue() {
+          _size = 0;
+          _front = nullptr;
+          _rear = nullptr;
+      }
+
+      // Destructor
+      ~Queue() {
+          while (!isEmpty()) {
+              pop();
+          }
+      }
+      
+      // Operasi queue lainnya...
+  };
   ```
 
 - #### <b>Fungsi isEmpty()</b>
-  Fungsi ini diguakan untuk memeriksa apakah queue kosong atau tidak. Prosesnya dilakukan dengan memeriksa apakah pointer `front` atau `rear` bernilai `NULL` atau tidak.
+  Fungsi ini digunakan untuk memeriksa apakah queue kosong atau tidak. Prosesnya dilakukan dengan memeriksa apakah pointer `_front` atau `_rear` bernilai `nullptr` atau tidak.
 
-  ```c
-  bool queue_isEmpty(Queue *queue) {
-    return (queue->_front == NULL && queue->_rear == NULL);
+  ```cpp
+  bool isEmpty() {
+      return (_front == nullptr && _rear == nullptr);
   }
   ```
 
-- #### <b>Fungsi queue_push()</b>
+- #### <b>Fungsi push()</b>
   Fungsi ini digunakan untuk menambahkan data pada queue. Operasinya dilakukan melalui tahap sebagai berikut:
-  - Buat node baru dengan struct `QueueNode`.
-  - Jika queue kosong, jadikan node baru ini sebagai `front` dan `rear`.
-  - Jika queue tidak kosong, maka next dari `rear` adalah node baru, dan jadikan node baru sebagai rear.
-  ```c
-  void queue_push(Queue *queue, int value) {
-    QueueNode *newNode = (QueueNode*) malloc(sizeof(QueueNode));
-    if (newNode) {
-      queue->_size++;
-      newNode->data = value;
-      newNode->next = NULL;
+  - Buat node baru dengan constructor `QueueNode`.
+  - Jika queue kosong, jadikan node baru ini sebagai `_front` dan `_rear`.
+  - Jika queue tidak kosong, maka next dari `_rear` adalah node baru, dan jadikan node baru sebagai `_rear`.
+  ```cpp
+  void push(int value) {
+      QueueNode *newNode = new QueueNode(value);
+      _size++;
       
-      if (queue_isEmpty(queue))                 
-        queue->_front = queue->_rear = newNode;
+      if (isEmpty())                 
+          _front = _rear = newNode;
       else {
-        queue->_rear->next = newNode;
-        queue->_rear = newNode;
+          _rear->next = newNode;
+          _rear = newNode;
       }
-    }
   }
   ```
 
-- #### <b>Fungsi queue_pop()</b>
+- #### <b>Fungsi pop()</b>
   Fungsi ini digunakan untuk menghapus/mengambil `node` terdepan dari queue. Operasinya dilakukan dengan tahap sebagai berikut:
 
-  - Tampung `front` pada variabel sementara `temp`.
-  - Mengganti `front` dengan referensi next dari `front`.
-  - Menghapus variabel sementara sebelumnya.
-  - Jika `front` kosong, maka `rear` juga kosong.
+  - Tampung `_front` pada variabel sementara `temp`.
+  - Mengganti `_front` dengan referensi next dari `_front`.
+  - Menghapus variabel sementara sebelumnya menggunakan `delete`.
+  - Jika `_front` kosong, maka `_rear` juga kosong.
 
-  ```c
-  void queue_pop(Queue *queue) {
-    if (!queue_isEmpty(queue)) {
-      QueueNode *temp = queue->_front;
-      queue->_front = queue->_front->next;
-      free(temp);
-
-      if (queue->_front == NULL)
-        queue->_rear = NULL;
-      queue->_size--;
-    }
+  ```cpp
+  void pop() {
+      if (!isEmpty()) {
+          QueueNode *temp = _front;
+          _front = _front->next;
+          delete temp;
+          
+          if (_front == nullptr)
+              _rear = nullptr;
+          _size--;
+      }
   }
   ```
 
-- #### <b>Fungsi queue_front()</b>
+- #### <b>Fungsi front()</b>
   Fungsi ini digunakan untuk mengambil `data` terdepan dari queue. Operasinya dilakukan dengan tahap sebagai berikut:
-  - Apabila queue tidak kosong, maka return data `front`.
-  - Apabila queue kosong, maka return 0. 
-  ```c
-  int queue_front(Queue *queue) {
-    if (!queue_isEmpty(queue)) {
-      return (queue->_front->data);
-    }
-    return 0;
+  - Apabila queue tidak kosong, maka return data `_front`.
+  - Apabila queue kosong, maka throw exception. 
+  ```cpp
+  int front() {
+      if (!isEmpty())
+          return _front->data;
+      throw runtime_error("Queue kosong");
   }
   ```
 
+- #### <b>Fungsi size()</b>
+  Fungsi ini digunakan untuk mendapatkan jumlah elemen dalam queue.
+
+  ```cpp
+  unsigned size() {
+      return _size;
+  }
+  ```
 
 ## <b>Deque</b>
 <a name="deque"></a>
@@ -822,166 +863,140 @@ Kata "book" -> hash("book") = 17 -> bucket[17] = "buku"
 Kata "pencil" -> hash("pencil") = 42 -> bucket[42] -> linked list -> "pensil"
 ```
 
-### Contoh Implementasi
+### Implementasi HashTable
 
-[code/hash_table.cpp](code/hash_table.cpp)
+[Kode Lengkap Dapat Dilihat Disini](code/hash_table.cpp)
 
-Implementasi hash table menggunakan metode chaining untuk menangani collision, di mana setiap bucket berisi linked list.
+Implementasi hash table menggunakan metode chaining untuk menangani collision, di mana setiap bucket berisi linked list, dengan pendekatan OOP.
 
 _Kompleksitas waktu operasi pada Hash Table: Average case O(1), Worst case O(n) ketika terjadi banyak collision._
 
-#### Representasi Node
+- #### <b>Implementasi HashTable</b>
+  HashTable diimplementasikan sebagai class dengan node sebagai struktur internal. Class ini memiliki atribut array dari pointer ke node (buckets), ukuran tabel, jumlah elemen, dan berbagai metode untuk operasi hash table.
 
-```c
-typedef struct HashNode {
-    int key;
-    int value;
-    struct HashNode *next;
-} HashNode;
-```
+  ```cpp
+  class HashTable {
+  private:
+      // Node Structure
+      struct HashNode {
+          int key;
+          int value;
+          HashNode *next;
+          HashNode(int k, int v) : key(k), value(v), next(nullptr) {}
+      };
 
-#### Struktur HashTable
+      HashNode **buckets;  // linked lists array
+      unsigned size;
+      unsigned count;
 
-```c
-typedef struct HashTable {
-    HashNode **buckets;  // Array of linked lists
-    unsigned size;       // Ukuran array
-    unsigned count;      // Jumlah elemen
-} HashTable;
-```
+      // Map key to index
+      unsigned hash_function(int key) {
+          return key % size;
+      }
 
-### Operasi
+  public:
+      // Constructor
+      HashTable(unsigned tableSize) {
+          size = tableSize;
+          count = 0;
+          buckets = new HashNode*[size];
+          for (unsigned i = 0; i < size; i++) {
+              buckets[i] = nullptr;
+          }
+      }
 
-#### hash_init()
-Fungsi ini digunakan untuk menginisialisasi hash table dengan ukuran tertentu. Semua bucket awalnya diatur ke NULL.
+      // Destructor
+      ~HashTable() {
+          for (unsigned i = 0; i < size; i++) {
+              HashNode *current = buckets[i];
+              while (current != nullptr) {
+                  HashNode *temp = current;
+                  current = current->next;
+                  delete temp;
+              }
+          }
+          delete[] buckets;
+      }
+      
+      // Operasi hash table lainnya...
+  };
+  ```
 
-```c
-void hash_init(HashTable *ht, unsigned size) {
-    ht->size = size;
-    ht->count = 0;
-    ht->buckets = (HashNode**) malloc(size * sizeof(HashNode*));
-    for (unsigned i = 0; i < size; i++) {
-        ht->buckets[i] = NULL;
-    }
-}
-```
+- #### <b>Fungsi insert()</b>
+  Memasukkan pasangan key-value ke dalam hash table. Jika key sudah ada, nilai akan diperbarui.
 
-#### hash_function()
-Fungsi hash sederhana yang memetakan kunci ke indeks dengan operasi modulo.
+  ```cpp
+  void insert(int key, int value) {
+      unsigned index = hash_function(key);
+      HashNode *current = buckets[index];
 
-```c
-unsigned hash_function(HashTable *ht, int key) {
-    return key % ht->size;
-}
-```
+      // check if key already exists
+      while (current != nullptr) {
+          if (current->key == key) {
+              current->value = value;  // update value
+              return;
+          }
+          current = current->next;
+      }
 
-#### hash_insert()
-Memasukkan pasangan key-value ke dalam hash table. Jika key sudah ada, nilai akan diperbarui.
+      // create new node
+      HashNode *newNode = new HashNode(key, value);
+      newNode->next = buckets[index];  // insert at beginning
+      buckets[index] = newNode;
+      count++;
+  }
+  ```
 
-```c
-void hash_insert(HashTable *ht, int key, int value) {
-    unsigned index = hash_function(ht, key);
-    HashNode *current = ht->buckets[index];
+- #### <b>Fungsi search()</b>
+  Mencari nilai berdasarkan kunci tertentu dalam hash table.
 
-    // Cek apakah kunci sudah ada
-    while (current != NULL) {
-        if (current->key == key) {
-            current->value = value;  // Update nilai
-            return;
-        }
-        current = current->next;
-    }
+  ```cpp
+  bool search(int key, int *value) {
+      unsigned index = hash_function(key);
+      HashNode *current = buckets[index];
+      
+      while (current != nullptr) {
+          if (current->key == key) {
+              *value = current->value;
+              return true;  // Found
+          }
+          current = current->next;
+      }
+      return false;  // Not found
+  }
+  ```
 
-    // Buat node baru
-    HashNode *newNode = (HashNode*) malloc(sizeof(HashNode));
-    newNode->key = key;
-    newNode->value = value;
-    newNode->next = ht->buckets[index];  // Sisipkan di awal
-    ht->buckets[index] = newNode;
-    ht->count++;
-}
-```
+- #### <b>Fungsi remove()</b>
+  Menghapus entri berdasarkan kunci dari hash table.
 
-#### hash_search()
-Mencari nilai berdasarkan kunci tertentu dalam hash table.
+  ```cpp
+  void remove(int key) {
+      unsigned index = hash_function(key);
+      HashNode *current = buckets[index];
+      HashNode *prev = nullptr;
 
-```c
-bool hash_search(HashTable *ht, int key, int *value) {
-    unsigned index = hash_function(ht, key);
-    HashNode *current = ht->buckets[index];
-    
-    while (current != NULL) {
-        if (current->key == key) {
-            *value = current->value;
-            return true;  // Ditemukan
-        }
-        current = current->next;
-    }
-    return false;  // Tidak ditemukan
-}
-```
+      while (current != nullptr) {
+          if (current->key == key) {
+              if (prev == nullptr) {
+                  buckets[index] = current->next;  // Delete node at the beginning
+              } else {
+                  prev->next = current->next;  // Delete node in the middle
+              }
+              delete current;
+              count--;
+              return;
+          }
+          prev = current;
+          current = current->next;
+      }
+  }
+  ```
 
-#### hash_delete()
-Menghapus entri berdasarkan kunci dari hash table.
+- #### <b>Fungsi isEmpty()</b>
+  Memeriksa apakah hash table kosong atau tidak.
 
-```c
-void hash_delete(HashTable *ht, int key) {
-    unsigned index = hash_function(ht, key);
-    HashNode *current = ht->buckets[index];
-    HashNode *prev = NULL;
-
-    while (current != NULL) {
-        if (current->key == key) {
-            if (prev == NULL) {
-                ht->buckets[index] = current->next;  // Hapus node pertama
-            } else {
-                prev->next = current->next;  // Hapus node tengah/akhir
-            }
-            free(current);
-            ht->count--;
-            return;
-        }
-        prev = current;
-        current = current->next;
-    }
-}
-```
-
-#### hash_isEmpty()
-Memeriksa apakah hash table kosong atau tidak.
-
-```c
-bool hash_isEmpty(HashTable *ht) {
-    return (ht->count == 0);
-}
-```
-
-### Contoh Penggunaan
-
-```c
-int main() {
-    HashTable ht;
-    hash_init(&ht, 10);  // Inisialisasi dengan 10 bucket
-
-    // Memasukkan data
-    hash_insert(&ht, 5, 100);
-    hash_insert(&ht, 15, 200);  // Collision di bucket 5 (jika size=10)
-    hash_insert(&ht, 25, 300);  // Collision lagi di bucket 5
-
-    // Mencari data
-    int value;
-    if (hash_search(&ht, 15, &value)) {
-        printf("Nilai untuk kunci 15: %d\n", value);  // Output: 200
-    }
-    
-    // Menghapus data
-    hash_delete(&ht, 15);
-    
-    // Mencari setelah dihapus
-    if (!hash_search(&ht, 15, &value)) {
-        printf("Kunci 15 telah dihapus\n");
-    }
-    
-    return 0;
-}
-```
+  ```cpp
+  bool isEmpty() {
+      return (count == 0);
+  }
+  ```
