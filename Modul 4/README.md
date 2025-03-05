@@ -511,6 +511,19 @@ Untuk mempermudah pemahaman BST dalam bentuk visual, kalian dapat menggunakan we
 
 ## **Self-Balancing Tree**
 
-## **AVL Tree**
+### **Pengertian**
 
-## **AVL Tree (Revised)**
+Self-Balancing Tree merupakan BST yang secara otomatis dapat menyeimbangkan perbedaan height saat terjadi insertion atau deletion pada node yang ada di BST tersebut. Dengan kata lain, Self-Balancing BST ini akan mempertahankan height sekecil mungkin untuk mempercepat operasi pada BST tersebut.
+
+Height biasanya dipertahankan dalam urutan Log n sehingga semua operasi membutuhkan waktu rata-rata O(Log n).
+
+### **Variasi Self-Balancing BST**
+
+Terdapat beberapa jenis self-balancing tree, seperti Red-Black Tree, AVL Tree, dan Splay Tree. Pada modul ini akan dibahas lebih lanjut mengenai AVL Tree.
+
+### **Referensi**
+
+* https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree
+* https://www.geeksforgeeks.org/self-balancing-binary-search-trees-comparisons/
+
+## **AVL Tree**
