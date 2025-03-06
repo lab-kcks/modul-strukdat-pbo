@@ -102,6 +102,7 @@ Dalam implementasinya, kompleksitas waktunya yaitu:
 Double linked list merupakan jenis linked list yang setiap node memiliki dua referensi: satu menunjuk ke node sebelumnya dan satu lagi menunjuk ke node berikutnya. Berbeda dengan single linked list yang hanya memiliki satu referensi yangg menunjuk ke node berikutnya. <br />
 Struktur node ganda ini memungkinkan traversal dua arah; forward dan backward
 
+ ![Double linked list](img/double-linked-list2.jpg)
 > Sumber gambar : https://brianross-95869.medium.com/doubly-linked-lists-double-the-trouble-but-double-the-fun-1d13ed215dfe
 
 ### **Struktur Double Linked List***
