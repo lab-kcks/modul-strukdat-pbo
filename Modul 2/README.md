@@ -189,7 +189,7 @@ class Node
   >     - Atur `prevNode->next` ke `newNode`
 
 - Menghapuskan Elemen di posisi tertentu
-   ![hapus elemen di posisi tertentu](img/deletion-at-specific-doubly.webp)
+   ![hapus elemen di posisi tertentu](img/deletion-at-specific-position-doubly.webp)
   > Langkah-langkah untuk menghapus node dari posisi tertentu dalam Double Linked List :
   > - Jika posisi node yang diberikan adalah 0 (atau 1 tergantung index), gunakan metode penghapusan di awal
   > - Jika posisi yang diberikan merupakan node terakhir, gunakan metode penghapusan di akhir
