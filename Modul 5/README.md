@@ -1,6 +1,11 @@
 # Modul 5 - Standard Template Library (STL) dan Graf
 
-Standard Template Library
+## Daftar Isi
+- [Daftar Isi](#Daftar-Isi)
+- [Standard Template Library](#Standard-Template-Library)
+- [Graf](#Graf)
+
+## Standard Template Library
 
 std::priority_queue
 
@@ -42,16 +47,16 @@ std::tuple
 
 
 
-Graf
+## Graf
 
-Graph terminology
+### Graph terminology
 - nodes
 - edges
 - path
 - directed
 - weighted
 
-Representasi graph
+### Representasi graph
 - Adjacency list representation
 - Adjacency matrix representation
 - Edge list representation
@@ -60,7 +65,7 @@ interactive visualization <br />
 https://csacademy.com/lesson/graph_representation
 
 
-Graph Traversal
+### Graph Traversal
 - DFS
 
 https://github.com/user-attachments/assets/4914b497-8724-42eb-a9c6-abe51cc715cf
@@ -80,7 +85,7 @@ Flood Fill <br />
 Finding connected components in a graph represented by a grid.
 
 
-Shortest path
+### Shortest path
 - Dijkstra 
 
 Latihan <br />
@@ -92,7 +97,7 @@ https://cses.fi/problemset/task/1671
 Latihan <br />
 https://cses.fi/problemset/task/1672
 
-MST 
+### Minimum spanning tree
 - Prim
 - Kruskal
 
