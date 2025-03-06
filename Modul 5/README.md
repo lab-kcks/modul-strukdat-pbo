@@ -56,7 +56,7 @@ Representasi graph
 - Adjacency matrix representation
 - Edge list representation
 
-interactive visualization
+interactive visualization <br />
 https://csacademy.com/lesson/graph_representation
 
 
@@ -67,24 +67,30 @@ https://github.com/user-attachments/assets/4914b497-8724-42eb-a9c6-abe51cc715cf
 
 - BFS
 
-
 https://github.com/user-attachments/assets/5c084a10-f2d7-4ac6-a900-cbf6287daf33
 
 
-interactive visualization
-https://csacademy.com/lesson/breadth_first_search
-https://csacademy.com/lesson/depth_first_search
+interactive visualization <br />
+https://csacademy.com/lesson/breadth_first_search <br />
+https://csacademy.com/lesson/depth_first_search <br />
 
 Application of graph traversal
 
-Flood Fill
+Flood Fill <br />
 Finding connected components in a graph represented by a grid.
 
 
 Shortest path
 - Dijkstra 
+
+Latihan <br />
+https://cses.fi/problemset/task/1671
+
 - Bellman–Ford
 - Floyd–Warshall
+
+Latihan <br />
+https://cses.fi/problemset/task/1672
 
 MST 
 - Prim
@@ -92,11 +98,13 @@ MST
 
 https://github.com/user-attachments/assets/a0f43df4-11dc-40eb-8ab7-471ba2ee32a7
 
-
+Latihan <br />
+https://cses.fi/problemset/task/1675
 
 Reference
 
-https://cplusplus.com/reference/stl/
-https://cses.fi/book/book.pdf
-https://cp-algorithms.com/
-https://usaco.guide/dashboard
+https://cplusplus.com/reference/stl/ <br />
+https://cses.fi/book/book.pdf <br />
+https://cp-algorithms.com/ <br />
+https://usaco.guide/dashboard <br />
+
