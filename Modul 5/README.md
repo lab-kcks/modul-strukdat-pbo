@@ -62,7 +62,14 @@ https://csacademy.com/lesson/graph_representation
 
 Graph Traversal
 - DFS
+
+https://github.com/user-attachments/assets/4914b497-8724-42eb-a9c6-abe51cc715cf
+
 - BFS
+
+
+https://github.com/user-attachments/assets/5c084a10-f2d7-4ac6-a900-cbf6287daf33
+
 
 interactive visualization
 https://csacademy.com/lesson/breadth_first_search
@@ -82,6 +89,10 @@ Shortest path
 MST 
 - Prim
 - Kruskal
+
+https://github.com/user-attachments/assets/a0f43df4-11dc-40eb-8ab7-471ba2ee32a7
+
+
 
 Reference
 
