@@ -214,34 +214,67 @@ Traversal dalam double linked list berarti mengiterasi list dengan mengunjungi s
 
 [Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/doublyList.cpp)  
 
-## Circular Single Linked List
+## **Circular Single Linked List**
 Circular Single Linked List adalah jenis linked list di mana setiap node memiliki referensi ke node berikutnya, dan node terakhir mengarah kembali ke node pertama, membentuk lingkaran. Berbeda dengan single linked list biasa yang memiliki ujung akhir, circular single linked list tidak memiliki node yang menunjuk ke NULL.
 
-###  Struktur Circular Single Linked List
+### **Struktur Circular Single Linked List**
 Struktur node dalam circular single linked list terdiri dari dua komponen utama:
 > - Data: Menyimpan nilai atau informasi dalam node.
 > - Pointer ke Node Berikutnya: Menunjuk ke node berikutnya dalam linked list. Node terakhir menunjuk kembali ke node pertama.
  ![Circular-linked list](img/circular-linked-list.png)
 
 
-### Perbedaan Utama dari Single Linked List Biasa
+### **Perbedaan Utama dari Single Linked List Biasa**
 
-Penyisipan Elemen :
+Penyisipan
 > - Jika disisipkan di awal, pointer next pada node terakhir harus diperbarui untuk merujuk ke head yang baru.
 > - Berbeda dengan SLL standar yang hanya memodifikasi pointer head, CSLL membutuhkan langkah tambahan untuk mempertahankan struktur melingkar.
 > - Untuk penyisipan di posisi lain, prosesnya hampir sama dengan SLL, kecuali bahwa traversal tidak berhenti pada NULL tetapi kembali ke head jika diperlukan.
+![csll insertion at beginning](img/Insertion-at-the-beginning-of-circular-linked-list.webp)
+![csll insertion at end](img/Insertion-at-the-end-of-circular-linked-list.webp)
 
-Penghapusan Elemen :
+Penghapusan
 > - Jika menghapus node head, pointer next pada node terakhir harus diperbarui untuk menunjuk ke head yang baru.
 > - Berbeda dengan SLL, di mana penghapusan node terakhir cukup dengan mengatur pointer next dari node sebelumnya menjadi NULL, dalam CSLL node terakhir harus tetap terhubung ke head.
 > - Jika menghapus node di posisi tertentu, traversal mengikuti logika yang sama dengan SLL tetapi tetap dalam referensi melingkar.
+![csll deletion at beginning](img/Deletion-from-the-beginning-of-circular-linked-list.webp)
+![csll deletion at end](img/Deletion-at-the-end-of-circular-linked-list.webp)
 
-Traversal Elemen :
+Traversal 
 > - Traversal dalam CSLL berbeda secara signifikan dari SLL karena tidak adanya terminasi NULL
 > - Kondisi terminasi harus didefinisikan secara eksplisit, biasanya ketika traversal kembali ke node head.
 > - Traversal maju akan kembali ke head, yang dapat menyebabkan loop tak terbatas jika tidak ditangani dengan benar.
 
+[Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/CSLL.cpp) 
 
+## **Circular Double Linked List**
+A Circular Doubly Linked List (CDLL) adalah variasi dari doubly linked list di mana node terakhir terhubung kembali ke node pertama, membentuk struktur melingkar. Berbeda dengan Doubly Linked List (DLL) standar yang memiliki pointer NULL di kedua ujungnya, CDLL memungkinkan traversal kontinu di kedua arah tanpa terminasi.
 
+- [Circular Double Linked List](#circular-double-linked-list)
 
+### **Struktur Circular Doubly Linked List**
+Setiap node dalam CDLL terdiri dari tiga komponen:
+> - Data: Menyimpan nilai atau informasi yang terdapat dalam node.
+> - Pointer Next: Menunjuk ke node berikutnya dalam urutan.
+> - Pointer Previous: Menunjuk ke node sebelumnya dalam urutan.
+Dalam CDLL:
+> - Pointer next dari node terakhir mengarah ke node pertama.
+> - Pointer previous dari node pertama mengarah ke node terakhir.
 
+### **Perbedaan Utama dari Doubly Linked List**
+Penyisipan
+> - Saat menyisipkan di awal, pointer next dari node terakhir harus diperbarui untuk merujuk ke head yang baru.
+> - Penyisipan di akhir memerlukan pembaruan pointer next pada node terakhir dan pointer next serta previous pada node baru untuk menjaga sifat melingkar.
+> - Penyisipan di posisi tertentu mengikuti logika yang sama dengan DLL, kecuali traversal harus mempertimbangkan struktur melingkar.
+
+Penghapusan
+> - Menghapus node head memerlukan pembaruan pointer next pada node terakhir untuk merujuk ke head yang baru.
+> - Menghapus node terakhir melibatkan pembaruan pointer next pada node sebelum terakhir untuk merujuk ke head.
+> - Saat menghapus dari posisi tertentu, perlu diperhatikan agar referensi melingkar tetap terjaga.
+
+Traversal
+> - Berbeda dengan DLL, traversal dalam CDLL tidak berhenti di NULL; sebaliknya, traversal berakhir ketika kembali ke node awal.
+> - Traversal maju berlanjut hingga kembali ke head.
+> - Traversal mundur mengikuti pola yang sama, menggunakan pointer previous.
+
+[Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/CDLL.cpp) 
