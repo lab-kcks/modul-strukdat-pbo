@@ -250,7 +250,7 @@ Traversal
 ## **Circular Double Linked List**
 A Circular Doubly Linked List (CDLL) adalah variasi dari doubly linked list di mana node terakhir terhubung kembali ke node pertama, membentuk struktur melingkar. Berbeda dengan Doubly Linked List (DLL) standar yang memiliki pointer NULL di kedua ujungnya, CDLL memungkinkan traversal kontinu di kedua arah tanpa terminasi.
 
-- [Circular Double Linked List](img/doubly-660x177.jpg)
+![Circular Double Linked List](img/doubly-660x177.jpg)
 
 ### **Struktur Circular Doubly Linked List**
 Setiap node dalam CDLL terdiri dari tiga komponen:
