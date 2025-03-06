@@ -95,7 +95,35 @@ Dalam implementasinya, kompleksitas waktunya yaitu:
 | getAt     | Mendapatkan nilai node pada posisi tertentu.  | O(N) (Worst-case)     |
 | isEmpty   | Memeriksa apakah list kosong.                 | O(1)                  |
 
-- Representasi Node
 
-
+ [Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/singlyList.cpp)  
+ 
 ## **Double Linked List**
+Double linked list merupakan jenis linked list yang setiap node memiliki dua referensi: satu menunjuk ke node sebelumnya dan satu lagi menunjuk ke node berikutnya. Berbeda dengan single linked list yang hanya memiliki satu referensi yangg menunjuk ke node berikutnya. <br />
+Struktur node ganda ini memungkinkan traversal dua arah; forward dan backward
+
+> Sumber gambar : https://brianross-95869.medium.com/doubly-linked-lists-double-the-trouble-but-double-the-fun-1d13ed215dfe
+
+### **Struktur Double Linked List***
+Struktur node pada double linked list terdiri dari tiga komponen utama:
+- Data: Komponen yang menyimpan nilai atau informasi yang disimpan dalam node.
+- Pointer ke Node Sebelumnya: Referensi yang menunjuk ke node sebelumnya dalam linked list.
+- Pointer ke Node Berikutnya: Referensi yang menunjuk ke node berikutnya dalam linked list.
+
+### **Implementasi Double Linked List**
+- Struktur node ganda dapat diimplementasikan sebagai berikut :
+```cpp
+struct Node {
+    int data;           // Menyimpan data node
+    struct Node* prev;  // Menunjuk ke node sebelumnya
+    struct Node* next;  // Menunjuk ke node berikutnya
+};
+```
+
+- Menambahkan Node di Awal
+- s
+- s
+
+
+
+
