@@ -110,19 +110,106 @@ Struktur node pada double linked list terdiri dari tiga komponen utama:
 - Pointer ke Node Sebelumnya: Referensi yang menunjuk ke node sebelumnya dalam linked list.
 - Pointer ke Node Berikutnya: Referensi yang menunjuk ke node berikutnya dalam linked list.
 
-### **Implementasi Double Linked List**
+### **Implementasi Dasar Double Linked List**
 - Struktur node ganda dapat diimplementasikan sebagai berikut :
 ```cpp
-struct Node {
-    int data;           // Menyimpan data node
-    struct Node* prev;  // Menunjuk ke node sebelumnya
-    struct Node* next;  // Menunjuk ke node berikutnya
+class Node
+{
+    public:
+    int data;
+    Node *next; //menunjuk ke node berikut
+    Node *prev; //menunjuk ke node sebelum
 };
 ```
 
-- Menambahkan Node di Awal
-- s
-- s
+- Menambahkan Elemen di Awal
+  ![tambah elemen di awal](img/insertion-at-beginning-doubly.webp)
+  > Langkah-langkahnya adalah sebagai berikut :
+  > - Membuat node baru berisi data yang ingin ditambahkan
+  > - Jika list kosong :
+  >     - Ubah `newNode->next` menjadi `NULL`
+  >     - Ubah `newNode->prev` menjadi `NULL`
+  >     - Arahkan pointer `head` ke `newNode`
+  > - Jika list tidak kosong :
+  >     - Atur `newNode->next` ke `head`
+  >     - Atur `newNode->prev` ke `NULL`
+  >     - Atur `head->prev` ke `newNode`
+  >     - Arahkan pointer `head` ke `newNode`
+  
+- Menambahkan Elemen di Akhir
+  ![tambah elemen di akhir](img/insertion-at-end-doubly.webp)
+  > Langkah-langkahnya adalah sebagai berikut :
+  > - Membuat node baru `newNode`
+  > - Jika list kosong :
+  >     - Ubah `newNode->next` menjadi `NULL`
+  >     - Ubah `newNode->prev` menjadi `NULL`
+  >     - Arahkan pointer `head` ke `newNode`
+  > - Jika list tidak kosong :
+  >     - Temukan node terakhir dengan melakukan iterasi ( node dengan `last->next == NULL` )
+  >     - Atur `last->next` ke `newNode`
+  >     - Atur `newNode->next` menjadi `NULL`
+  
+- Menghapuskan Elemen di Awal
+  ![hapus elemen di awal](img/deletion-at-beginning-doubly.webp)
+  > Langkah-langkah untuk menghapus node awal Double Linked List :
+  > - Periksa apakah list kosong
+  > - Jika list hanya memiliki satu node :
+  >     - Atur `head` menjadi `NULL`
+  >     - Hapus memori node tersebut
+  > - Jika list memiliki > 1 node
+  >     - Perbarui `head` dengan menunjuk ke `head->next`
+  >     - Atur `prev` dari head baru ke `NULL`
+  >     - Hapus memori `head` lama
+  
+- Menghapuskan Elemen di Akhir
+   ![hapus elemen di akhir](img/deletion-at-end-doubly.webp)
+  > Langkah-langkah untuk menghapus node akhir Double Linked List :
+  > - Periksa apakah list kosong
+  > - Jika list tidak kosong :
+  >     - Temukan node terakhir dengan iterasi `last->next == NULL`
+  >     - Jika node terakhir adalah node satu-satunya dalam list `head->next ==NULL`, perbarui `head` menjadi `NULL`
+  >     - Jika lebih dari satu node, atur `next` dari node kedua terakhir (`last->prev`) menjadi `NULL`
+  > - Hapus memori node terakhir
+  
+- Menyisipkan Elemen di posisi tertentu
+   ![tambah elemen di posisi tertentu](img/insertion-at-specific-doubly.webp)
+  > Langkah-langkahnya adalah sebagai berikut :
+  > - Membuat node baru `newNode`
+  > - Cek apakah posisi node yang diberikan valid berdasarkan ukuran list
+  > - Jika posisi adalah 0 (atau 1 tergantung index)
+  >     - Terapkan penambahan elemen di awal
+  > - Jika posisi yang diberikan adalah node terakhir (sama dengan ukuran list)
+  >     - Terapkan penambahan elemen di akhir
+  > - Untuk posisi valid lainnya :
+  >     - Telusuri list untuk menemukan node sebelum posisi yang diinginkan `prevNode`
+  >     - Atur `newNode->next` ke `prevNode->next
+  >     - Atur `newNode->prev` ke `prevNode`
+  >     - Jika `prevNode->next` tidak `NULL`, atur `prevNode->next->prev` ke `newNode`
+  >     - Atur `prevNode->next` ke `newNode`
+
+- Menghapuskan Elemen di posisi tertentu
+   ![hapus elemen di posisi tertentu](img/deletion-at-specific-doubly.webp)
+  > Langkah-langkah untuk menghapus node dari posisi tertentu dalam Double Linked List :
+  > - Jika posisi node yang diberikan adalah 0 (atau 1 tergantung index), gunakan metode penghapusan di awal
+  > - Jika posisi yang diberikan merupakan node terakhir, gunakan metode penghapusan di akhir
+  > - Untuk posisi valid lainnya :
+  >     - Traversal untuk menemukan node yang akan dihapus `delNode`
+  >     - Jika `delNode` adalah node pertama, sesuaikan `head`
+  >     - Jika tidak, atur `delNode->prev->next` ke node setelah `delNode`(`delNode->next`) dan `delNode->next->prev` ke node sebelum `delNode`(`delNode->prev`)
+
+### **Traversal dalam Double Linked List**
+Traversal dalam double linked list berarti mengiterasi list dengan mengunjungi setiap node dan melakukan operasi yang diinginkan. <br />
+- Forward Traversal : `head` ke node terakhir
+- Reverse/Backward Traversal : node terakhir ke `head`
+
+1. Forward Traversal
+   > - Buat pointer sementara `temp` dan salin pointer head ke dalamnya `temp = head`.
+   > - Untuk traversal maju, terus pindahkan `temp` ke `temp->next`
+   > - Jalankan operasi yang diinginkan di setiap iterasi.
+2. Backward Traversal
+   > - Buat pointer sementara `temp` dan salin pointer node terakhir ke dalamnya `temp = tail`.
+   > - Untuk traversal mundur, terus pindahkan pointer `temp` ke `temp->prev`
+   > - Jalankan operasi yang diinginkan di setiap iterasi.
 
 
 
