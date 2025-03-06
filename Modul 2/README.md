@@ -212,6 +212,8 @@ Traversal dalam double linked list berarti mengiterasi list dengan mengunjungi s
    > - Untuk traversal mundur, terus pindahkan pointer `temp` ke `temp->prev`
    > - Jalankan operasi yang diinginkan di setiap iterasi.
 
+[Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/doublyList.cpp)  
+
 
 
 
