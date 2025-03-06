@@ -52,7 +52,7 @@ Untuk menambahkan data baru dari depan list. Untuk ilustrasinya terdapat pada ga
 
 - insertAt <br />
 Untuk menambahkan data baru pada posisi yang diinginkan. Untuk ilustrasinya terdapat pada gambar di bawah.
-![insertAt](img/isertAt.png)
+![insertAt](img/insertAt.png)
 
 - back Untuk mendapatkan data yang ada di paling belakang.
 - front Untuk mendapatkan data yang ada di paling depan.
@@ -77,5 +77,25 @@ Untuk menghapus data yang berada di posisi paling depan. Untuk ilustrasinya terd
   ![Double linked list](img/double-linked-list.png)
 - Circular-Linked List Pada variasi ini elemen terakhir ditautkan ke elemen pertama. Ini membentuk lingkaran melingkar. Untuk ilustrasinya terdapat pada gambar di bawah.
   ![Circular-linked list](img/circular-linked-list.png)
+
+### **Implementasi ADT: SinglyList**
+Representasi dan Implementasi yang akan dijelaskan dalam modul ini adalah Singly Linked List yang menyimpan tipe data int. Representasi akan dibawa ke dalam bentuk Abstract Data Type (ADT) yang nantinya akan menjadi tipe data baru bernama SinglyList. <br />
+Dalam implementasinya, kompleksitas waktunya yaitu:
+
+| Operasi   | Keterangan                                      | Kompleksitas Waktu  |
+|-----------|-----------------------------------------------|-----------------------|
+| pushBack  | Memasukkan data baru dari belakang.           | O(N)                  |
+| pushFront | Memasukkan data baru dari depan.              | O(1)                  |
+| insertAt  | Memasukkan data baru pada posisi tertentu.    | O(N) (Worst-case)     |
+| popBack   | Menghapus node paling belakang.               | O(N)                  |
+| popFront  | Menghapus node paling depan.                  | O(1)                  |
+| remove(x) | Menghapus node pertama dengan data x.         | O(N) (Worst-case)     |
+| front     | Mendapatkan nilai node terdepan.              | O(1)                  |
+| back      | Mendapatkan nilai node paling belakang.       | O(N)                  |
+| getAt     | Mendapatkan nilai node pada posisi tertentu.  | O(N) (Worst-case)     |
+| isEmpty   | Memeriksa apakah list kosong.                 | O(1)                  |
+
+- Representasi Node
+
 
 ## **Double Linked List**
