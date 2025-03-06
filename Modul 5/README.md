@@ -99,6 +99,9 @@ https://cses.fi/problemset/task/1672
 
 ### Minimum spanning tree
 - Prim
+
+https://www.cs.usfca.edu/~galles/visualization/Prim.html
+
 - Kruskal
 
 https://github.com/user-attachments/assets/a0f43df4-11dc-40eb-8ab7-471ba2ee32a7
