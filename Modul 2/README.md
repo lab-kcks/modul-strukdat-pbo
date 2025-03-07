@@ -4,7 +4,7 @@
 
 - [Linked List](#linked-list)
 - [Double Linked List](#double-linked-list)
-- [Circular Linked List](#circular-linked-list)
+- [Circular Single Linked List](#circular-single-linked-list)
 - [Circular Double Linked List](#circular-double-linked-list)
 
 ## **Linked List**
@@ -52,7 +52,7 @@ Untuk menambahkan data baru dari depan list. Untuk ilustrasinya terdapat pada ga
 
 - insertAt <br />
 Untuk menambahkan data baru pada posisi yang diinginkan. Untuk ilustrasinya terdapat pada gambar di bawah.
-![insertAt](img/isertAt.png)
+![insertAt](img/insertAt.png)
 
 - back Untuk mendapatkan data yang ada di paling belakang.
 - front Untuk mendapatkan data yang ada di paling depan.
@@ -78,4 +78,203 @@ Untuk menghapus data yang berada di posisi paling depan. Untuk ilustrasinya terd
 - Circular-Linked List Pada variasi ini elemen terakhir ditautkan ke elemen pertama. Ini membentuk lingkaran melingkar. Untuk ilustrasinya terdapat pada gambar di bawah.
   ![Circular-linked list](img/circular-linked-list.png)
 
+### **Implementasi ADT: SinglyList**
+Representasi dan Implementasi yang akan dijelaskan dalam modul ini adalah Singly Linked List yang menyimpan tipe data int. Representasi akan dibawa ke dalam bentuk Abstract Data Type (ADT) yang nantinya akan menjadi tipe data baru bernama SinglyList. <br />
+Dalam implementasinya, kompleksitas waktunya yaitu:
+
+| Operasi   | Keterangan                                      | Kompleksitas Waktu  |
+|-----------|-----------------------------------------------|-----------------------|
+| pushBack  | Memasukkan data baru dari belakang.           | O(N)                  |
+| pushFront | Memasukkan data baru dari depan.              | O(1)                  |
+| insertAt  | Memasukkan data baru pada posisi tertentu.    | O(N) (Worst-case)     |
+| popBack   | Menghapus node paling belakang.               | O(N)                  |
+| popFront  | Menghapus node paling depan.                  | O(1)                  |
+| remove(x) | Menghapus node pertama dengan data x.         | O(N) (Worst-case)     |
+| front     | Mendapatkan nilai node terdepan.              | O(1)                  |
+| back      | Mendapatkan nilai node paling belakang.       | O(N)                  |
+| getAt     | Mendapatkan nilai node pada posisi tertentu.  | O(N) (Worst-case)     |
+| isEmpty   | Memeriksa apakah list kosong.                 | O(1)                  |
+
+
+ [Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/singlyList.cpp)  
+ 
 ## **Double Linked List**
+Double linked list merupakan jenis linked list yang setiap node memiliki dua referensi: satu menunjuk ke node sebelumnya dan satu lagi menunjuk ke node berikutnya. Berbeda dengan single linked list yang hanya memiliki satu referensi yangg menunjuk ke node berikutnya. <br />
+Struktur node ganda ini memungkinkan traversal dua arah; forward dan backward
+
+ ![Double linked list](img/double-linked-list2.jpg)
+> Sumber gambar : https://brianross-95869.medium.com/doubly-linked-lists-double-the-trouble-but-double-the-fun-1d13ed215dfe
+
+### **Struktur Double Linked List***
+Struktur node pada double linked list terdiri dari tiga komponen utama:
+- Data: Komponen yang menyimpan nilai atau informasi yang disimpan dalam node.
+- Pointer ke Node Sebelumnya: Referensi yang menunjuk ke node sebelumnya dalam linked list.
+- Pointer ke Node Berikutnya: Referensi yang menunjuk ke node berikutnya dalam linked list.
+
+### **Implementasi Dasar Double Linked List**
+- Struktur node ganda dapat diimplementasikan sebagai berikut :
+```cpp
+class Node
+{
+    public:
+    int data;
+    Node *next; //menunjuk ke node berikut
+    Node *prev; //menunjuk ke node sebelum
+};
+```
+
+- Menambahkan Elemen di Awal
+  ![tambah elemen di awal](img/insertion-at-beginning-doubly.webp)
+  > Langkah-langkahnya adalah sebagai berikut :
+  > - Membuat node baru berisi data yang ingin ditambahkan
+  > - Jika list kosong :
+  >     - Ubah `newNode->next` menjadi `NULL`
+  >     - Ubah `newNode->prev` menjadi `NULL`
+  >     - Arahkan pointer `head` ke `newNode`
+  > - Jika list tidak kosong :
+  >     - Atur `newNode->next` ke `head`
+  >     - Atur `newNode->prev` ke `NULL`
+  >     - Atur `head->prev` ke `newNode`
+  >     - Arahkan pointer `head` ke `newNode`
+  
+- Menambahkan Elemen di Akhir
+  ![tambah elemen di akhir](img/insertion-at-end-doubly.webp)
+  > Langkah-langkahnya adalah sebagai berikut :
+  > - Membuat node baru `newNode`
+  > - Jika list kosong :
+  >     - Ubah `newNode->next` menjadi `NULL`
+  >     - Ubah `newNode->prev` menjadi `NULL`
+  >     - Arahkan pointer `head` ke `newNode`
+  > - Jika list tidak kosong :
+  >     - Temukan node terakhir dengan melakukan iterasi ( node dengan `last->next == NULL` )
+  >     - Atur `last->next` ke `newNode`
+  >     - Atur `newNode->next` menjadi `NULL`
+  
+- Menghapuskan Elemen di Awal
+  ![hapus elemen di awal](img/deletion-at-beginning-doubly.webp)
+  > Langkah-langkah untuk menghapus node awal Double Linked List :
+  > - Periksa apakah list kosong
+  > - Jika list hanya memiliki satu node :
+  >     - Atur `head` menjadi `NULL`
+  >     - Hapus memori node tersebut
+  > - Jika list memiliki > 1 node
+  >     - Perbarui `head` dengan menunjuk ke `head->next`
+  >     - Atur `prev` dari head baru ke `NULL`
+  >     - Hapus memori `head` lama
+  
+- Menghapuskan Elemen di Akhir
+   ![hapus elemen di akhir](img/deletion-at-end-doubly.webp)
+  > Langkah-langkah untuk menghapus node akhir Double Linked List :
+  > - Periksa apakah list kosong
+  > - Jika list tidak kosong :
+  >     - Temukan node terakhir dengan iterasi `last->next == NULL`
+  >     - Jika node terakhir adalah node satu-satunya dalam list `head->next ==NULL`, perbarui `head` menjadi `NULL`
+  >     - Jika lebih dari satu node, atur `next` dari node kedua terakhir (`last->prev`) menjadi `NULL`
+  > - Hapus memori node terakhir
+  
+- Menyisipkan Elemen di posisi tertentu
+   ![tambah elemen di posisi tertentu](img/insertion-at-specific-doubly.webp)
+  > Langkah-langkahnya adalah sebagai berikut :
+  > - Membuat node baru `newNode`
+  > - Cek apakah posisi node yang diberikan valid berdasarkan ukuran list
+  > - Jika posisi adalah 0 (atau 1 tergantung index)
+  >     - Terapkan penambahan elemen di awal
+  > - Jika posisi yang diberikan adalah node terakhir (sama dengan ukuran list)
+  >     - Terapkan penambahan elemen di akhir
+  > - Untuk posisi valid lainnya :
+  >     - Telusuri list untuk menemukan node sebelum posisi yang diinginkan `prevNode`
+  >     - Atur `newNode->next` ke `prevNode->next
+  >     - Atur `newNode->prev` ke `prevNode`
+  >     - Jika `prevNode->next` tidak `NULL`, atur `prevNode->next->prev` ke `newNode`
+  >     - Atur `prevNode->next` ke `newNode`
+
+- Menghapuskan Elemen di posisi tertentu
+   ![hapus elemen di posisi tertentu](img/deletion-at-specific-position-doubly.webp)
+  > Langkah-langkah untuk menghapus node dari posisi tertentu dalam Double Linked List :
+  > - Jika posisi node yang diberikan adalah 0 (atau 1 tergantung index), gunakan metode penghapusan di awal
+  > - Jika posisi yang diberikan merupakan node terakhir, gunakan metode penghapusan di akhir
+  > - Untuk posisi valid lainnya :
+  >     - Traversal untuk menemukan node yang akan dihapus `delNode`
+  >     - Jika `delNode` adalah node pertama, sesuaikan `head`
+  >     - Jika tidak, atur `delNode->prev->next` ke node setelah `delNode`(`delNode->next`) dan `delNode->next->prev` ke node sebelum `delNode`(`delNode->prev`)
+
+### **Traversal dalam Double Linked List**
+Traversal dalam double linked list berarti mengiterasi list dengan mengunjungi setiap node dan melakukan operasi yang diinginkan. <br />
+- Forward Traversal : `head` ke node terakhir
+- Reverse/Backward Traversal : node terakhir ke `head`
+
+1. Forward Traversal
+   > - Buat pointer sementara `temp` dan salin pointer head ke dalamnya `temp = head`.
+   > - Untuk traversal maju, terus pindahkan `temp` ke `temp->next`
+   > - Jalankan operasi yang diinginkan di setiap iterasi.
+2. Backward Traversal
+   > - Buat pointer sementara `temp` dan salin pointer node terakhir ke dalamnya `temp = tail`.
+   > - Untuk traversal mundur, terus pindahkan pointer `temp` ke `temp->prev`
+   > - Jalankan operasi yang diinginkan di setiap iterasi.
+
+[Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/doublyList.cpp)  
+
+## **Circular Single Linked List**
+Circular Single Linked List adalah jenis linked list di mana setiap node memiliki referensi ke node berikutnya, dan node terakhir mengarah kembali ke node pertama, membentuk lingkaran. Berbeda dengan single linked list biasa yang memiliki ujung akhir, circular single linked list tidak memiliki node yang menunjuk ke NULL.
+
+### **Struktur Circular Single Linked List**
+Struktur node dalam circular single linked list terdiri dari dua komponen utama:
+> - Data: Menyimpan nilai atau informasi dalam node.
+> - Pointer ke Node Berikutnya: Menunjuk ke node berikutnya dalam linked list. Node terakhir menunjuk kembali ke node pertama.
+ ![Circular-linked list](img/circular-linked-list.png)
+
+
+### **Perbedaan Utama dari Single Linked List Biasa**
+
+Penyisipan
+> - Jika disisipkan di awal, pointer next pada node terakhir harus diperbarui untuk merujuk ke head yang baru.
+> - Berbeda dengan SLL standar yang hanya memodifikasi pointer head, CSLL membutuhkan langkah tambahan untuk mempertahankan struktur melingkar.
+> - Untuk penyisipan di posisi lain, prosesnya hampir sama dengan SLL, kecuali bahwa traversal tidak berhenti pada NULL tetapi kembali ke head jika diperlukan.
+![csll insertion at beginning](img/Insertion-at-the-beginning-of-circular-linked-list.webp)
+![csll insertion at end](img/Insertion-at-the-end-of-circular-linked-list.webp)
+
+Penghapusan
+> - Jika menghapus node head, pointer next pada node terakhir harus diperbarui untuk menunjuk ke head yang baru.
+> - Berbeda dengan SLL, di mana penghapusan node terakhir cukup dengan mengatur pointer next dari node sebelumnya menjadi NULL, dalam CSLL node terakhir harus tetap terhubung ke head.
+> - Jika menghapus node di posisi tertentu, traversal mengikuti logika yang sama dengan SLL tetapi tetap dalam referensi melingkar.
+![csll deletion at beginning](img/Deletion-from-the-beginning-of-circular-linked-list.webp)
+![csll deletion at end](img/Deletion-at-the-end-of-circular-linked-list.webp)
+
+Traversal 
+> - Traversal dalam CSLL berbeda secara signifikan dari SLL karena tidak adanya terminasi NULL
+> - Kondisi terminasi harus didefinisikan secara eksplisit, biasanya ketika traversal kembali ke node head.
+> - Traversal maju akan kembali ke head, yang dapat menyebabkan loop tak terbatas jika tidak ditangani dengan benar.
+
+[Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/CSLL.cpp) 
+
+## **Circular Double Linked List**
+A Circular Doubly Linked List (CDLL) adalah variasi dari doubly linked list di mana node terakhir terhubung kembali ke node pertama, membentuk struktur melingkar. Berbeda dengan Doubly Linked List (DLL) standar yang memiliki pointer NULL di kedua ujungnya, CDLL memungkinkan traversal kontinu di kedua arah tanpa terminasi.
+
+![Circular Double Linked List](img/doubly-660x177.jpg)
+
+### **Struktur Circular Doubly Linked List**
+Setiap node dalam CDLL terdiri dari tiga komponen:
+> - Data: Menyimpan nilai atau informasi yang terdapat dalam node.
+> - Pointer Next: Menunjuk ke node berikutnya dalam urutan.
+> - Pointer Previous: Menunjuk ke node sebelumnya dalam urutan.
+Dalam CDLL:
+> - Pointer next dari node terakhir mengarah ke node pertama.
+> - Pointer previous dari node pertama mengarah ke node terakhir.
+
+### **Perbedaan Utama dari Doubly Linked List**
+Penyisipan
+> - Saat menyisipkan di awal, pointer next dari node terakhir harus diperbarui untuk merujuk ke head yang baru.
+> - Penyisipan di akhir memerlukan pembaruan pointer next pada node terakhir dan pointer next serta previous pada node baru untuk menjaga sifat melingkar.
+> - Penyisipan di posisi tertentu mengikuti logika yang sama dengan DLL, kecuali traversal harus mempertimbangkan struktur melingkar.
+
+Penghapusan
+> - Menghapus node head memerlukan pembaruan pointer next pada node terakhir untuk merujuk ke head yang baru.
+> - Menghapus node terakhir melibatkan pembaruan pointer next pada node sebelum terakhir untuk merujuk ke head.
+> - Saat menghapus dari posisi tertentu, perlu diperhatikan agar referensi melingkar tetap terjaga.
+
+Traversal
+> - Berbeda dengan DLL, traversal dalam CDLL tidak berhenti di NULL; sebaliknya, traversal berakhir ketika kembali ke node awal.
+> - Traversal maju berlanjut hingga kembali ke head.
+> - Traversal mundur mengikuti pola yang sama, menggunakan pointer previous.
+
+[Kode Lengkap & Penjelasan Dapat Dilihat Disini](code/CDLL.cpp) 
