@@ -319,7 +319,65 @@ Operasi-operasi yang ada di `std::set`:
 * `lower_bound(val)` - mengembalikan iterator yang menunjuk ke key yang memiliki nilai terkecil yang tidak lebih kecil dari *va;*. Jika tidak ada, maka akan mengembalikan iterator `end()`.
 * `upper_bound(val)` - mengembalikan iterator yang menunjuk ke key yang memiliki nilai terkecil yang lebih besar dari *val*. Jika tidak ada, maka akan mengembalikan iterator `end()`.
 
-Contoh implementasi STL Set dapat dilihat di link [berikut]
+### `std::unordered_map`
+
+Masih ingat dengan Hash table ?
+
+std::unordered_map adalah sebuah associative container yang menampung elemen dalam bentuk key-value dengan tidak ada urutan tertentu. Container ini menggunakan hash table untuk menyimpan data, sehingga operasi pencarian, penyisipan, dan penghapusan memiliki kompleksitas waktu rata-rata O(1).
+
+Operasi-operasi yang ada di std::unordered_map:
+
+* `operator[]` - Mengakses value dari suatu key tertentu. Jika key tidak ada, operasi ini akan membuat entry baru dengan key tersebut dan value default.
+* `begin()` - Iterator yang menunjuk awal sekuens dari map (urutan tidak terdefinisi).
+* `end()` - Iterator yang menunjuk elemen setelah akhir sekuens map.
+* `size()` - Mendapatkan jumlah elemen pada map.
+* `empty()` - Memeriksa apakah map kosong. Mengembalikan true jika ukuran map 0, sebaliknya false.
+* `insert()` - Memasukkan pasangan key-value. Jika key sudah ada, operasi ini tidak akan mengubah value.
+* `erase()` - Menghapus elemen berdasarkan key atau posisi iterator.
+* `clear()` - Menghapus seluruh elemen.
+* `swap()` - Menukar seluruh elemen dengan map lain yang bertipe sama.
+* `find()` - Mencari elemen berdasarkan key. Mengembalikan iterator ke elemen jika ditemukan, atau end() jika tidak.
+* `count()` - Mengembalikan 1 jika key ada, atau 0 jika tidak (karena key bersifat unik).
+* `bucket_count()` - Mendapatkan jumlah bucket (slot hash) yang digunakan dalam hash table.
+* `bucket(key)` - Mendapatkan nomor bucket tempat key tertentu disimpan.
+* `load_factor()` - Mendapatkan rasio rata-rata elemen per bucket.
+* `max_load_factor()` - Mendapatkan atau mengatur rasio maksimum elemen per bucket sebelum rehashing dilakukan.
+* `rehash(n)` - Mengatur ulang jumlah bucket untuk menampung setidaknya n elemen.
+* `reserve(n)` - Mengatur jumlah bucket agar dapat menampung n elemen tanpa melebihi max_load_factor.
+* `hash_function()` - Mengembalikan fungsi hash yang digunakan.
+* `key_eq()` - Mengembalikan fungsi pembanding kesamaan key.
+
+Contoh implementasi STL unordered_map dapat dilihat di link [berikut]
+
+### `std::list`
+
+Masih ingat dengan Linked list?
+
+std::list adalah sebuah sequence container yang mengimplementasikan struktur data doubly linked list. Elemen-elemen dalam std::list disimpan secara terpisah di memori (non-contiguous) dan setiap elemen memiliki pointer ke elemen sebelumnya (prev) dan berikutnya (next).
+
+Operasi-operasi yang ada di std::list:
+* `push_back()` - Menambahkan elemen di akhir list.
+* `push_front()` - Menambahkan elemen di awal list.
+* `pop_back()` - Menghapus elemen terakhir.
+* `pop_front()` - Menghapus elemen pertama.
+* `emplace()` - Membuat elemen baru di posisi tertentu (tanpa operasi copy/move).
+* `insert()` - Menyisipkan elemen di posisi tertentu atau range elemen.
+* `erase()` - Menghapus elemen di posisi tertentu atau range elemen.
+* `clear()` - Menghapus seluruh elemen dalam list.
+* `size()` - Mendapatkan jumlah elemen dalam list.
+* `empty()` - Memeriksa apakah list kosong. Mengembalikan true jika kosong, false jika tidak.
+* `begin()` - Iterator yang menunjuk ke elemen pertama.
+* `end()` - Iterator yang menunjuk ke elemen setelah akhir list.
+* `rbegin()` - Iterator reverse yang menunjuk ke elemen terakhir.
+* `rend()` - Iterator reverse yang menunjuk ke elemen sebelum awal list.
+* `sort()` - Mengurutkan elemen dalam list secara ascending (default) atau dengan kriteria tertentu.
+* `reverse()` - Membalik urutan elemen dalam list.
+* `unique()` - Menghapus elemen duplikat yang berurutan (biasanya digunakan setelah sort()).
+* `merge()` - Menggabungkan dua list yang sudah terurut menjadi satu list terurut.
+* `splice()` - Memindahkan elemen dari list lain ke posisi tertentu dalam list saat ini.
+* `swap()` - Menukar seluruh elemen dengan list lain yang bertipe sama.
+
+Contoh implementasi STL list dapat dilihat di link [berikut]
  
 ### `PBDS`
  
