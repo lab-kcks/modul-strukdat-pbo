@@ -10,12 +10,11 @@
  * 
  **/
 
-
 #include <iostream>
 
 using namespace std;
 
-// Node structure
+// Node class
 class CListNode {
 public:
     int data;
@@ -43,11 +42,11 @@ public:
             newNode->next = newNode; // Point to itself
             _head = newNode;
         } else {
-            CListNode *temp = _head;
-            while (temp->next != _head)
-                temp = temp->next;
-            temp->next = newNode;
+            CListNode *tail = _head;
+            while (tail->next != _head)
+                tail = tail->next;
             newNode->next = _head;
+            tail->next = newNode;
             _head = newNode;
         }
         _size++;
@@ -59,10 +58,10 @@ public:
             newNode->next = newNode;
             _head = newNode;
         } else {
-            CListNode *temp = _head;
-            while (temp->next != _head)
-                temp = temp->next;
-            temp->next = newNode;
+            CListNode *tail = _head;
+            while (tail->next != _head)
+                tail = tail->next;
+            tail->next = newNode;
             newNode->next = _head;
         }
         _size++;
@@ -72,14 +71,14 @@ public:
         if (!isEmpty() && index < _size) {
             _size--;
             CListNode *temp = _head, *prev = nullptr;
-            
+
             if (index == 0) {
-                while (temp->next != _head)
-                    temp = temp->next;
-                CListNode *toDelete = _head;
+                CListNode *tail = _head;
+                while (tail->next != _head)
+                    tail = tail->next;
                 _head = _head->next;
-                temp->next = _head;
-                delete toDelete;
+                tail->next = _head;
+                delete temp;
             } else {
                 for (int i = 0; i < index; i++) {
                     prev = temp;
@@ -121,27 +120,25 @@ public:
 
 int main() {
     CircularSinglyList myList;
-    
+
     myList.pushBack(2);
     myList.pushBack(3);
     myList.pushBack(4);
     myList.pushBack(5);
     myList.pushBack(6);
-    
     myList.traverse();
-    
+
     myList.pushFront(9);
     myList.pushFront(8);
     myList.pushFront(7);
     myList.pushFront(6);
-    
     myList.traverse();
-    
+
     myList.popAt(3);
     myList.traverse();
-    
+
     myList.insertAt(2, 99);
     myList.traverse();
-    
+
     return 0;
 }
