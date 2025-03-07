@@ -1,3 +1,16 @@
+/**
+ * Implementasi ADT CircularSinglyList (Circular Singly Linked List)
+ * 
+ * Dibuat dan ditulis oleh Bayu Laksana
+ * -- tanggal 22 Januari 2019
+ * Diubah oleh Daffa RP 
+ * -- 7 Maret 2025
+ * Struktur Data 2025
+ * Implementasi untuk bahasa C++
+ * 
+ **/
+
+
 #include <iostream>
 
 using namespace std;
