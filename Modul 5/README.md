@@ -348,36 +348,6 @@ Operasi-operasi yang ada di std::unordered_map:
 * `key_eq()` - Mengembalikan fungsi pembanding kesamaan key.
 
 Contoh implementasi STL unordered_map dapat dilihat di link [berikut]
-
-### `std::list`
-
-Masih ingat dengan Linked list?
-
-std::list adalah sebuah sequence container yang mengimplementasikan struktur data doubly linked list. Elemen-elemen dalam std::list disimpan secara terpisah di memori (non-contiguous) dan setiap elemen memiliki pointer ke elemen sebelumnya (prev) dan berikutnya (next).
-
-Operasi-operasi yang ada di std::list:
-* `push_back()` - Menambahkan elemen di akhir list.
-* `push_front()` - Menambahkan elemen di awal list.
-* `pop_back()` - Menghapus elemen terakhir.
-* `pop_front()` - Menghapus elemen pertama.
-* `emplace()` - Membuat elemen baru di posisi tertentu (tanpa operasi copy/move).
-* `insert()` - Menyisipkan elemen di posisi tertentu atau range elemen.
-* `erase()` - Menghapus elemen di posisi tertentu atau range elemen.
-* `clear()` - Menghapus seluruh elemen dalam list.
-* `size()` - Mendapatkan jumlah elemen dalam list.
-* `empty()` - Memeriksa apakah list kosong. Mengembalikan true jika kosong, false jika tidak.
-* `begin()` - Iterator yang menunjuk ke elemen pertama.
-* `end()` - Iterator yang menunjuk ke elemen setelah akhir list.
-* `rbegin()` - Iterator reverse yang menunjuk ke elemen terakhir.
-* `rend()` - Iterator reverse yang menunjuk ke elemen sebelum awal list.
-* `sort()` - Mengurutkan elemen dalam list secara ascending (default) atau dengan kriteria tertentu.
-* `reverse()` - Membalik urutan elemen dalam list.
-* `unique()` - Menghapus elemen duplikat yang berurutan (biasanya digunakan setelah sort()).
-* `merge()` - Menggabungkan dua list yang sudah terurut menjadi satu list terurut.
-* `splice()` - Memindahkan elemen dari list lain ke posisi tertentu dalam list saat ini.
-* `swap()` - Menukar seluruh elemen dengan list lain yang bertipe sama.
-
-Contoh implementasi STL list dapat dilihat di link [berikut]
  
 ### `PBDS`
  
