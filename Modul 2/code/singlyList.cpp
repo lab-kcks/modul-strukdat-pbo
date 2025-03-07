@@ -97,7 +97,7 @@ public:
         1. Melakukan penelusuran dengan bantuan dua node, yakni nextNode dan currNode.
         2. Jika next dari currNode kosong, maka artinya jumlah data hanya satu. Hapus langsung node tersebut.
         3. Lakukan penelusuran hingga akhir.
-        4. Saat sampai akhir, hilangkan referensi dari node sekarang (currNode).
+        4. Saat sampai akhir, hilangkan referensi dari node sekarang.
         5. Hapus node selanjutnya (nextNode).
     */
     void popBack() {
