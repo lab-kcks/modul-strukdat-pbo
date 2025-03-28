@@ -91,5 +91,23 @@ int main() {
     // masukkan perintah di sini dengan memanggil fungsi-fungsi yang ada di ADT PriorityQueue
     // pq.{fungsi}
 
+    // Isi PriorityQueue dengan 1, 2, 3, 4, 5
+    pq.push(1);
+    pq.push(2);
+    pq.push(3);
+    pq.push(4);
+    pq.push(5);
+
+    // pq top menapilkan elemen pertama
+    cout << pq.top() << endl;
+    
+    // Cetak isi PriorityQueue
+    while (!pq.isEmpty()) {
+        printf("%d ", pq.top());
+        pq.pop();
+        // hasilnya 1 2 3 4 5
+    }
+    puts("");
+
     return 0;
 }
