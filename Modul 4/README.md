@@ -73,193 +73,213 @@ Binary Search Tree adalah struktur data pohon biner berbasis node yang memiliki 
 
 ### **Implementasi Binary Search Tree**
 
+[Kode Lengkap dapat dilihat di sini](/code/bst.cpp)
+
 #### **Properti**
 
 **Node**
 
 ```cpp
-struct BSTNode {
-    BSTNode *left, *right;
+class BSTNode {
+public:
     int key;
+    BSTNode *left, *right;
+
+    BSTNode(int value) {
+        key = value;
+        left = right = nullptr;
+    }
 };
 ```
 
-**Binary Search Tree**
+**Class Binary Search Tree**
 
 ```cpp
-  struct BSTNode {
-    BSTNode *_root;
+class BST {
+private:
+    BSTNode* _root;
     unsigned int _size;
-};
 
-// Fungsi-Fungsi...
+    // Utility functions lainnya ...
+
+public:
+    // Constructor
+    BST() {
+        _root = nullptr;
+        _size = 0;
+    }
+
+    // Destructor
+    ~BST() {
+        __deleteTree(_root);
+    }
+
+    // Fungsi-fungsi ...
+};
 ```
 
 #### Fungsi
 
-**is_empty**
+* **is_empty**
 
-Untuk mengecek apakah BST kosong atau tidak
+    Untuk mengecek apakah BST kosong atau tidak
 
-```cpp
-bool isEmpty() {
-    return _root == NULL;
-}
-```
+    ```cpp
+    bool isEmpty() {
+        return _root == NULL;
+    }
+    ```
 
-**Find**
+* **Find**
 
-Berikut adalah cara melakukan pencarian node pada implementasi ini
+    Berikut adalah cara melakukan pencarian node pada implementasi ini
 
-1. Mulai dari root
-2. Jika value yang dicari **lebih kecil** dari node yang sedang dicek, pindah **ke kiri**
-3. Jika value yang dicari **lebih besar** dari node yang sedang dicek, pindah **ke kanan**
+    1. Mulai dari root
+    2. Jika value yang dicari **lebih kecil** dari node yang sedang dicek, pindah **ke kiri**
+    3. Jika value yang dicari **lebih besar** dari node yang sedang dicek, pindah **ke kanan**
 
-![BST Search](img/bst_search.png)
+    ![BST Search](img/bst_search.png)
 
-> Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/bstsearch.png
+    > Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/bstsearch.png
 
-**Primary Function**
+    **Primary Function**
 
-```cpp
-bool find(int value) {
-    BSTNode *temp = __search(_root, value);
-    if (!temp)
-        return false;
-    if (temp->key == value)
-        return true;
-    else
-        return false;
-}
-```
-
-**Utility Function**
-
-```cpp
-BSTNode* __search(BSTNode *root, int value) {
-    while (root != NULL) {
-        if (value < root->key)
-            root = root->left;
-
-        else if (value > root->key)
-            root = root->right;
+    ```cpp
+    bool find(int value) {
+        BSTNode *temp = __search(_root, value);
+        if (!temp)
+            return false;
+        if (temp->key == value)
+            return true;
         else
-            return root;
+            return false;
     }
-    return root;
-}
-```
+    ```
 
-**Insert**
+    **Utility Function**
 
-Untuk menambahkan node, pertama-tama harus ditentukan dulu posisi node yang akan ditambahkan. Setelah mendapat posisi yang sesuai, maka akan dilakukan pembuatan node baru yang berisi value yang ingin ditambahkan. Node baru yang akan ditambahkan akan selalu berada di posisi daun (leaf).
+    ```cpp
+    BSTNode* __search(BSTNode *root, int value) {
+        while (root != NULL) {
+            if (value < root->key)
+                root = root->left;
 
-![BST Insert](img/bst_insert.png)
-
-**Primary Function**
-
-```cpp
-void insert(int value) {
-    if (!find(value)) {
-        _root = __insert(_root, value);
-        _size++;
-    }
-}
-```
-
-**Utility Function**
-
-```cpp
-BSTNode* __insert(BSTNode *root, int value) {
-    if (root == NULL)
-        return __createNode(value);
-
-    if (value < root->key)
-        root->left = __insert(root->left, value);
-    else if (value > root->key)
-        root->right = __insert(root->right, value);
-
-    return root;
-}
-```
-
-**Remove**
-
-Terdapat 3 kondisi pada saat akan remove.
-
-**Kondisi 1** Node yang akan dihapus adalah node leaf (tanpa child)
-
-Pada kondisi ini, node akan langsung dihapus
-
-![Remove Leaf](img/bst_remove_leaf.png)
-
-> Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/removeleaf.png
-
-**Kondisi 2** Node yang akan dihapus mempunyai 1 child (kiri atau kanan)
-
-Setelah node dihapus, maka child akan diposisikan pada node yang telah dihapus.
-
-![One Child Remove](img/bst_one_child_remove.png)
-
-**Kondisi 3** Node yang akan dihapus mempunyai 2 child
-
-Sebelum node dihapus, maka akan dilakukan pencarian node terkecil dari subTree kanan child, kemudian akan dilakukan pertukaran. Setelah itu, dilakukan penghapusan node.
-
-![Two Child Remove](img/bst_two_child_remove.png)
-
-**Primary Function**
-
-```cpp
-void remove(int value) {
-    if (find(value)) {
-        _root = __remove(_root, value);
-        _size++;
-    }
-}
-```
-
-**Utility Function**
-
-```cpp
-BSTNode* __remove(BSTNode *root, int value) {
-    if (root == NULL) return NULL;
-
-    if (value > root->key)
-        root->right = __remove(root->right, value);
-    else if (value < root->key)
-        root->left = __remove(root->left, value);
-    else {
-
-        if (root->left == NULL) {
-            BSTNode *rightChild = root->right;
-            free(root);
-            return rightChild;
+            else if (value > root->key)
+                root = root->right;
+            else
+                return root;
         }
-        else if (root->right == NULL) {
-            BSTNode *leftChild = root->left;
-            free(root);
-            return leftChild;
-        }
-
-        BSTNode *temp = __findMinNode(root->right);
-        root->key     = temp->key;
-        root->right   = __remove(root->right, temp->key);
+        return root;
     }
-    return root;
-}
-```
+    ```
 
-```cpp
-BSTNode* __findMinNode(BSTNode *node) {
-    BSTNode *currNode = node;
-    while (currNode && currNode->left != NULL)
-        currNode = currNode->left;
+* **Insert**
 
-    return currNode;
-}
-```
+    Untuk menambahkan node, pertama-tama harus ditentukan dulu posisi node yang akan ditambahkan. Setelah mendapat posisi yang sesuai, maka akan dilakukan pembuatan node baru yang berisi value yang ingin ditambahkan. Node baru yang akan ditambahkan akan selalu berada di posisi daun (leaf).
 
-Contoh Code
+    ![BST Insert](img/bst_insert.png)
+
+    **Primary Function**
+
+    ```cpp
+    void insert(int value) {
+        if (!find(value)) 
+        {
+            _root = __insert(_root, value);
+            _size++;
+        }
+    }
+    ```
+
+    **Utility Function**
+
+    ```cpp
+    BSTNode* __insert(BSTNode *root, int value) {
+        if (root == NULL)
+            return new BSTNode(value);
+
+        if (value < root->key)
+            root->left = __insert(root->left, value);
+        else if (value > root->key)
+            root->right = __insert(root->right, value);
+
+        return root;
+    }
+    ```
+
+* **Remove** \
+    Terdapat 3 kondisi pada saat akan remove.
+
+    - **Kondisi 1** Node yang akan dihapus adalah node leaf (tanpa child) \
+        Pada kondisi ini, node akan langsung dihapus
+
+        ![Remove Leaf](img/bst_remove_leaf.png)
+
+        > Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/removeleaf.png
+
+    - **Kondisi 2** Node yang akan dihapus mempunyai 1 child (kiri atau kanan) \
+        Setelah node dihapus, maka child akan diposisikan pada node yang telah dihapus.
+
+        ![One Child Remove](img/bst_one_child_remove.png)
+
+    - **Kondisi 3** Node yang akan dihapus mempunyai 2 child \
+        Sebelum node dihapus, maka akan dilakukan pencarian node terkecil dari subTree kanan child, kemudian akan dilakukan pertukaran. Setelah itu, dilakukan penghapusan node.
+
+        ![Two Child Remove](img/bst_two_child_remove.png)
+
+    **Primary Function**
+
+    ```cpp
+    void remove(int value) {
+        if (find(value)) 
+        {
+            _root = __remove(_root, value);
+            _size++;
+        }
+    }
+    ```
+
+    **Utility Function**
+
+    ```cpp
+    BSTNode* __remove(BSTNode *root, int value) {
+        if (root == NULL) return NULL;
+
+        if (value > root->key)
+            root->right = __remove(root->right, value);
+        else if (value < root->key)
+            root->left = __remove(root->left, value);
+        else {
+
+            if (root->left == NULL) {
+                BSTNode *rightChild = root->right;
+                free(root);
+                return rightChild;
+            }
+            else if (root->right == NULL) {
+                BSTNode *leftChild = root->left;
+                free(root);
+                return leftChild;
+            }
+            
+            // Node with two children
+            BSTNode *temp = __findMinNode(root->right);
+            root->key     = temp->key;
+            root->right   = __remove(root->right, temp->key);
+        }
+        return root;
+    }
+    ```
+
+    ```cpp
+    BSTNode* __findMinNode(BSTNode *node) {
+        BSTNode *currNode = node;
+        while (currNode && currNode->left != NULL)
+            currNode = currNode->left;
+
+        return currNode;
+    }
+    ```
 
 ### **Skewed Tree**
 
