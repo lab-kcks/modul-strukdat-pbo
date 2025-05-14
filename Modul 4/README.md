@@ -73,7 +73,7 @@ Binary Search Tree adalah struktur data pohon biner berbasis node yang memiliki 
 
 ### **Implementasi Binary Search Tree**
 
-[Kode Lengkap dapat dilihat di sini](/code/bst.cpp)
+[Kode Lengkap dapat dilihat di sini](code/bst.cpp)
 
 #### **Properti**
 
