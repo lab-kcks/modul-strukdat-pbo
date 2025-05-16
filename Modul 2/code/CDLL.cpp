@@ -1,33 +1,52 @@
+/**
+ * Implementasi ADT CircularSinglyList (Circular Singly Linked List)
+ * 
+ * Dibuat dan ditulis oleh Bayu Laksana
+ * -- tanggal 22 Januari 2019
+ * Diubah oleh Daffa RP 
+ * -- 7 Maret 2025
+ * Struktur Data 2025
+ * Implementasi untuk bahasa C++
+ * 
+ **/
+
+
 #include <iostream>
 
 using namespace std;
 
-// Node structure
-struct CDListNode {
+// Node class
+class CDListNode {
+public:
     int data;
     CDListNode *next, *prev;
+
+    CDListNode(int value) {
+        data = value;
+        next = prev = nullptr;
+    }
 };
 
-/* Struktur Circular Doubly Linked List */
-struct CircularDoublyList {
+// Circular Doubly Linked List class
+class CircularDoublyList {
+private:
     CDListNode *_head;
     unsigned _size;
 
-    void init() {
-        _head = NULL;
+public:
+    CircularDoublyList() {
+        _head = nullptr;
         _size = 0;
     }
 
     bool isEmpty() {
-        return (_head == NULL);
+        return (_head == nullptr);
     }
 
     void pushFront(int value) {
-        CDListNode *newNode = (CDListNode*) malloc(sizeof(CDListNode));
+        CDListNode *newNode = new CDListNode(value);
         if (newNode) {
             _size++;
-            newNode->data = value;
-            
             if (isEmpty()) {
                 newNode->next = newNode;
                 newNode->prev = newNode;
@@ -44,11 +63,9 @@ struct CircularDoublyList {
     }
 
     void pushBack(int value) {
-        CDListNode *newNode = (CDListNode*) malloc(sizeof(CDListNode));
+        CDListNode *newNode = new CDListNode(value);
         if (newNode) {
             _size++;
-            newNode->data = value;
-            
             if (isEmpty()) {
                 newNode->next = newNode;
                 newNode->prev = newNode;
@@ -67,19 +84,19 @@ struct CircularDoublyList {
         if (!isEmpty() && index < _size) {
             _size--;
             CDListNode *temp = _head;
-            
+
             if (index == 0) {
                 CDListNode *tail = _head->prev;
                 _head = _head->next;
                 _head->prev = tail;
                 tail->next = _head;
-                free(temp);
+                delete temp;
             } else {
-                for (int i = 0; i < index; i++) 
+                for (int i = 0; i < index; i++)
                     temp = temp->next;
                 temp->prev->next = temp->next;
                 temp->next->prev = temp->prev;
-                free(temp);
+                delete temp;
             }
         }
     }
@@ -90,12 +107,11 @@ struct CircularDoublyList {
         } else if (index == 0) {
             pushFront(value);
         } else {
-            CDListNode *newNode = (CDListNode*) malloc(sizeof(CDListNode));
+            CDListNode *newNode = new CDListNode(value);
             if (newNode) {
                 CDListNode *temp = _head;
-                for (int i = 0; i < index - 1; i++) 
+                for (int i = 0; i < index - 1; i++)
                     temp = temp->next;
-                newNode->data = value;
                 newNode->next = temp->next;
                 newNode->prev = temp;
                 temp->next->prev = newNode;
@@ -109,10 +125,10 @@ struct CircularDoublyList {
         if (!isEmpty()) {
             CDListNode *temp = _head;
             do {
-                printf("%d ", temp->data);
+                cout << temp->data << " ";
                 temp = temp->next;
             } while (temp != _head);
-            printf("\n");
+            cout << endl;
         }
     }
 
@@ -120,41 +136,40 @@ struct CircularDoublyList {
         if (!isEmpty()) {
             CDListNode *temp = _head->prev;
             do {
-                printf("%d ", temp->data);
+                cout << temp->data << " ";
                 temp = temp->prev;
             } while (temp != _head->prev);
-            printf("\n");
+            cout << endl;
         }
     }
 };
 
-int main(int argc, char const *argv[]) {
+int main() {
     CircularDoublyList myList;
-    myList.init();
-    
+
     myList.pushBack(2);
     myList.pushBack(3);
     myList.pushBack(4);
     myList.pushBack(5);
     myList.pushBack(6);
-    
+
     myList.traverseForward();
-    
+
     myList.pushFront(9);
     myList.pushFront(8);
     myList.pushFront(7);
     myList.pushFront(6);
-    
+
     myList.traverseForward();
-    
+
     myList.popAt(3);
     myList.traverseForward();
-    
+
     myList.insertAt(2, 99);
     myList.traverseForward();
-    
-    printf("Traversing backward:\n");
+
+    cout << "Traversing backward:" << endl;
     myList.traverseBackward();
-    
+
     return 0;
 }

@@ -111,5 +111,40 @@ int main() {
     // masukkan perintah di sini dengan memanggil fungsi-fungsi yang ada di ADT Deque
     // dq.{fungsi}
 
+    // Isi deque dengan 1, 2, 3, 4, 5
+    dq.pushBack(1);
+    dq.pushBack(2);
+    dq.pushBack(3);
+    dq.pushBack(4);
+    dq.pushBack(5);
+
+    // dq front menapilkan elemen pertama
+    cout << dq.front() << endl;
+    
+    // dq back menampilkan elemen terakhir
+    cout << dq.back() << endl;
+
+    // Cetak isi deque
+    while (!dq.isEmpty()) {
+        printf("%d ", dq.front());
+        dq.popFront();
+        // hasilnya 1 2 3 4 5
+    }
+    puts("");
+
+    // Isi deque dengan 6, 7, 8, 9
+    dq.pushFront(9);
+    dq.pushFront(8);
+    dq.pushFront(7);
+    dq.pushFront(6);
+    
+    // Cetak isi deque balik
+    while (!dq.isEmpty()) {
+        printf("%d ", dq.back());
+        dq.popBack();
+        // hasilnya 9 8 7 6
+    }
+    puts("");
+
     return 0;
 }

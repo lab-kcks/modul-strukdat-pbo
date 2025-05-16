@@ -542,16 +542,21 @@ Untuk melakukan push, langkah-langkahnya adalah sebagai berikut.
 - Buat node baru.
 - Jika Priority Queue kosong, jadikan node baru sebagai `top`.
 - Jika tidak kosong, masih terdapat 2 kasus.
+
 **Kasus 1, data node baru lebih kecil dari top**
 - Buat next node baru ke top pqueue.
 - Pindah top pqueue ke node baru.
+
 ![Case-1](https://user-images.githubusercontent.com/83171211/189660169-9e26d817-de11-4801-b5e0-c2c2f4c6ea7a.png)
+
 **Kasus 2, data node baru lebih besar dari top**
 - Iterasi temp sampai data sebelum node baru tidak ada yang lebih besar.
 - Atau sampai akhir dari pqueue (null).
 - Arahkan next node baru ke next dari temp.
 - Arahkan next dari temp ke node baru.
+
 ![Case-2](https://user-images.githubusercontent.com/83171211/189660234-2479ad73-2b95-4d80-8796-41d7b72ef9da.png)
+
 ```cpp
 void push(int value) {
     PQueueNode *newNode = new PQueueNode(value);

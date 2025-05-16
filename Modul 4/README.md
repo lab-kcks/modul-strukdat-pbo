@@ -57,6 +57,7 @@ Binary tree merupakan struktur data tree yang setiap nodenya memiliki paling ban
 - https://www.geeksforgeeks.org/introduction-to-tree-data-structure/
 - https://en.wikipedia.org/wiki/Binary_tree
 
+- - -
 ## **Binary Search Tree**
 
 ### **Pengertian**
@@ -73,193 +74,213 @@ Binary Search Tree adalah struktur data pohon biner berbasis node yang memiliki 
 
 ### **Implementasi Binary Search Tree**
 
+[Kode Lengkap dapat dilihat di sini](code/bst.cpp)
+
 #### **Properti**
 
 **Node**
 
 ```cpp
-struct BSTNode {
-    BSTNode *left, *right;
+class BSTNode {
+public:
     int key;
+    BSTNode *left, *right;
+
+    BSTNode(int value) {
+        key = value;
+        left = right = nullptr;
+    }
 };
 ```
 
-**Binary Search Tree**
+**Class Binary Search Tree**
 
 ```cpp
-  struct BSTNode {
-    BSTNode *_root;
+class BST {
+private:
+    BSTNode* _root;
     unsigned int _size;
-};
 
-// Fungsi-Fungsi...
+    // Utility functions lainnya ...
+
+public:
+    // Constructor
+    BST() {
+        _root = nullptr;
+        _size = 0;
+    }
+
+    // Destructor
+    ~BST() {
+        __deleteTree(_root);
+    }
+
+    // Fungsi-fungsi ...
+};
 ```
 
 #### Fungsi
 
-**is_empty**
+* **is_empty**
 
-Untuk mengecek apakah BST kosong atau tidak
+    Untuk mengecek apakah BST kosong atau tidak
 
-```cpp
-bool isEmpty() {
-    return _root == NULL;
-}
-```
+    ```cpp
+    bool isEmpty() {
+        return _root == NULL;
+    }
+    ```
 
-**Find**
+* **Find**
 
-Berikut adalah cara melakukan pencarian node pada implementasi ini
+    Berikut adalah cara melakukan pencarian node pada implementasi ini
 
-1. Mulai dari root
-2. Jika value yang dicari **lebih kecil** dari node yang sedang dicek, pindah **ke kiri**
-3. Jika value yang dicari **lebih besar** dari node yang sedang dicek, pindah **ke kanan**
+    1. Mulai dari root
+    2. Jika value yang dicari **lebih kecil** dari node yang sedang dicek, pindah **ke kiri**
+    3. Jika value yang dicari **lebih besar** dari node yang sedang dicek, pindah **ke kanan**
 
-![BST Search](img/bst_search.png)
+    ![BST Search](img/bst_search.png)
 
-> Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/bstsearch.png
+    > Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/bstsearch.png
 
-**Primary Function**
+    **Primary Function**
 
-```cpp
-bool find(int value) {
-    BSTNode *temp = __search(_root, value);
-    if (!temp)
-        return false;
-    if (temp->key == value)
-        return true;
-    else
-        return false;
-}
-```
-
-**Utility Function**
-
-```cpp
-BSTNode* __search(BSTNode *root, int value) {
-    while (root != NULL) {
-        if (value < root->key)
-            root = root->left;
-
-        else if (value > root->key)
-            root = root->right;
+    ```cpp
+    bool find(int value) {
+        BSTNode *temp = __search(_root, value);
+        if (!temp)
+            return false;
+        if (temp->key == value)
+            return true;
         else
-            return root;
+            return false;
     }
-    return root;
-}
-```
+    ```
 
-**Insert**
+    **Utility Function**
 
-Untuk menambahkan node, pertama-tama harus ditentukan dulu posisi node yang akan ditambahkan. Setelah mendapat posisi yang sesuai, maka akan dilakukan pembuatan node baru yang berisi value yang ingin ditambahkan. Node baru yang akan ditambahkan akan selalu berada di posisi daun (leaf).
+    ```cpp
+    BSTNode* __search(BSTNode *root, int value) {
+        while (root != NULL) {
+            if (value < root->key)
+                root = root->left;
 
-![BST Insert](img/bst_insert.png)
-
-**Primary Function**
-
-```cpp
-void insert(int value) {
-    if (!find(value)) {
-        _root = __insert(_root, value);
-        _size++;
-    }
-}
-```
-
-**Utility Function**
-
-```cpp
-BSTNode* __insert(BSTNode *root, int value) {
-    if (root == NULL)
-        return __createNode(value);
-
-    if (value < root->key)
-        root->left = __insert(root->left, value);
-    else if (value > root->key)
-        root->right = __insert(root->right, value);
-
-    return root;
-}
-```
-
-**Remove**
-
-Terdapat 3 kondisi pada saat akan remove.
-
-**Kondisi 1** Node yang akan dihapus adalah node leaf (tanpa child)
-
-Pada kondisi ini, node akan langsung dihapus
-
-![Remove Leaf](img/bst_remove_leaf.png)
-
-> Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/removeleaf.png
-
-**Kondisi 2** Node yang akan dihapus mempunyai 1 child (kiri atau kanan)
-
-Setelah node dihapus, maka child akan diposisikan pada node yang telah dihapus.
-
-![One Child Remove](img/bst_one_child_remove.png)
-
-**Kondisi 3** Node yang akan dihapus mempunyai 2 child
-
-Sebelum node dihapus, maka akan dilakukan pencarian node terkecil dari subTree kanan child, kemudian akan dilakukan pertukaran. Setelah itu, dilakukan penghapusan node.
-
-![Two Child Remove](img/bst_two_child_remove.png)
-
-**Primary Function**
-
-```cpp
-void remove(int value) {
-    if (find(value)) {
-        _root = __remove(_root, value);
-        _size++;
-    }
-}
-```
-
-**Utility Function**
-
-```cpp
-BSTNode* __remove(BSTNode *root, int value) {
-    if (root == NULL) return NULL;
-
-    if (value > root->key)
-        root->right = __remove(root->right, value);
-    else if (value < root->key)
-        root->left = __remove(root->left, value);
-    else {
-
-        if (root->left == NULL) {
-            BSTNode *rightChild = root->right;
-            free(root);
-            return rightChild;
+            else if (value > root->key)
+                root = root->right;
+            else
+                return root;
         }
-        else if (root->right == NULL) {
-            BSTNode *leftChild = root->left;
-            free(root);
-            return leftChild;
-        }
-
-        BSTNode *temp = __findMinNode(root->right);
-        root->key     = temp->key;
-        root->right   = __remove(root->right, temp->key);
+        return root;
     }
-    return root;
-}
-```
+    ```
 
-```cpp
-BSTNode* __findMinNode(BSTNode *node) {
-    BSTNode *currNode = node;
-    while (currNode && currNode->left != NULL)
-        currNode = currNode->left;
+* **Insert**
 
-    return currNode;
-}
-```
+    Untuk menambahkan node, pertama-tama harus ditentukan dulu posisi node yang akan ditambahkan. Setelah mendapat posisi yang sesuai, maka akan dilakukan pembuatan node baru yang berisi value yang ingin ditambahkan. Node baru yang akan ditambahkan akan selalu berada di posisi daun (leaf).
 
-Contoh Code
+    ![BST Insert](img/bst_insert.png)
+
+    **Primary Function**
+
+    ```cpp
+    void insert(int value) {
+        if (!find(value)) 
+        {
+            _root = __insert(_root, value);
+            _size++;
+        }
+    }
+    ```
+
+    **Utility Function**
+
+    ```cpp
+    BSTNode* __insert(BSTNode *root, int value) {
+        if (root == NULL)
+            return new BSTNode(value);
+
+        if (value < root->key)
+            root->left = __insert(root->left, value);
+        else if (value > root->key)
+            root->right = __insert(root->right, value);
+
+        return root;
+    }
+    ```
+
+* **Remove** \
+    Terdapat 3 kondisi pada saat akan remove.
+
+    - **Kondisi 1** Node yang akan dihapus adalah node leaf (tanpa child) \
+        Pada kondisi ini, node akan langsung dihapus
+
+        ![Remove Leaf](img/bst_remove_leaf.png)
+
+        > Sumber gambar : https://courses.engr.illinois.edu/cs225/fa2022/assets/notes/bst/removeleaf.png
+
+    - **Kondisi 2** Node yang akan dihapus mempunyai 1 child (kiri atau kanan) \
+        Setelah node dihapus, maka child akan diposisikan pada node yang telah dihapus.
+
+        ![One Child Remove](img/bst_one_child_remove.png)
+
+    - **Kondisi 3** Node yang akan dihapus mempunyai 2 child \
+        Sebelum node dihapus, maka akan dilakukan pencarian node terkecil dari subTree kanan child, kemudian akan dilakukan pertukaran. Setelah itu, dilakukan penghapusan node.
+
+        ![Two Child Remove](img/bst_two_child_remove.png)
+
+    **Primary Function**
+
+    ```cpp
+    void remove(int value) {
+        if (find(value)) 
+        {
+            _root = __remove(_root, value);
+            _size++;
+        }
+    }
+    ```
+
+    **Utility Function**
+
+    ```cpp
+    BSTNode* __remove(BSTNode *root, int value) {
+        if (root == NULL) return NULL;
+
+        if (value > root->key)
+            root->right = __remove(root->right, value);
+        else if (value < root->key)
+            root->left = __remove(root->left, value);
+        else {
+
+            if (root->left == NULL) {
+                BSTNode *rightChild = root->right;
+                free(root);
+                return rightChild;
+            }
+            else if (root->right == NULL) {
+                BSTNode *leftChild = root->left;
+                free(root);
+                return leftChild;
+            }
+            
+            // Node with two children
+            BSTNode *temp = __findMinNode(root->right);
+            root->key     = temp->key;
+            root->right   = __remove(root->right, temp->key);
+        }
+        return root;
+    }
+    ```
+
+    ```cpp
+    BSTNode* __findMinNode(BSTNode *node) {
+        BSTNode *currNode = node;
+        while (currNode && currNode->left != NULL)
+            currNode = currNode->left;
+
+        return currNode;
+    }
+    ```
 
 ### **Skewed Tree**
 
@@ -272,6 +293,7 @@ Jika urutan insertion tree yang dilakukan adalah 5,4,3,2,1 maka bentuk tree akan
 - https://www.geeksforgeeks.org/binary-search-tree-data-structure/
 - https://courses.engr.illinois.edu/cs225/fa2022/resources/bst/
 
+---
 ## **Traversal Binary Search Tree**
 
 ### Definisi
@@ -370,98 +392,96 @@ void __postorder(BSTNode* node) {
 
 ```cpp
 #include <iostream>
+
 using namespace std;
 
-// Struktur node untuk BST
-struct BSTNode {
+// kelas untuk node pada BST
+class BSTNode {
+public:
     int key;
-    BSTNode* left;
-    BSTNode* right;
+    BSTNode *left;
+    BSTNode *right;
 
-    BSTNode(int value) {
-        key = value;
-        left = right = nullptr;
-    }
+    BSTNode(int value) : key(value), left(nullptr), right(nullptr) {}
 };
 
-// Struktur BST
-struct BST {
-    BSTNode* root;
-
-    // Konstruktor
-    BST() {
-        root = nullptr;
-    }
-
-    // Fungsi untuk menyisipkan elemen
-    void insert(int value) {
-        root = __insert(root, value);
-    }
-
-    // Wrapper untuk Preorder Traversal
-    void traversePreorder() {
-        __preorder(root);
-        cout << endl;
-    }
-
-    // Wrapper untuk Inorder Traversal
-    void traverseInorder() {
-        __inorder(root);
-        cout << endl;
-    }
-
-    // Wrapper untuk Postorder Traversal
-    void traversePostorder() {
-        __postorder(root);
-        cout << endl;
-    }
-
+// kelas Binary Search Tree
+class BST {
 private:
-    // Utility Function untuk menyisipkan elemen ke BST
-    BSTNode* __insert(BSTNode* node, int value) {
-        if (node == nullptr)
+    BSTNode *root;
+
+    // fungsi rekursif untuk menyisipkan node
+    BSTNode* insert(BSTNode *node, int value) {
+        if (!node)
             return new BSTNode(value);
 
         if (value < node->key)
-            node->left = __insert(node->left, value);
+            node ->left = insert(node ->left, value);
         else
-            node->right = __insert(node->right, value);
+            node ->right = insert(node ->right, value);
 
         return node;
     }
 
-    // Utility Function untuk Preorder Traversal (Root - Left - Right)
-    void __preorder(BSTNode* node) {
+    // fungsi rekursif untuk preorder traversal
+    void preorder(BSTNode *node) {
         if (node) {
-            cout << node->key << " ";
-            __preorder(node->left);
-            __preorder(node->right);
+            cout << node ->key << " ";
+            preorder(node ->left);
+            preorder(node ->right);
         }
     }
 
-    // Utility Function untuk Inorder Traversal (Left - Root - Right)
-    void __inorder(BSTNode* node) {
+    // fungsi rekursif untuk inorder traversal
+    void inorder(BSTNode *node) {
         if (node) {
-            __inorder(node->left);
-            cout << node->key << " ";
-            __inorder(node->right);
+            inorder(node ->left);
+            cout << node ->key << " ";
+            inorder(node ->right);
         }
     }
 
-    // Utility Function untuk Postorder Traversal (Left - Right - Root)
-    void __postorder(BSTNode* node) {
+    // fungsi rekursif untuk posstorder traversal
+    void postorder(BSTNode *node) {
         if (node) {
-            __postorder(node->left);
-            __postorder(node->right);
-            cout << node->key << " ";
+            postorder(node ->left);
+            postorder(node ->right);
+            cout << node ->key << " ";
         }
+    }
+
+public:
+    // constructor
+    BST() : root(nullptr) {}
+
+    // menyisipkan elemen ke dalam BST
+    void insert(int value) {
+        root = insert(root, value);
+    }
+
+    // traversal preorder
+    void traversalPreorder() {
+        preorder(root);
+        cout << endl;
+    }
+
+    // traversal inorder
+    void traversalInorder() {
+        inorder(root);
+        cout << endl;
+    }
+
+    // traversal Postorder
+    void traversalPostorder() {
+        postorder(root);
+        cout << endl;
     }
 };
 
 int main() {
     BST tree;
 
-    // Menambahkan elemen ke BST
+    // menambahkan elemen ke BST
     tree.insert(50);
     tree.insert(30);
     tree.insert(70);
@@ -471,13 +491,13 @@ int main() {
     tree.insert(80);
 
     cout << "Preorder Traversal: ";
-    tree.traversePreorder();
+    tree.traversalPreorder();
 
     cout << "Inorder Traversal: ";
-    tree.traverseInorder();
+    tree.traversalInorder();
 
     cout << "Postorder Traversal: ";
-    tree.traversePostorder();
+    tree.traversalPostorder();
 
     return 0;
 }
@@ -557,27 +577,37 @@ $$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan$$
 
 Dengan begitu, nilai valid Balance Factor hanya berikut ini
 
-$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan = -1, 0, 1$. Jika nilainya di luar angka-angka tersebut, maka _tree_ tersebut **imbalanced**
+$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan = -1, 0, 1$. \
+Jika nilainya di luar angka-angka tersebut, maka _tree_ tersebut **imbalanced**
 
 ### **Representasi Node**
 
-[Link Implementasi Lengkap `AVL Tree` dapat dilihat di sini >](https://github.com/AlproITS/StrukturData/blob/master/For%20C%2B%2B/AVL%20Tree/unique_AVL_tree.cpp)
+[Link Implementasi Lengkap `AVL Tree` dapat dilihat di sini >](code/avl.cpp)
 
 Representasi node pada AVL Tree sama dengan BST hanya saja ada tambahan data berupa tinggi pada tiap nodenya.
 
-```cpp
-typedef struct AVLNode_t
-{
-    int data;
-    struct AVLNode_t *left,*right;
-    int height;
-}AVLNode;
+**Node**
 
-typedef struct AVL_t
-{
+```cpp
+class AVLTree {
+private:
+    // Representasi Node (sebagai struct internal)
+    struct AVLNode {
+        int data;
+        AVLNode *left, *right;
+        int height;
+
+        // Konstruktor untuk AVLNode
+        AVLNode(int value) : data(value), left(nullptr), right(nullptr), height(1) {}
+    };
+
     AVLNode *_root;
     unsigned int _size;
-}AVL;
+    
+    // utility functions lainnya ...
+public:
+    // fungsi-fungsi utama lainnya ...
+}
 ```
 
 - Untuk menginisiasi sebuah AVl kita bisa menggunakan fungsi `avl_init()`.
@@ -689,7 +719,7 @@ Pada rotasi kiri caranya adalah right child dari pivotNode akan menjadi menjadi 
 
 **Left Rotation** ini bisa menyelesaikan permasalahan untuk **Case Right Skewed**.
 
-```c
+```cpp
 AVLNode* _rightCaseRotate(AVLNode* node){
     return _leftRotate(node);
 }
