@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm> 
 #include <vector>
-// Menggunakan namespace std untuk kemudahan
 using namespace std;
 
 class AVLTree {
