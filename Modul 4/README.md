@@ -414,7 +414,7 @@ private:
     BSTNode* insert(BSTNode *node, int value) {
         if (!node)
             return new BSTNode(value);
-            
+
         if (value < node->key)
             node ->left = insert(node ->left, value);
         else
@@ -577,27 +577,37 @@ $$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan$$
 
 Dengan begitu, nilai valid Balance Factor hanya berikut ini
 
-$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan = -1, 0, 1$. Jika nilainya di luar angka-angka tersebut, maka _tree_ tersebut **imbalanced**
+$BalanceFactor = HeightSubtreeKiri - HeightSubtreeKanan = -1, 0, 1$. \
+Jika nilainya di luar angka-angka tersebut, maka _tree_ tersebut **imbalanced**
 
 ### **Representasi Node**
 
-[Link Implementasi Lengkap `AVL Tree` dapat dilihat di sini >](https://github.com/AlproITS/StrukturData/blob/master/For%20C%2B%2B/AVL%20Tree/unique_AVL_tree.cpp)
+[Link Implementasi Lengkap `AVL Tree` dapat dilihat di sini >](code/avl.cpp)
 
 Representasi node pada AVL Tree sama dengan BST hanya saja ada tambahan data berupa tinggi pada tiap nodenya.
 
-```cpp
-typedef struct AVLNode_t
-{
-    int data;
-    struct AVLNode_t *left,*right;
-    int height;
-}AVLNode;
+**Node**
 
-typedef struct AVL_t
-{
+```cpp
+class AVLTree {
+private:
+    // Representasi Node (sebagai struct internal)
+    struct AVLNode {
+        int data;
+        AVLNode *left, *right;
+        int height;
+
+        // Konstruktor untuk AVLNode
+        AVLNode(int value) : data(value), left(nullptr), right(nullptr), height(1) {}
+    };
+
     AVLNode *_root;
     unsigned int _size;
-}AVL;
+    
+    // utility functions lainnya ...
+public:
+    // fungsi-fungsi utama lainnya ...
+}
 ```
 
 - Untuk menginisiasi sebuah AVl kita bisa menggunakan fungsi `avl_init()`.
@@ -709,7 +719,7 @@ Pada rotasi kiri caranya adalah right child dari pivotNode akan menjadi menjadi 
 
 **Left Rotation** ini bisa menyelesaikan permasalahan untuk **Case Right Skewed**.
 
-```c
+```cpp
 AVLNode* _rightCaseRotate(AVLNode* node){
     return _leftRotate(node);
 }
