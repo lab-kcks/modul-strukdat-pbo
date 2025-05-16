@@ -57,6 +57,7 @@ Binary tree merupakan struktur data tree yang setiap nodenya memiliki paling ban
 - https://www.geeksforgeeks.org/introduction-to-tree-data-structure/
 - https://en.wikipedia.org/wiki/Binary_tree
 
+- - -
 ## **Binary Search Tree**
 
 ### **Pengertian**
@@ -292,6 +293,7 @@ Jika urutan insertion tree yang dilakukan adalah 5,4,3,2,1 maka bentuk tree akan
 - https://www.geeksforgeeks.org/binary-search-tree-data-structure/
 - https://courses.engr.illinois.edu/cs225/fa2022/resources/bst/
 
+---
 ## **Traversal Binary Search Tree**
 
 ### Definisi
@@ -390,98 +392,96 @@ void __postorder(BSTNode* node) {
 
 ```cpp
 #include <iostream>
+
 using namespace std;
 
-// Struktur node untuk BST
-struct BSTNode {
+// kelas untuk node pada BST
+class BSTNode {
+public:
     int key;
-    BSTNode* left;
-    BSTNode* right;
+    BSTNode *left;
+    BSTNode *right;
 
-    BSTNode(int value) {
-        key = value;
-        left = right = nullptr;
-    }
+    BSTNode(int value) : key(value), left(nullptr), right(nullptr) {}
 };
 
-// Struktur BST
-struct BST {
-    BSTNode* root;
-
-    // Konstruktor
-    BST() {
-        root = nullptr;
-    }
-
-    // Fungsi untuk menyisipkan elemen
-    void insert(int value) {
-        root = __insert(root, value);
-    }
-
-    // Wrapper untuk Preorder Traversal
-    void traversePreorder() {
-        __preorder(root);
-        cout << endl;
-    }
-
-    // Wrapper untuk Inorder Traversal
-    void traverseInorder() {
-        __inorder(root);
-        cout << endl;
-    }
-
-    // Wrapper untuk Postorder Traversal
-    void traversePostorder() {
-        __postorder(root);
-        cout << endl;
-    }
-
+// kelas Binary Search Tree
+class BST {
 private:
-    // Utility Function untuk menyisipkan elemen ke BST
-    BSTNode* __insert(BSTNode* node, int value) {
-        if (node == nullptr)
-            return new BSTNode(value);
+    BSTNode *root;
 
+    // fungsi rekursif untuk menyisipkan node
+    BSTNode* insert(BSTNode *node, int value) {
+        if (!node)
+            return new BSTNode(value);
+            
         if (value < node->key)
-            node->left = __insert(node->left, value);
+            node ->left = insert(node ->left, value);
         else
-            node->right = __insert(node->right, value);
+            node ->right = insert(node ->right, value);
 
         return node;
     }
 
-    // Utility Function untuk Preorder Traversal (Root - Left - Right)
-    void __preorder(BSTNode* node) {
+    // fungsi rekursif untuk preorder traversal
+    void preorder(BSTNode *node) {
         if (node) {
-            cout << node->key << " ";
-            __preorder(node->left);
-            __preorder(node->right);
+            cout << node ->key << " ";
+            preorder(node ->left);
+            preorder(node ->right);
         }
     }
 
-    // Utility Function untuk Inorder Traversal (Left - Root - Right)
-    void __inorder(BSTNode* node) {
+    // fungsi rekursif untuk inorder traversal
+    void inorder(BSTNode *node) {
         if (node) {
-            __inorder(node->left);
-            cout << node->key << " ";
-            __inorder(node->right);
+            inorder(node ->left);
+            cout << node ->key << " ";
+            inorder(node ->right);
         }
     }
 
-    // Utility Function untuk Postorder Traversal (Left - Right - Root)
-    void __postorder(BSTNode* node) {
+    // fungsi rekursif untuk posstorder traversal
+    void postorder(BSTNode *node) {
         if (node) {
-            __postorder(node->left);
-            __postorder(node->right);
-            cout << node->key << " ";
+            postorder(node ->left);
+            postorder(node ->right);
+            cout << node ->key << " ";
         }
+    }
+
+public:
+    // constructor
+    BST() : root(nullptr) {}
+
+    // menyisipkan elemen ke dalam BST
+    void insert(int value) {
+        root = insert(root, value);
+    }
+
+    // traversal preorder
+    void traversalPreorder() {
+        preorder(root);
+        cout << endl;
+    }
+
+    // traversal inorder
+    void traversalInorder() {
+        inorder(root);
+        cout << endl;
+    }
+
+    // traversal Postorder
+    void traversalPostorder() {
+        postorder(root);
+        cout << endl;
     }
 };
 
 int main() {
     BST tree;
 
-    // Menambahkan elemen ke BST
+    // menambahkan elemen ke BST
     tree.insert(50);
     tree.insert(30);
     tree.insert(70);
@@ -491,13 +491,13 @@ int main() {
     tree.insert(80);
 
     cout << "Preorder Traversal: ";
-    tree.traversePreorder();
+    tree.traversalPreorder();
 
     cout << "Inorder Traversal: ";
-    tree.traverseInorder();
+    tree.traversalInorder();
 
     cout << "Postorder Traversal: ";
-    tree.traversePostorder();
+    tree.traversalPostorder();
 
     return 0;
 }
