@@ -15,6 +15,20 @@
 
 ## Graf
 
+Apa sebenarnya itu graf? Pada dasarnya, graf adalah cara untuk merepresentasikan hubungan antara objek-objek. Mari kita lihat contoh sederhana. Bayangkan kita memiliki sekelompok orang dan kita tahu untuk setiap pasangan apakah mereka berteman atau tidak.
+
+![image](https://github.com/user-attachments/assets/5befc0ed-148e-4c83-8cdd-8e31398cb8f8)
+
+Kita menganggap bahwa hubungan pertemanan bersifat timbal balik, jadi jika Alice adalah teman Bob, maka Bob juga adalah teman Alice. Dalam contoh di atas, kamu bisa dengan mudah melihat bahwa ini benar, dan kamu juga bisa mengetahui informasi tentang semua orang lain dalam kelompok itu. Misalnya, Dave dan Ellen adalah teman, tetapi Alice dan Fred tidak.
+
+Informasi dalam gambar di atas adalah graf pertemanan dari kelompok ini. Kita menyebut objek-objek (enam orang dalam kasus ini) dalam graf sebagai nodes atau vertices (V), dan hubungan pertemanan di antara mereka (garis-garisnya) sebagai edges (E). Graf biasanya dilambangkan dengan G(V, E).
+
+### Permasalahan Umum dalam Teori Graf
+Misalkan terdapat sebuah peta dengan beberapa kota dan jalan dua arah yang menghubungkan kota-kota tersebut. Beberapa permasalahan yang berkaitan dengan graf antara lain:
+
+- Apakah kota A connected dengan kota B? Anggap suatu wilayah sebagai group kota di mana setiap kota dalam group tersebut dapat dijangkau dari kota lainnya di group yang sama, tetapi tidak dapat menjangkau kota di luar group tersebut. Berapa banyak wilayah yang ada di peta ini, dan kota mana saja yang termasuk dalam masing-masing wilayah?
+- Berapa jarak terpendek yang harus saya tempuh untuk pergi dari kota A ke kota B? 
+
 ### Graph terminology
 Berikut adalah pengertian dari komponen/tipe-tipe graf
 
@@ -32,180 +46,110 @@ Berikut adalah pengertian dari komponen/tipe-tipe graf
 | `Cycle` | *path* yang dimulai dan diakhiri pada 1 buah vertex yang sama |
 
 
-## Implementasi Graf
-
-Beberapa implementasi graf dalam kehidupan sehari-hari:
-
-* Umum digunakan oleh compiler untuk menggambarkan alokasi sumber daya ke proses atau menunjukkan analisis aliran data, dll.
-* Umum digunakan untuk menggambarkan grafik jaringan, atau grafik semantik atau bahkan untuk menggambarkan aliran komputasi.
-* Digunakan untuk membangun sistem transportasi khususnya jaringan jalan. Contoh populer: peta Google yang secara ekstensif menggunakan graph.
-
-Beberapa kelebihan dari graf:
-
-* Mudah diimplementasikan untuk mencari rute terdekat, tetangga dari vertex/node, dan sebagainya
-* Membantu dalam mengorganisir data
-
-Kekurangan dari graf:
-
-* Menggunakan banyak pointer sehingga program dapat menjadi kompleks
-* Dapat menggunakan memory yang besar
-
 ## Cara merepresentasikan graf
 
-Terdapat beberapa cara yang biasa digunakan untuk merepresentasikan graf, yaitu:
+Ada beberapa cara untuk merepresentasikan graf dalam algoritma. Pemilihan struktur data tergantung pada ukuran graf dan cara algoritma memprosesnya. 
 
-### Sequential Representation / Adjacency Matrix
+### Adjacency list representation
+Dalam adjacency list, setiap node x dalam graf diberikan sebuah daftar yang berisi nodes yang terhubung langsung dengan x melalui sebuah edge.
 
-Kita bisa merepresentasikan graf dengan menggunakan array 2 dimensi `Adjmat[V][V]` dengan `AdjMat[i][j]` bernilai 1 apabila terdapat *edge* yang menghubungkan vertex i dan j, bernilai 0 jika tidak ada *edge*.
+Cara untuk menyimpan adjacency lists adalah dengan mendeklarasikan sebuah array dari vector seperti berikut:<br/>
+```
+vector<int> adj[N];
+```
+N dipilih sedemikian rupa sehingga semua adjacency lists dapat disimpan. Sebagai contoh, graf berikut: <br/>
+![image](https://github.com/user-attachments/assets/6aed881c-2a83-4da4-a7bb-480d467ead4c) <br/>
+dapat disimpan sebagai berikut:<br/>
+```
+adj[1].push_back(2);
+adj[2].push_back(3);
+adj[2].push_back(4);
+adj[3].push_back(4);
+adj[4].push_back(1);
+```
+Jika graf undirected, graf tersebut dapat disimpan dengan cara yang serupa, tetapi setiap edge ditambahkan dalam kedua arah.
+Untuk graf weighted, strukturnya dapat diperluas sebagai berikut:
+```
+vector<pair<int,int>> adj[N];
+```
+Dalam kasus ini, adjacency list dari node a selalu berisi pasangan (b,w) ketika terdapat edge dari node a ke node b dengan weight w. Sebagai contoh, graf
 
-Nilai `AdjMat[i][j]` bisa bernilai *weight* dari suatu *edge* untuk weighted graf.
+![image](https://github.com/user-attachments/assets/4d0cb7e2-cb16-46e8-9540-6535d2ef8e82)
 
-Contoh Adjacency Matrix
-
-* Unweighted & Undirected Graph
-
-![image](https://user-images.githubusercontent.com/77750276/201638781-62b65963-e776-4645-a3df-78f18022a697.png)
-
-> Sumber gambar: [softwaretestinghelp.com](https://www.softwaretestinghelp.com/graph-implementation-cpp/)
-
-* Unweighted & Directed Graph
-
-![image](https://user-images.githubusercontent.com/77750276/201638804-68d9c29c-2771-43f0-9fe5-aed16843c46c.png)
-
-> Sumber gambar: [softwaretestinghelp.com](https://www.softwaretestinghelp.com/graph-implementation-cpp/)
-
-* Weighted & Directed Graph
-
-![image](https://user-images.githubusercontent.com/77750276/201638818-a6775be3-88c8-48dc-be2d-45a13f2cb31a.png)
-
-> Sumber gambar: [softwaretestinghelp.com](https://www.softwaretestinghelp.com/graph-implementation-cpp/)
-
-Untuk implementasi pada codingan, dapat menggunakan array 2 Dimensi (sudah jarang digunakan)
-
-### Linked Representation / Adjacency List
-
-Masalah utama dari penggunaan adjacency matrix adalah penggunaan memory sebanyak $V^2$ memory untuk graph dengan *vertex* sebanyak V sehingga tidak cocok untuk graph dengan ukuran besar.
-
-Solusi dari masalah itu adalah *Adjacency List*. Ide dari perepresentasian dengan menggunakan Adjacency list adalah dengan hanya menyimpan daftar dari vertex-vertx lain yang memiliki edge yang terhubung dengan suatu vertex.
-
-Contoh Adjacency List:
-
-* Unweighted & Undirected Graph
-
-![image](https://user-images.githubusercontent.com/77750276/201638839-8a87453f-f0d6-4511-b914-8159986f9d3e.png)
-
-> Sumber gambar: [softwaretestinghelp.com](https://www.softwaretestinghelp.com/graph-implementation-cpp/)
-
-* Unweighted & Directed Graph
-
-![image](https://user-images.githubusercontent.com/77750276/201638858-ebc75f8e-a05d-4114-ac4b-18d9b5b0ec5b.png)
-
-> Sumber gambar: [softwaretestinghelp.com](https://www.softwaretestinghelp.com/graph-implementation-cpp/)
-
-### Contoh Implementasi Code Adjacency List
-
-Weighted Graph
-
-```cpp
-#include<bits/stdc++.h>
-
-using namespace std;
-
-void addEdge(vector<pair <int, int>> adj[],int u,int v, int weight){
-    adj[u].push_back(make_pair(v, weight));
-
-    // Jika undirected, maka dipush ke 2 2 nya
-
-    // adj[v].push_back(make_pair(u, weight));
-}
-
-void printGraph(vector<pair <int, int>> adj[],int V){
-    // Loop sebanyak jumlah vertex
-    for (int v = 0; v < V; v++){
-        cout << "\n Adjacency list of vertex "
-            << v << "\n head";
-
-        for (int i = 0; i < adj[v].size(); i++){
-            // Karena pakai <pair <int, int>>, jadi untuk ngeprint bisa menggunakan .first dan .second
-            cout<<" --> "<< adj[v][i].first << " " << adj[v][i].second;
-        }
-
-        printf("\n");
-    }
-}
-
-int main(){
-    // Jumlah Vertex
-    int V = 5;
-
-    vector<pair <int, int>> adj[V];
-    addEdge(adj, 0, 1, 2);
-    addEdge(adj, 0, 4, 3);
-    addEdge(adj, 1, 3, 4);
-    addEdge(adj, 2, 4, 2);
-    addEdge(adj, 1, 2, 3);
-
-    printGraph(adj, V);
-
-    return 0;
+dapat disimpan sebagai berikut:
+```
+adj[1].push_back({2,5});
+adj[2].push_back({3,7});
+adj[2].push_back({4,6});
+adj[3].push_back({4,5});
+adj[4].push_back({1,2});
+```
+Keuntungan menggunakan adjacency lists adalah kita dapat secara efisien menemukan nodes yang dapat kita tuju dari suatu node tertentu melalui sebuah edge. Sebagai contoh, loop berikut akan melewati semua nodes yang dapat kita tuju dari node s:
+```
+for (auto u : adj[s]) {
+// process node u
 }
 ```
-
-Unweighted Graph
-
-```cpp
-#include<bits/stdc++.h>
-
-using namespace std;
-
-void addEdge(vector<int> adj[],int u,int v){
-    adj[u].push_back(v);
-
-    // Jika undirected, maka dipush ke 2 2 nya
-
-    // adj[v].push_back(u)
-}
-
-void printGraph(vector<int> adj[],int V){
-    // Loop sebanyak jumlah vertex
-    for (int v = 0; v < V; v++){
-        cout << "\n Adjacency list of vertex "
-            << v << "\n head";
-
-        for (int i = 0; i < adj[v].size(); i++){
-            cout<<" --> "<<adj[v][i];
-        }
-
-        printf("\n");
-    }
-}
-
-int main(){
-    // Jumlah Vertex
-    int V = 5;
-
-    vector<int> adj[V];
-    addEdge(adj, 0, 1);
-    addEdge(adj, 0, 4);
-    addEdge(adj, 1, 3);
-    addEdge(adj, 2, 4);
-    addEdge(adj, 1, 2);
-
-    printGraph(adj, V);
-
-    return 0;
-}
+### Adjacency matrix representation
+Sebuah adjacency matrix adalah array dua dimensi yang menunjukkan edges mana yang terdapat dalam graf. Kita dapat secara efisien memeriksa dari sebuah adjacency matrix apakah terdapat edge di antara dua nodes. Matrix tersebut dapat disimpan sebagai sebuah array
 ```
+int adj[N][N];
+```
+di mana setiap nilai adj[a][b] menunjukkan apakah graf berisi edge dari node a ke node b. Jika edge tersebut termasuk dalam graf, maka adj[a][b] = 1, dan jika tidak maka adj[a][b] = 0. Sebagai contoh, graf<br/>
+![image](https://github.com/user-attachments/assets/c2cc06f9-165d-48fc-9a8a-0ec67ea8abca)<br/>
+dapat direpresentasikan sebagai berikut:<br/>
+![image](https://github.com/user-attachments/assets/81b502de-898f-492e-a2be-c454b3cf4d15)<br/>
+Jika graf tersebut berbobot, representasi adjacency matrix dapat diperluas sehingga matriks tersebut berisi bobot dari edge jika edge tersebut ada. Dengan menggunakan representasi ini, graf berikut <br/>
 
-## Referensi
+![image](https://github.com/user-attachments/assets/2eb21cae-6abd-4795-846d-9ad70650c8a2)<br/>
+bersesuaian dengan matriks berikut:<br/>
+![image](https://github.com/user-attachments/assets/d1322c59-b3a9-4a9a-86eb-0812dd521fa9) <br/>
 
-* https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/ 
-* https://www.techiedelight.com/terminology-and-representations-of-graphs/ 
-* https://www.geeksforgeeks.org/applications-advantages-and-disadvantages-of-graph/
-* https://www.softwaretestinghelp.com/graph-implementation-cpp/
+Kelemahan dari representasi adjacency matrix adalah matriks tersebut berisi n^2 elemen, dan biasanya sebagian besar bernilai nol. Karena alasan ini, representasi tersebut tidak dapat digunakan jika graf berukuran besar.
+
+### Edge list representation
+Sebuah edge list berisi semua edges dari sebuah graph dalam urutan tertentu. Ini adalah cara yang mudah untuk merepresentasikan sebuah graph jika algoritma memproses semua edges dari graph tersebut dan tidak diperlukan untuk menemukan edges yang dimulai dari node tertentu.<br/>
+Edge list tersebut dapat disimpan dalam sebuah vector <br/>
+
+```
+vector<pair<int,int>> edges;
+```
+setiap pasangan (a,b) menunjukkan bahwa terdapat sebuah edge dari node a ke node b. Jadi, graph <br/>
+![image](https://github.com/user-attachments/assets/80f3c7f0-8da3-4a8e-b513-46c2b249a54e)<br/>
+dapat direpresentasikan sebagai berikut:<br/>
+```
+edges.push_back({1,2});
+edges.push_back({2,3});
+edges.push_back({2,4});
+edges.push_back({3,4});
+edges.push_back({4,1});
+```
+Jika graf tersebut berbobot, strukturnya dapat diperluas sebagai berikut: <br/>
+```
+vector<tuple<int,int,int>> edges;
+```
+Setiap elemen dalam list ini berbentuk (a,b,w), yang berarti terdapat sebuah edge dari node a ke node b dengan weight w. Sebagai contoh, graph<br/>
+![image](https://github.com/user-attachments/assets/c6277253-77aa-45b0-9b40-eee42b1fec1c)
+
+dapat direpresentasikan sebagai berikut.
+
+```
+edges.push_back({1,2,5});
+edges.push_back({2,3,7});
+edges.push_back({2,4,6});
+edges.push_back({3,4,5});
+edges.push_back({4,1,2});
+```
 
 interactive visualization <br />
 https://csacademy.com/lesson/graph_representation
+
+## Referensi
+
+* https://cses.fi/book/book.pdf
+* https://csacademy.com/lesson/introduction_to_graphs
+
+
 
 
 ## Graph Traversal
