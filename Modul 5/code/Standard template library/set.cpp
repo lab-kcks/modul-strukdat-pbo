@@ -1,146 +1,55 @@
 #include <iostream>
+#include <algorithm>
 #include <set>
-#include <string>
-
 using namespace std;
 
-// Class untuk menyimpan data mahasiswa
-class Mahasiswa {
-private:
-    int nim;
-    string nama;
-    float ipk;
-
-public:
-    // Constructor
-    Mahasiswa(int _nim, string _nama, float _ipk) 
-        : nim(_nim), nama(_nama), ipk(_ipk) {}
-    
-    // Getter methods
-    int getNim() const { return nim; }
-    string getNama() const { return nama; }
-    float getIpk() const { return ipk; }
-    
-    // Untuk menampilkan informasi mahasiswa
-    void printInfo() const {
-        cout << "NIM: " << nim << ", Nama: " << nama << ", IPK: " << ipk << endl;
-    }
-    
-    // Operator overloading untuk membandingkan objek (diperlukan untuk set)
-    bool operator<(const Mahasiswa& other) const {
-        return nim < other.nim; // Membandingkan berdasarkan NIM
-    }
-};
-
-// Class untuk mengelola data mahasiswa menggunakan set
-class DatabaseMahasiswa {
-private:
-    set<Mahasiswa> daftarMahasiswa;
-
-public:
-    // Menambahkan mahasiswa baru
-    void tambahMahasiswa(const Mahasiswa& mhs) {
-        auto hasil = daftarMahasiswa.insert(mhs);
-        if (hasil.second) {
-            cout << "Mahasiswa dengan NIM " << mhs.getNim() << " berhasil ditambahkan." << endl;
-        } else {
-            cout << "Mahasiswa dengan NIM " << mhs.getNim() << " sudah ada dalam database." << endl;
-        }
-    }
-    
-    // Menghapus mahasiswa berdasarkan NIM
-    void hapusMahasiswa(int nim) {
-        bool ditemukan = false;
-        for (auto it = daftarMahasiswa.begin(); it != daftarMahasiswa.end(); ++it) {
-            if (it->getNim() == nim) {
-                daftarMahasiswa.erase(it);
-                cout << "Mahasiswa dengan NIM " << nim << " telah dihapus." << endl;
-                ditemukan = true;
-                break;
-            }
-        }
-        
-        if (!ditemukan) {
-            cout << "Mahasiswa dengan NIM " << nim << " tidak ditemukan." << endl;
-        }
-    }
-    
-    // Mencari mahasiswa berdasarkan NIM
-    void cariMahasiswa(int nim) {
-        bool ditemukan = false;
-        for (const auto& mhs : daftarMahasiswa) {
-            if (mhs.getNim() == nim) {
-                cout << "Mahasiswa ditemukan: ";
-                mhs.printInfo();
-                ditemukan = true;
-                break;
-            }
-        }
-        
-        if (!ditemukan) {
-            cout << "Mahasiswa dengan NIM " << nim << " tidak ditemukan." << endl;
-        }
-    }
-    
-    // Menampilkan semua mahasiswa
-    void tampilkanSemuaMahasiswa() const {
-        if (daftarMahasiswa.empty()) {
-            cout << "Database mahasiswa kosong." << endl;
-            return;
-        }
-        
-        cout << "Daftar Mahasiswa:" << endl;
-        int nomor = 1;
-        for (const auto& mhs : daftarMahasiswa) {
-            cout << nomor++ << ". ";
-            mhs.printInfo();
-        }
-    }
-    
-    // Mendapatkan jumlah mahasiswa
-    size_t jumlahMahasiswa() const {
-        return daftarMahasiswa.size();
-    }
-    
-    // Mengosongkan database
-    void kosongkanDatabase() {
-        daftarMahasiswa.clear();
-        cout << "Database mahasiswa telah dikosongkan." << endl;
-    }
-};
-
 int main() {
-    DatabaseMahasiswa db;
+   set<int> mySet;
+    for (int i = 1 ; i <= 10 ; i++) {
+        for (int j = 1 ; j <= 10 ; j++) {
+            mySet.insert(i);
+        }
+    }
+
+    cout << "ukuran set sekarang : " << mySet.size() << endl;
+    cout << "elemen - elemen di dalam set : ";
+    for (set<int>::iterator it = mySet.begin() ; it != mySet.end() ; ++it) {
+        cout << *it << " "; //coba tebak kenapa harus pakai asterisk?
+    }
+    cout << endl;
+
+    for (int i = 7 ; i <= 12 ; i++) {
+        if (mySet.count(i)) {
+            cout << i << " ada di dalam set" << endl;
+        } else {
+            cout << i << " tidak ada di dalam set" << endl;
+        }
+    }
+
+    set<int>::iterator lo,hi;
+    mySet.erase(5);                 //1 2 3 4 6 7 8 9 10
+    lo = mySet.lower_bound(4);      //      ^
+    hi = mySet.upper_bound(4);      //        ^
     
-    // Menambahkan beberapa mahasiswa
-    db.tambahMahasiswa(Mahasiswa(101, "Budi Santoso", 3.75));
-    db.tambahMahasiswa(Mahasiswa(102, "Andi Wijaya", 3.50));
-    db.tambahMahasiswa(Mahasiswa(103, "Siti Nurbaya", 3.90));
-    db.tambahMahasiswa(Mahasiswa(101, "Duplikat Budi", 3.25)); // NIM duplikat
+    cout << "Kapasitas maksimum set: " << mySet.max_size() << endl;
     
-    cout << "\nJumlah mahasiswa dalam database: " << db.jumlahMahasiswa() << endl;
+    cout << "Set kosong? " << (mySet.empty() ? "Ya" : "Tidak") << endl;
     
-    // Menampilkan semua mahasiswa
-    cout << "\n";
-    db.tampilkanSemuaMahasiswa();
+    set<int>::iterator findResult = mySet.find(8);
+    if (findResult != mySet.end()) {
+        cout << "Elemen 8 ditemukan: " << *findResult << endl;
+    }
     
-    // Mencari mahasiswa
-    cout << "\n";
-    db.cariMahasiswa(102);
-    db.cariMahasiswa(105); // NIM tidak ada
+    set<int> otherSet;
+    otherSet.insert(100);
+    otherSet.insert(200);
+    cout << "Sebelum swap - mySet size: " << mySet.size() << endl;
+    mySet.swap(otherSet);
+    cout << "Setelah swap - mySet size: " << mySet.size() << endl;
     
-    // Menghapus mahasiswa
-    cout << "\n";
-    db.hapusMahasiswa(103);
-    
-    // Menampilkan lagi setelah penghapusan
-    cout << "\n";
-    db.tampilkanSemuaMahasiswa();
-    
-    // Mengosongkan database
-    cout << "\n";
-    db.kosongkanDatabase();
-    db.tampilkanSemuaMahasiswa();
-    
+    mySet.clear();
+    cout << "Setelah clear - ukuran set: " << mySet.size() << endl;
+    cout << "Set kosong setelah clear? " << (mySet.empty() ? "Ya" : "Tidak") << endl;
+
     return 0;
 }

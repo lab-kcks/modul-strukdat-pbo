@@ -1,263 +1,160 @@
 #include <iostream>
-#include <vector>
-#include <string>
 #include <algorithm>
-
+#include <vector>
 using namespace std;
 
-class Inventory {
-private:
-    vector<string> items;
-    vector<int> quantities;
-    vector<double> prices;
-
-public:
-    // Constructor
-    Inventory() {
-        cout << "Inventory system initialized. Maximum capacity: " << items.max_size() << " items." << endl;
-    }
-
-    // Add new item to inventory
-    void addItem(const string& name, int quantity, double price) {
-        items.push_back(name);         // Using push_back() to add element at the end
-        quantities.push_back(quantity);
-        prices.push_back(price);
-        cout << "Added " << quantity << " " << name << "(s) at $" << price << " each." << endl;
-    }
-
-    // Remove item from inventory by index
-    void removeItem(int index) {
-        if (index >= 0 && index < items.size()) {
-            cout << "Removed " << items[index] << " from inventory." << endl;
-            
-            // Using erase() to remove element at specific position
-            items.erase(items.begin() + index);
-            quantities.erase(quantities.begin() + index);
-            prices.erase(prices.begin() + index);
-        } else {
-            cout << "Invalid index! Cannot remove item." << endl;
-        }
-    }
-
-    // Access item safely using at()
-    void getItemDetails(int index) {
-        try {
-            // Using at() for safe access with bounds checking
-            string name = items.at(index);
-            int quantity = quantities.at(index);
-            double price = prices.at(index);
-            
-            cout << "Item: " << name << endl;
-            cout << "Quantity: " << quantity << endl;
-            cout << "Price: $" << price << endl;
-            cout << "Total Value: $" << quantity * price << endl;
-        } catch (const out_of_range& e) {
-            cout << "Error: " << e.what() << " - Invalid index!" << endl;
-        }
-    }
-
-    // Update quantity
-    void updateQuantity(int index, int newQuantity) {
-        if (index >= 0 && index < items.size()) {
-            quantities[index] = newQuantity;  // Using operator[] for direct access
-            cout << "Updated " << items[index] << " quantity to " << newQuantity << endl;
-        } else {
-            cout << "Invalid index! Cannot update quantity." << endl;
-        }
-    }
-
-    // Find item by name
-    int findItem(const string& name) {
-        // Using begin() and end() for iteration
-        for (auto it = items.begin(); it != items.end(); ++it) {
-            if (*it == name) {
-                int index = distance(items.begin(), it);
-                cout << "Found " << name << " at index " << index << endl;
-                return index;
-            }
-        }
-        
-        cout << name << " not found in inventory." << endl;
-        return -1;
-    }
-
-    // Sort inventory alphabetically
-    void sortInventory() {
-        // Create a vector of indices
-        vector<int> indices(items.size());
-        for (int i = 0; i < indices.size(); ++i) {
-            indices[i] = i;
-        }
-
-        // Sort indices based on item names
-        sort(indices.begin(), indices.end(), [this](int a, int b) {
-            return items[a] < items[b];
-        });
-
-        // Create temporary vectors for sorted items
-        vector<string> sortedItems(items.size());
-        vector<int> sortedQuantities(items.size());
-        vector<double> sortedPrices(items.size());
-
-        // Rearrange all vectors based on sorted indices
-        for (int i = 0; i < indices.size(); ++i) {
-            sortedItems[i] = items[indices[i]];
-            sortedQuantities[i] = quantities[indices[i]];
-            sortedPrices[i] = prices[indices[i]];
-        }
-
-        // Swap with original vectors
-        items.swap(sortedItems);       // Using swap() to exchange contents
-        quantities.swap(sortedQuantities);
-        prices.swap(sortedPrices);
-
-        cout << "Inventory sorted alphabetically." << endl;
-    }
-
-    // Resize inventory (for planning purposes)
-    void planInventorySize(int newSize) {
-        int oldSize = items.size();
-        
-        // Using resize() to change vector size
-        items.resize(newSize, "Empty Slot");
-        quantities.resize(newSize, 0);
-        prices.resize(newSize, 0.0);
-        
-        cout << "Inventory resized from " << oldSize << " to " << newSize << " slots." << endl;
-    }
-
-    // Reset inventory with specific number of empty slots
-    void resetInventory(int slots) {
-        // Using assign() to set new size and values
-        items.assign(slots, "Available");
-        quantities.assign(slots, 0);
-        prices.assign(slots, 0.0);
-        
-        cout << "Inventory reset with " << slots << " available slots." << endl;
-    }
-
-    // Clear inventory completely
-    void clearInventory() {
-        // Using clear() to remove all elements
-        items.clear();
-        quantities.clear();
-        prices.clear();
-        
-        cout << "Inventory cleared. Current size: " << items.size() << endl;
-    }
-
-    // Search for items in a price range
-    void findItemsInPriceRange(double minPrice, double maxPrice) {
-        cout << "Items priced between $" << minPrice << " and $" << maxPrice << ":" << endl;
-        
-        bool found = false;
-        // Using lower_bound() and upper_bound() for range search
-        auto minIt = lower_bound(prices.begin(), prices.end(), minPrice);
-        auto maxIt = upper_bound(prices.begin(), prices.end(), maxPrice);
-        
-        // Note: This simple example assumes prices are already sorted
-        // In a real implementation, we'd need a more complex approach for unsorted data
-        for (auto it = minIt; it != maxIt; ++it) {
-            int index = distance(prices.begin(), it);
-            cout << "- " << items[index] << ": $" << prices[index] << " (Quantity: " << quantities[index] << ")" << endl;
-            found = true;
-        }
-        
-        if (!found) {
-            cout << "No items found in this price range." << endl;
-        }
-    }
-
-    // Display full inventory
-    void displayInventory() {
-        if (items.empty()) {   // Using empty() to check if vector has no elements
-            cout << "Inventory is empty!" << endl;
-            return;
-        }
-        
-        cout << "\n===== CURRENT INVENTORY =====" << endl;
-        cout << "Total Items: " << items.size() << endl;
-        
-        double totalValue = 0.0;
-        
-        for (int i = 0; i < items.size(); ++i) {
-            cout << i << ". " << items[i] 
-                 << " - Qty: " << quantities[i] 
-                 << ", Price: $" << prices[i]
-                 << ", Value: $" << quantities[i] * prices[i] << endl;
-            
-            totalValue += quantities[i] * prices[i];
-        }
-        
-        cout << "\nFirst item: " << items.front() << endl;    // Using front() to access first element
-        cout << "Last item: " << items.back() << endl;        // Using back() to access last element
-        cout << "Total Inventory Value: $" << totalValue << endl;
-        cout << "=============================" << endl;
-    }
-};
-
 int main() {
-    Inventory store;
-    
-    // Adding items using push_back()
-    store.addItem("Laptop", 5, 999.99);
-    store.addItem("Smartphone", 10, 499.50);
-    store.addItem("Headphones", 15, 59.99);
-    store.addItem("Tablet", 7, 349.99);
-    store.addItem("Smartwatch", 8, 199.99);
-    
-    // Display inventory
-    store.displayInventory();
-    
-    // Access item details using at() with exception handling
-    cout << "\nAccessing item details:" << endl;
-    store.getItemDetails(1);
-    store.getItemDetails(10); // This will throw an out_of_range exception
-    
-    // Find an item
-    cout << "\nSearching for items:" << endl;
-    int headphonesIndex = store.findItem("Headphones");
-    store.findItem("Desktop"); // Not in inventory
-    
-    // Update quantity using operator[]
-    cout << "\nUpdating quantities:" << endl;
-    store.updateQuantity(headphonesIndex, 20);
-    
-    // Remove an item using erase()
-    cout << "\nRemoving items:" << endl;
-    store.removeItem(0);
-    
-    // Display updated inventory
-    store.displayInventory();
-    
-    // Sort inventory alphabetically
-    cout << "\nSorting inventory:" << endl;
-    store.sortInventory();
-    store.displayInventory();
-    
-    // Find items in price range
-    cout << "\nSearching by price range:" << endl;
-    store.findItemsInPriceRange(100.0, 400.0);
-    
-    // Resize inventory
-    cout << "\nResizing inventory:" << endl;
-    store.planInventorySize(8);
-    store.displayInventory();
-    
-    // Reset inventory
-    cout << "\nResetting inventory:" << endl;
-    store.resetInventory(3);
-    store.displayInventory();
-    
-    // Add new items after reset
-    store.addItem("Camera", 3, 299.99);
-    store.addItem("Speaker", 6, 79.99);
-    store.displayInventory();
-    
-    // Clear inventory
-    cout << "\nClearing inventory:" << endl;
-    store.clearInventory();
-    store.displayInventory();
-    
+    vector<int> angka;
+    vector<int> ganjil = {1, 3, 5, 7};
+    vector<int> genap = {2, 4, 6, 8};
+
+    // Masukkan nilai dengan push_back
+    angka.push_back(1);
+    angka.push_back(2);
+    angka.push_back(3);
+    angka.push_back(4);
+
+    cout << "Isi vector \'angka\':";
+    for (auto i = angka.begin(); i != angka.end(); ++i) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    // Cek jumlah elemen vector
+    cout << "Jumlah elemen pada vector \'angka\': " << angka.size() << endl;
+    cout << "Jumlah maksimal elemen yang dapat ditampung oleh vector \'angka\': " << angka.max_size() << endl;
+
+    // Cek apakah vector kosong atau tidak
+    if (angka.empty()) {
+        cout << "Vector \'angka\' kosong.\n";
+    } else {
+        cout << "Vector \'angka\' tidak kosong.\n";
+    }
+
+    // Menghapus nilai paling akhir dari vector
+    angka.pop_back();
+
+    cout << "Isi vector \'angka\' setelah pop back:";
+    for (auto i = angka.begin(); i != angka.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << '\n';
+
+    // Resize
+    angka.resize(5, 50);
+
+    cout << "Isi vector \'angka\' setelah resize:";
+    for (auto i = angka.begin(); i != angka.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    // Assign (lihat perbedaannya dengan resize)
+    angka.assign(8, 10);
+
+    cout << "Isi vector \'angka\' setelah assign:";
+    for (auto i = angka.begin(); i != angka.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    // Masukkan nilai 20 di posisi ke-2
+    angka.insert(angka.begin() + 1, 20);
+
+    // Masukkan nilai 30 di posisi ke-3 sebanyak 3
+    angka.insert(angka.begin() + 2, 3, 30);
+
+    cout << "Isi vector \'angka\' setelah insert:";
+    for (auto i = angka.begin(); i != angka.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    // Menghapus elemen ke-2
+    angka.erase(angka.begin() + 1);
+
+    cout << "Isi vector \'angka\' setelah hapus elemen ke-2:";
+    for (auto i = angka.begin(); i != angka.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    // Menghapus elemen ke-2 hingga elemen ke-5
+    angka.erase(angka.begin() + 1, angka.begin() + 4);
+    cout << "Isi vector \'angka\' setelah hapus elemen ke-2 sampai ke-5:";
+    for (auto i = angka.begin(); i != angka.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    angka.clear();
+
+    if (angka.empty()) {
+        cout << "Vector \'angka\' kosong.\n";
+    } else {
+        cout << "Vector \'angka\' tidak kosong.\n";
+    }
+
+    cout << "Isi vector \'ganjil\':";
+    for (auto i = ganjil.begin(); i != ganjil.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    cout << "Isi vector \'genap\':";
+    for (auto i = genap.begin(); i != genap.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
+
+    cout << "Elemen pertama (front): " << ganjil.front() << endl;
+    cout << "Elemen terakhir (back): "  << ganjil.back()  << endl;
+
+
+    ganjil.swap(genap);
+    // atau
+    // genap.swap(ganjil);
+
+    cout << "Isi vector \'ganjil\' setelah swap:";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << ganjil.at(i);
+    }
+    cout << "\n";
+
+    cout << "Isi vector \'genap\' setelah swap:";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << genap.at(i);
+    }
+    cout << "\n";
+
+    // Setelah swap, tampilkan isi ganjil secara terbalik
+    cout << "Isi vector 'ganjil' secara terbalik:";
+    for (auto rit = ganjil.rbegin(); rit != ganjil.rend(); ++rit) {
+        cout << ' ' << *rit;
+    }
+    cout << "\n";
+
+    cout << "Isi vector 'genap' secara terbalik:";
+    for (auto rit = genap.rbegin(); rit != genap.rend(); ++rit) {
+        cout << ' ' << *rit;
+    }
+    cout << "\n";
+
+    // Lower bound dan upper bound
+    vector<int> toSort = {3, 5, 2, 4, 1};
+    vector<int>::iterator lo, hi;
+
+    sort(toSort.begin(), toSort.end());
+    for (int i = 0; i < 5; i++) {
+        cout << " " << toSort[i];
+    }
+    cout << endl;
+
+    lo = lower_bound(toSort.begin(), toSort.end(), 3);
+    hi = upper_bound(toSort.begin(), toSort.end(), 3);
+
+    cout << "Index lower_bound: " << (lo - toSort.begin()) << endl;
+    cout << "Index upper_bound: " << (hi - toSort.begin()) << endl;
+
     return 0;
 }

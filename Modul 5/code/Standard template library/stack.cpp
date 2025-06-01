@@ -1,129 +1,47 @@
 #include <iostream>
+#include <algorithm>
 #include <stack>
-#include <string>
-
 using namespace std;
 
-class BookStack {
-private:
-    stack<string> books;
-    string stackName;
-
-public:
-    // Constructor
-    BookStack(const string& name) : stackName(name) {
-        cout << "Stack buku '" << stackName << "' telah dibuat" << endl;
-    }
-
-    // Menambahkan buku ke stack
-    void addBook(const string& bookTitle) {
-        books.push(bookTitle);
-        cout << "Buku '" << bookTitle << "' ditambahkan ke stack '" << stackName << "'" << endl;
-    }
-
-    // Mengambil buku teratas
-    string takeTopBook() {
-        if (books.empty()) {
-            cout << "Stack '" << stackName << "' kosong, tidak ada buku yang bisa diambil" << endl;
-            return "";
-        }
-
-        string topBook = books.top();
-        books.pop();
-        cout << "Buku '" << topBook << "' diambil dari stack '" << stackName << "'" << endl;
-        return topBook;
-    }
-
-    // Melihat buku teratas tanpa mengambilnya
-    string peekTopBook() const {
-        if (books.empty()) {
-            cout << "Stack '" << stackName << "' kosong" << endl;
-            return "";
-        }
-
-        cout << "Buku teratas di stack '" << stackName << "' adalah '" << books.top() << "'" << endl;
-        return books.top();
-    }
-
-    // Mengecek apakah stack kosong
-    bool isEmpty() const {
-        return books.empty();
-    }
-
-    // Mendapatkan jumlah buku di stack
-    int getBookCount() const {
-        return books.size();
-    }
-
-    // Menukar isi dengan stack lain
-    void swapWith(BookStack& otherStack) {
-        books.swap(otherStack.books);
-        cout << "Stack '" << stackName << "' ditukar dengan stack '" << otherStack.stackName << "'" << endl;
-    }
-
-    // Menampilkan semua buku dalam stack (tanpa mengubah stack asli)
-    void displayBooks() const {
-        if (books.empty()) {
-            cout << "Stack '" << stackName << "' kosong" << endl;
-            return;
-        }
-
-        cout << "Buku dalam stack '" << stackName << "' (dari atas ke bawah):" << endl;
-        
-        // Buat salinan stack untuk ditampilkan
-        stack<string> tempStack = books;
-        int position = 1;
-        
-        while (!tempStack.empty()) {
-            cout << position << ". " << tempStack.top() << endl;
-            tempStack.pop();
-            position++;
-        }
-    }
-};
-
 int main() {
-    // Membuat dua stack buku
-    BookStack fictionBooks("Fiksi");
-    BookStack nonFictionBooks("Non-Fiksi");
+    stack<int> angka;
+    stack<int> genap;
+    stack<int> ganjil;
 
-    // Menambahkan buku ke stack fiksi
-    fictionBooks.addBook("Harry Potter");
-    fictionBooks.addBook("Lord of the Rings");
-    fictionBooks.addBook("Game of Thrones");
+    for (int i = 0; i < 4; i++) {
+        angka.push(i + 1);
+    }
 
-    // Menambahkan buku ke stack non-fiksi
-    nonFictionBooks.addBook("Atomic Habits");
-    nonFictionBooks.addBook("Sapiens");
+    cout << "Elemen pertama stack \"angka\": " << angka.top() << "\n";
+    cout << "Jumlah elemen pada stack \"angka\": " << angka.size() << "\n";
 
-    // Menampilkan semua buku di kedua stack
-    fictionBooks.displayBooks();
-    nonFictionBooks.displayBooks();
+    if (angka.empty()) {
+        cout << "Stack \"angka\" kosong.\n";
+    } else {
+        cout << "Stack \"angka\" tidak kosong.\n";
+    }
+    
+    angka.pop();
 
-    // Melihat buku teratas di stack fiksi
-    fictionBooks.peekTopBook();
+    cout << "Elemen pertama stack \"angka\" setelah pop: " << angka.top() << "\n";
 
-    // Mengambil buku teratas dari stack fiksi
-    string takenBook = fictionBooks.takeTopBook();
-    cout << "Buku yang diambil: " << takenBook << endl;
+    for (int i = 0; i < 4; i++) {
+        genap.push((i + 1) * 2);
+    }
 
-    // Menampilkan stack fiksi setelah pengambilan buku
-    fictionBooks.displayBooks();
+    for (int i = 0; i < 4; i++) {
+        ganjil.push((i + 1) * 2 - 1);
+    }
 
-    // Menukar kedua stack
-    fictionBooks.swapWith(nonFictionBooks);
+    cout << "Elemen pertama stack \"genap\": " << genap.top() << "\n";
+    cout << "Elemen pertama stack \"ganjil\": " << ganjil.top() << "\n";
 
-    // Menampilkan stack setelah ditukar
-    cout << "\nSetelah pertukaran stack:" << endl;
-    fictionBooks.displayBooks();
-    nonFictionBooks.displayBooks();
+    genap.swap(ganjil);
+    // atau
+    // ganjil.swap(genap);
 
-    // Mengecek jumlah buku
-    cout << "Jumlah buku di stack Fiksi: " << fictionBooks.getBookCount() << endl;
-    cout << "Jumlah buku di stack Non-Fiksi: " << nonFictionBooks.getBookCount() << endl;
-
-    // Mengecek apakah stack kosong
-    cout << "Apakah stack Fiksi kosong? " << (fictionBooks.isEmpty() ? "Ya" : "Tidak") << endl;
+    cout << "Elemen pertama stack \"genap\" setelah swap: " << genap.top() << "\n";
+    cout << "Elemen pertama stack \"ganjil\" setelah swap: " << ganjil.top() << "\n";
 
     return 0;
 }

@@ -1,131 +1,118 @@
 #include <iostream>
+#include <algorithm>
 #include <array>
-#include <string>
-
-class StudentRecord {
-private:
-    std::array<int, 5> scores;
-    std::string name;
-
-public:
-    // Constructor
-    StudentRecord(const std::string& studentName) : name(studentName) {
-        scores.fill(0); // Menggunakan fill() untuk mengisi semua elemen dengan 0
-    }
-
-    // Setter untuk skor dengan index tertentu
-    void setScore(size_t index, int value) {
-        if (index < scores.size()) {
-            scores[index] = value; // Menggunakan operator[] untuk mengakses elemen
-        } else {
-            std::cout << "Index di luar batas!" << std::endl;
-        }
-    }
-
-    // Setter untuk skor dengan index tertentu (menggunakan at() dengan exception handling)
-    void setScoreSafe(size_t index, int value) {
-        try {
-            scores.at(index) = value; // Menggunakan at() yang lebih aman dengan exception handling
-        } catch (const std::out_of_range& e) {
-            std::cout << "Error: " << e.what() << std::endl;
-        }
-    }
-
-    // Mendapatkan skor tertinggi
-    int getHighestScore() const {
-        int highest = scores.front(); // Menggunakan front() untuk mendapatkan elemen pertama
-        for (auto it = scores.begin(); it != scores.end(); ++it) { // Menggunakan begin() dan end() untuk iterasi
-            if (*it > highest) {
-                highest = *it;
-            }
-        }
-        return highest;
-    }
-
-    // Mendapatkan skor terendah
-    int getLowestScore() const {
-        int lowest = scores.front();
-        for (const auto& score : scores) { // Iterasi menggunakan range-based for loop
-            if (score < lowest && score != 0) {
-                lowest = score;
-            }
-        }
-        return lowest;
-    }
-
-    // Menukar data dengan record lain
-    void swapWith(StudentRecord& other) {
-        scores.swap(other.scores); // Menggunakan swap() untuk menukar isi array
-        std::string tempName = name;
-        name = other.name;
-        other.name = tempName;
-    }
-
-    // Memeriksa apakah semua skor telah diisi
-    bool isComplete() const {
-        return !scores.empty() && scores.back() != 0; // Menggunakan empty() dan back()
-    }
-
-    // Mendapatkan jumlah maksimum skor yang dapat disimpan
-    size_t getMaxScores() const {
-        return scores.max_size(); // Menggunakan max_size()
-    }
-
-    // Mendapatkan jumlah skor yang tersimpan
-    size_t getScoreCount() const {
-        return scores.size(); // Menggunakan size()
-    }
-
-    // Menampilkan data siswa
-    void display() const {
-        std::cout << "Nama Siswa: " << name << std::endl;
-        std::cout << "Skor: ";
-        for (const auto& score : scores) {
-            std::cout << score << " ";
-        }
-        std::cout << std::endl;
-        std::cout << "Skor Tertinggi: " << getHighestScore() << std::endl;
-        std::cout << "Skor Terendah: " << getLowestScore() << std::endl;
-        std::cout << "Jumlah Skor: " << getScoreCount() << std::endl;
-    }
-};
+using namespace std;
 
 int main() {
-    // Membuat objek StudentRecord
-    StudentRecord student1("Budi");
-    StudentRecord student2("Ani");
+    array<int, 4> angka = {1, 2, 3, 4};
+    array<int, 4> ganjil = {1, 3, 5, 7};
+    array<int, 4> genap = {2, 4, 6, 8};
+    array<int, 4> kosong;
 
-    // Menggunakan berbagai metode
-    student1.setScore(0, 85);
-    student1.setScore(1, 90);
-    student1.setScore(2, 78);
-    student1.setScore(3, 92);
-    student1.setScore(4, 88);
+    // Test output array
+    cout << "Isi array \'angka\':";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << angka[i];
+    }
+    cout << "\n";
 
-    student2.setScore(0, 75);
-    student2.setScore(1, 82);
-    student2.setScoreSafe(2, 79);
-    student2.setScoreSafe(3, 81);
-    student2.setScoreSafe(4, 77);
+    // Output nilai di posisi tertentu
+    cout << "Elemen ke-3 (operator[]): " << angka[2] << endl;
+    cout << "Elemen ke-3 (at()): " << angka[2] << endl;
+    cout << "Elemen pertama: " << angka.front() << endl;
+    cout << "Elemen terakhir: " << angka.back() << endl;
 
-    // Menampilkan data sebelum swap
-    std::cout << "=== Data Sebelum Swap ===" << std::endl;
-    student1.display();
-    std::cout << std::endl;
-    student2.display();
+    // Ganti nilai di posisi tertentu
+    angka.front() = 50;
+    angka.at(2) = 100;
+    angka.back() = 150;
 
-    // Menukar data antara student1 dan student2
-    student1.swapWith(student2);
+    cout << "Isi array \'angka\' sekarang:";
+    for (auto i = angka.begin(); i != angka.end(); ++i) {
+        cout << ' ' << *i;
+    }
+    cout << "\n";
 
-    // Menampilkan data setelah swap
-    std::cout << "\n=== Data Setelah Swap ===" << std::endl;
-    student1.display();
-    std::cout << std::endl;
-    student2.display();
+    // Cek jumlah elemen pada array
+    cout << "Jumlah elemen pada array \'angka\': " << angka.size() << "\n";
+    cout << "Jumlah maksimal elemen yang dapat ditampung oleh array \'angka\': " << angka.max_size() << "\n";
 
-    // Mencoba mengakses index yang tidak valid
-    std::cout << "\n=== Pengujian Exception Handling ===" << std::endl;
-    student1.setScoreSafe(10, 100); // Akan memunculkan pesan error
+    // Cek array apakah kosong atau tidak
+    if (angka.empty()) {
+        cout << "Array \'angka\' kosong.\n";
+    } else {
+        cout << "Array \'angka\' tidak kosong.\n";
+    }
+    if (kosong.empty()) {
+        cout << "Array \'kosong\' kosong.\n";
+    } else {
+        cout << "Array \'kosong\' tidak kosong.\n";
+    }
+
+    cout << "Isi array \'ganjil\':";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << ganjil.at(i);
+    }
+    cout << "\n";
+
+    cout << "Isi array \'genap\':";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << genap.at(i);
+    }
+    cout << "\n";
+
+    // Menukar nilai (swap)
+    ganjil.swap(genap);
+    // atau
+    // genap.swap(genjil);
+
+    cout << "Isi array \'ganjil\' setelah swap:";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << ganjil.at(i);
+    }
+    cout << '\n';
+
+    cout << "Isi array \'genap\' setelah swap:";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << genap.at(i);
+    }
+    cout << '\n';
+
+    // Reverse iteration
+    cout << "Reverse isi 'angka':";
+    for (auto it = angka.rbegin(); it != angka.rend(); ++it) {
+        cout << ' ' << *it;
+    }
+    cout << "\n";
+
+    // Structured binding (C++17)
+    auto [a, b, c, d] = angka;
+    cout << "Structured binding: " << a << ',' << b << ',' << c << ',' << d << "\n";
+
+    // Comparison operators
+    if (ganjil == genap) 
+        cout << "ganjil == genap\n";
+    else if (ganjil < genap)
+        cout << "ganjil < genap\n";
+    else
+        cout << "ganjil > genap\n";
+
+    // Masukkan nilai dengan fill()
+    angka.fill(200);
+    kosong.fill(20);
+
+    cout << "Isi array \'angka\' setelah fill:";
+    for (int i = 0; i < 4; i++) {
+        cout << ' ' << angka.at(i);
+    }
+    cout << '\n';
+
+    cout << "Isi array \'kosong\' setelah fill:";
+    for (auto i = kosong.begin(); i != kosong.end(); i++) {
+        cout << ' ' << *i;
+    }
+    cout << '\n';
+
 
     return 0;
 }
