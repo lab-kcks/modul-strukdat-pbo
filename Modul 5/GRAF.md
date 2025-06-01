@@ -58,7 +58,7 @@ Cara untuk menyimpan adjacency lists adalah dengan mendeklarasikan sebuah array 
 vector<int> adj[N];
 ```
 N dipilih sedemikian rupa sehingga semua adjacency lists dapat disimpan. Sebagai contoh, graf berikut: <br/>
-![image](https://github.com/user-attachments/assets/6aed881c-2a83-4da4-a7bb-480d467ead4c) <br/>
+![image](https://github.com/user-attachments/assets/5f641e41-32ed-40fd-a0e9-c0a2754568f1)<br/>
 dapat disimpan sebagai berikut:<br/>
 ```
 adj[1].push_back(2);
@@ -74,7 +74,7 @@ vector<pair<int,int>> adj[N];
 ```
 Dalam kasus ini, adjacency list dari node a selalu berisi pasangan (b,w) ketika terdapat edge dari node a ke node b dengan weight w. Sebagai contoh, graf
 
-![image](https://github.com/user-attachments/assets/4d0cb7e2-cb16-46e8-9540-6535d2ef8e82)
+![image](https://github.com/user-attachments/assets/251cec76-fb4c-4335-92a4-fcfe475418ac)
 
 dapat disimpan sebagai berikut:
 ```
@@ -96,14 +96,14 @@ Sebuah adjacency matrix adalah array dua dimensi yang menunjukkan edges mana yan
 int adj[N][N];
 ```
 di mana setiap nilai adj[a][b] menunjukkan apakah graf berisi edge dari node a ke node b. Jika edge tersebut termasuk dalam graf, maka adj[a][b] = 1, dan jika tidak maka adj[a][b] = 0. Sebagai contoh, graf<br/>
-![image](https://github.com/user-attachments/assets/c2cc06f9-165d-48fc-9a8a-0ec67ea8abca)<br/>
+![image](https://github.com/user-attachments/assets/506b07d4-2d78-43ab-9896-d664f98bc932)<br/>
 dapat direpresentasikan sebagai berikut:<br/>
-![image](https://github.com/user-attachments/assets/81b502de-898f-492e-a2be-c454b3cf4d15)<br/>
+![image](https://github.com/user-attachments/assets/45b7dff7-ddaa-4346-b875-fa19bde96b3a)<br/>
 Jika graf tersebut berbobot, representasi adjacency matrix dapat diperluas sehingga matriks tersebut berisi bobot dari edge jika edge tersebut ada. Dengan menggunakan representasi ini, graf berikut <br/>
 
-![image](https://github.com/user-attachments/assets/2eb21cae-6abd-4795-846d-9ad70650c8a2)<br/>
+![image](https://github.com/user-attachments/assets/52841b31-469a-44d3-b599-9b126b381a98)<br/>
 bersesuaian dengan matriks berikut:<br/>
-![image](https://github.com/user-attachments/assets/d1322c59-b3a9-4a9a-86eb-0812dd521fa9) <br/>
+![image](https://github.com/user-attachments/assets/49f97bfd-d3da-4b81-9ef8-d661ec13909d) <br/>
 
 Kelemahan dari representasi adjacency matrix adalah matriks tersebut berisi n^2 elemen, dan biasanya sebagian besar bernilai nol. Karena alasan ini, representasi tersebut tidak dapat digunakan jika graf berukuran besar.
 
@@ -115,7 +115,7 @@ Edge list tersebut dapat disimpan dalam sebuah vector <br/>
 vector<pair<int,int>> edges;
 ```
 setiap pasangan (a,b) menunjukkan bahwa terdapat sebuah edge dari node a ke node b. Jadi, graph <br/>
-![image](https://github.com/user-attachments/assets/80f3c7f0-8da3-4a8e-b513-46c2b249a54e)<br/>
+![image](https://github.com/user-attachments/assets/5840c2ab-b47f-47d8-99b5-2c88278fdbdd)<br/>
 dapat direpresentasikan sebagai berikut:<br/>
 ```
 edges.push_back({1,2});
@@ -129,7 +129,7 @@ Jika graf tersebut berbobot, strukturnya dapat diperluas sebagai berikut: <br/>
 vector<tuple<int,int,int>> edges;
 ```
 Setiap elemen dalam list ini berbentuk (a,b,w), yang berarti terdapat sebuah edge dari node a ke node b dengan weight w. Sebagai contoh, graph<br/>
-![image](https://github.com/user-attachments/assets/c6277253-77aa-45b0-9b40-eee42b1fec1c)
+![image](https://github.com/user-attachments/assets/2df2dcc9-b953-4a06-84bc-e6a965aa3d65)<br/>
 
 dapat direpresentasikan sebagai berikut.
 
