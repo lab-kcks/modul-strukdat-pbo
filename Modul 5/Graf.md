@@ -3,7 +3,7 @@
     - [Permasalahan Umum dalam Teori Graf](###Permasalahan-Umum-dalam-Teori-Graf)
     - [Terminology](###Graph-terminology)
     - [Representasi Graph](###Cara-merepresentasikan-graf)
-    - [traversal](###Graph-Traversal)\
+    - [traversal](###Graph-Traversal)
       	- BFS
       	- DFS 
     - [mst](###Minimum-Spanning-Tree)
