@@ -1,14 +1,14 @@
 ### Daftar Isi
 - [Graf](#Graf)
-    - [Permasalahan Umum dalam Teori Graf](###Permasalahan-Umum-dalam-Teori-Graf)
-    - [Terminology](###Graph-terminology)
-    - [Representasi Graph](###Cara-merepresentasikan-graf)
-    - [traversal](###Graph-Traversal)
+    - [Permasalahan Umum dalam Teori Graf](##Permasalahan-Umum-dalam-Teori-Graf)
+    - [Terminology](##Graph-terminology)
+    - [Representasi Graph](##Cara-merepresentasikan-graf)
+    - [traversal](##Graph-Traversal)
       	- BFS
       	- DFS 
-    - [mst](###Minimum-Spanning-Tree)
+    - [mst](##Minimum-Spanning-Tree)
         - [prim](###Prim'sAlgorithm)
-    - [shortest-path](###Shortest-Path)
+    - [shortest-path](##Shortest-Path)
         - [Djikstra](###Dijkstra's-Algorithm)
 
 # Graf
