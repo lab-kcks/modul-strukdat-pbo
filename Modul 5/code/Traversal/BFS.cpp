@@ -1,7 +1,4 @@
-#include <iostream>
-#include <queue>
-#include <vector>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -9,59 +6,86 @@ class Graph {
 private:
     int numVertices;
     vector<vector<int>> adjList;
+    vector<bool> visited;
 
 public:
     // Constructor
-    Graph(int vertices) : numVertices(vertices), adjList(vertices) {}
-
-    // Function to add an edge to the graph
-    void addEdge(int src, int dest) {
-        adjList[src].push_back(dest);
-        adjList[dest].push_back(src); // For undirected graph
+    Graph(int vertices) {
+        numVertices = vertices;
+        adjList.resize(vertices);
+        visited.resize(vertices, false);
     }
 
-    // BFS function
-    void BFS(int startVertex) {
-        queue<int> queue;
-        unordered_set<int> visited;
+    // Add edge to the graph
+    void addEdge(int src, int dest) {
+        adjList[src].push_back(dest);
+    }
 
-        // Mark the starting vertex as visited and enqueue it
-        visited.insert(startVertex);
-        queue.push(startVertex);
+    // Reset visited array for new traversal
+    void resetVisited() {
+        fill(visited.begin(), visited.end(), false);
+    }
 
-        while (!queue.empty()) {
-            int currentVertex = queue.front();
-            queue.pop();
-            cout << currentVertex << " ";
+    // BFS traversal starting from a given vertex
+    void bfsFromVertex(int startVertex) {
+        queue<int> q;
+        q.push(startVertex);
+        visited[startVertex] = true;
 
-            // Visit all adjacent vertices of the current vertex
-            for (int adjacentVertex : adjList[currentVertex]) {
-                if (visited.find(adjacentVertex) == visited.end()) {
-                    visited.insert(adjacentVertex);
-                    queue.push(adjacentVertex);
+        while (!q.empty()) {
+            int currentNode = q.front();
+            cout << currentNode << " ";
+            q.pop();
+
+            for (int neighbor : adjList[currentNode]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.push(neighbor);
                 }
             }
+        }
+    }
+
+    // BFS traversal for all connected components
+    void bfsTraversal() {
+        resetVisited();
+        
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i]) {
+                bfsFromVertex(i);
+            }
+        }
+    }
+
+    // Display the adjacency list
+    void displayGraph() {
+        for (int i = 0; i < numVertices; i++) {
+            cout << "Vertex " << i << ": ";
+            for (int neighbor : adjList[i]) {
+                cout << neighbor << " ";
+            }
+            cout << endl;
         }
     }
 };
 
 int main() {
-    // Create a graph with 6 vertices
     Graph graph(6);
 
-    // Add edges to the graph
+    // Add edges as per the original example
     graph.addEdge(0, 1);
     graph.addEdge(0, 2);
+    graph.addEdge(0, 4);
     graph.addEdge(1, 3);
     graph.addEdge(1, 4);
-    graph.addEdge(2, 4);
-    graph.addEdge(3, 4);
-    graph.addEdge(3, 5);
-    graph.addEdge(4, 5);
+    graph.addEdge(2, 5);
 
-    // Perform BFS starting from vertex 0
-    cout << "BFS starting from vertex 0: ";
-    graph.BFS(0);
+    cout << "Graph structure:" << endl;
+    graph.displayGraph();
+    
+    cout << "\nBFS Traversal: ";
+    graph.bfsTraversal();
+    cout << endl;
 
     return 0;
 }

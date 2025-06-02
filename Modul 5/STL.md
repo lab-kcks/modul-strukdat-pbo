@@ -385,9 +385,9 @@ Implementasi `map`, `set`, `priority_queue`, dan `PBDS` menggunakan struktur dat
 
 Untuk informasi lebih detail mengenai  PBDS dapat dilihat di : [https://codeforces.com/blog/entry/11080](https://codeforces.com/blog/entry/11080).
 
-Contoh implementasi STL Container dapat dilihat pada link [berikut]
+Contoh implementasi STL Container dapat dilihat pada link [berikut](https://github.com/lab-kcks/modul-strukdat-pbo/tree/main/Modul%205/code/Standard%20template%20library)
 
-Contoh implementasi STL Container menggunakan OOP dapat dilihat pada link [berikut]
+Contoh implementasi STL Container menggunakan OOP dapat dilihat pada link [berikut](https://github.com/lab-kcks/modul-strukdat-pbo/tree/main/Modul%205/code/Standard%20template%20library/OOP)
 
 ## Standard Template Library Functors
 Komponen functors di STL (Standard Template Library) mengacu pada objek yang bertindak seperti fungsi. Functors, atau function objects, adalah kelas atau struct yang mengimplementasikan operator () sehingga objek dari kelas tersebut bisa digunakan sebagai fungsi. Functors sering digunakan untuk mengkustomisasi perilaku algoritma STL.
