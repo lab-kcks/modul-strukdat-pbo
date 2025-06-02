@@ -269,7 +269,8 @@ Misal terdapat sebuah graph. Jumlah edge dari Spanning Tree pasti berjumlah node
 
 Sedangkan *Minimum Spanning Tree* adalah Spanning Tree dari sebuah weighted graph sehingga weight yang dihasilkan seminimal mungkin.
 
-![](img/m5-G.jpg)
+![146b47a](https://github.com/user-attachments/assets/0835eb15-02a5-40cf-9bc1-dbb4bca540d9)
+
 > Sumber gambar: [hackerearth.com](https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/tutorial/)
 
 Untuk mengimplementasikan MST, terdapat 2 algoritma yaitu *Prim's Algoritm* dan *Kruskal's Algorithm*. Namun yang akan kita bahas saat ini adalah *Prim's Algorithm*.
@@ -283,7 +284,7 @@ Langkah Algoritma :
 - Temukan semua edge yang menghubungkan tree ke node baru, temukan minimumnya dan tambahkan ke MST dengan catatan, edge tersebut tidak membuat cycle pada MST yang sedang dibentuk 
 - Ulangi langkah sebelumnya hingga semua node terhubung
 
-![mst-prim](img/m5-mst-prim.png)
+![m5-mst-prim](https://github.com/user-attachments/assets/6c5fdcae-e6ff-485d-b4a5-b71af7637703)
 > Sumber gambar: [medium.com](https://medium.com/analytics-vidhya/minimum-spanning-tree-prim-3f32445ce854)
 
 ## Implementasi MST Prim's Algorithm
@@ -355,7 +356,6 @@ Penjelasan kode :
 - Cetak MST
 
 ## Referensi
-- https://github.com/AlproITS/StrukturData/wiki/Modul-5-(Minimum-Spanning-Tree)
 - https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
 - https://www.programiz.com/dsa/prim-algorithm
 
