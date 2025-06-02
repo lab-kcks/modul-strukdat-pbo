@@ -363,9 +363,7 @@ Penjelasan kode :
 
 ## Penjelasan
 
-Pada permasalahan graph, Shortest Path Problem merupakan pencarian path dari 2 vertex pada suatu graph yang mempunyai penjumlahan weight yang paling minimum. Permasalahan ini dapat diselesaikan dengan mudah menggunakan BFS apabila semua edge mempunyai weight 1. Namun, pada permasalahan kali ini, weight dapat bernilai berapapun. Terdapat banyak sekali implementasi untuk penyelesaian Shortest Path Problem, tapi yang akan kita bahas saat ini adalah Dijkstra’s Algorithm.
-
-*Shortest Path* adalah algoritma yang menemukan jalur minimum dari satu node ke node lainnya. Terdapat beberapa algoritma untuk mencari shortest path. Namun pada kali ini, kita akan membahas algoritma Dijkstra atau *Dijkstra's Algorithm*.
+Pada permasalahan graph, Shortest Path Problem merupakan pencarian path dari 2 vertex pada suatu graph yang mempunyai penjumlahan weight yang paling minimum. Permasalahan ini dapat diselesaikan dengan mudah menggunakan BFS apabila semua edge mempunyai weight 1. Namun, pada permasalahan kali ini, weight dapat bernilai berapapun. Terdapat banyak sekali implementasi untuk penyelesaian Shortest Path Problem, diantaranya Dijkstra, Bellman–Ford, Floyd–Warshall. Namun, yang akan kita bahas saat ini adalah Dijkstra’s Algorithm.
 
 Misalkan kita diminta untuk mencari jalur tercepat dari sebuah graph. Jalur tersebut dari node satu ke ujungnya (misal). Mengapa menggunakan *Shortest Path*? Mengapa tidak menggunakan bfs untuk menyelesaikan masalah ini?
 
@@ -384,12 +382,15 @@ Langkah algoritma :
 
 Berikut adalah ilustrasi dijkstra
 
-![](img/m5-D.png)
+![m5-D](https://github.com/user-attachments/assets/be2492fa-674a-4218-83eb-24e9e1891c33)
+
 > Sumber gambar: [researchgate.com](https://www.researchgate.net/figure/a-Network-topology-b-Steps-of-Dijkstra-algorithm_fig1_271518595)
 
 Ket : INF adalah infinite (tak hingga)
 
-![](img/m5-D2.png)
+![m5-D2](https://github.com/user-attachments/assets/cb40fe01-67b4-4572-9dd9-5a6268b8b53d)
+
+https://github.com/user-attachments/assets/c110a063-cab2-4899-8a73-11d2d8829d2d
 
 ## Implementasi SPT Dijkstra's Algorithm
 
@@ -444,45 +445,10 @@ void dijkstra(int graph[V][V], int src)
 ```
 
 ## Referensi
-- https://github.com/AlproITS/StrukturData/wiki/Modul-5-(Shortest-Path)
 - https://www.geeksforgeeks.org/c-program-for-dijkstras-shortest-path-algorithm-greedy-algo-7/
-
-
-Application of graph traversal
-
-Flood Fill <br />
-Finding connected components in a graph represented by a grid.
-
-
-## Shortest path
-- Dijkstra 
-
-Latihan <br />
-https://cses.fi/problemset/task/1671
-
-- Bellman–Ford
-- Floyd–Warshall
-
-Latihan <br />
-https://cses.fi/problemset/task/1672
-
-### Minimum spanning tree
-- Prim
-
-https://www.cs.usfca.edu/~galles/visualization/Prim.html
-
-- Kruskal
-
-https://github.com/user-attachments/assets/a0f43df4-11dc-40eb-8ab7-471ba2ee32a7
-
-Latihan <br />
-https://cses.fi/problemset/task/1675
-
-Reference
-
-https://cplusplus.com/reference/stl/ <br />
-https://cses.fi/book/book.pdf <br />
-https://cp-algorithms.com/ <br />
-https://usaco.guide/dashboard <br />
+- https://cplusplus.com/reference/stl/ <br />
+- https://cses.fi/book/book.pdf <br />
+- https://cp-algorithms.com/ <br />
+- https://usaco.guide/dashboard <br />
 
 
