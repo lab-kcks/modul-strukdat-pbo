@@ -1,19 +1,17 @@
-## Daftar Isi
+### Daftar Isi
 - [Graf](#Graf)
-    - [Pengertian]
-    - [traversal]
-        - [BFS]
-        - [DFS]
-    - [shortest-path]
-        - [Djikstra]
-        - [Bellman–Ford]
-        - [Floyd–Warshall]
-    - [mst]
-        - [kruskal]
-        - [prim]
-- [Reference]
+    - [Permasalahan Umum dalam Teori Graf](###Permasalahan-Umum-dalam-Teori-Graf)
+    - [Terminology](###Graph-terminology)
+    - [Representasi Graph](###Cara-merepresentasikan-graf)
+    - [traversal](###Graph-Traversal)\
+      	- BFS
+      	- DFS 
+    - [mst](###Minimum-Spanning-Tree)
+        - [prim](###Prim'sAlgorithm)
+    - [shortest-path](###Shortest-Path)
+        - [Djikstra](###Dijkstra's-Algorithm)
 
-## Graf
+# Graf
 
 Apa sebenarnya itu graf? Pada dasarnya, graf adalah cara untuk merepresentasikan hubungan antara objek-objek. Mari kita lihat contoh sederhana. Bayangkan kita memiliki sekelompok orang dan kita tahu untuk setiap pasangan apakah mereka berteman atau tidak.
 
@@ -23,13 +21,13 @@ Kita menganggap bahwa hubungan pertemanan bersifat timbal balik, jadi jika Alice
 
 Informasi dalam gambar di atas adalah graf pertemanan dari kelompok ini. Kita menyebut objek-objek (enam orang dalam kasus ini) dalam graf sebagai nodes atau vertices (V), dan hubungan pertemanan di antara mereka (garis-garisnya) sebagai edges (E). Graf biasanya dilambangkan dengan G(V, E).
 
-### Permasalahan Umum dalam Teori Graf
+## Permasalahan Umum dalam Teori Graf
 Misalkan terdapat sebuah peta dengan beberapa kota dan jalan dua arah yang menghubungkan kota-kota tersebut. Beberapa permasalahan yang berkaitan dengan graf antara lain:
 
 - Apakah kota A connected dengan kota B? Anggap suatu wilayah sebagai group kota di mana setiap kota dalam group tersebut dapat dijangkau dari kota lainnya di group yang sama, tetapi tidak dapat menjangkau kota di luar group tersebut. Berapa banyak wilayah yang ada di peta ini, dan kota mana saja yang termasuk dalam masing-masing wilayah?
 - Berapa jarak terpendek yang harus saya tempuh untuk pergi dari kota A ke kota B? 
 
-### Graph terminology
+## Graph terminology
 Berikut adalah pengertian dari komponen/tipe-tipe graf
 
 | Terminologi | Pengertian |
@@ -144,14 +142,14 @@ edges.push_back({4,1,2});
 interactive visualization <br />
 https://csacademy.com/lesson/graph_representation
 
-## Referensi
+### Referensi
 
 * https://cses.fi/book/book.pdf
 * https://csacademy.com/lesson/introduction_to_graphs
 
 ## Graph Traversal
 
-## **Breadth-First Search**
+### **Breadth-First Search**
 
 Pada BFS, penelusuran node pada graf dilakukan lapis demi lapis. Semakin dekat suatu node dengan node awal, node tersebut akan dikunjungi terlebih dahulu.
 
@@ -209,7 +207,7 @@ int main() {
 }
 ```
 
-## Depth-First Search
+### Depth-First Search
 
 Pada DFS, penelusuran node pada graf dilakukan dengan cara mengunjungi node secara rekursif (mengunjungi nodes tetangga yang belum dikunjungi) dan backtracking (mundur jika tidak ada nodes tetangga yang belum dikunjungi). Untuk lebih sederhananya adalah DFS akan bergerak maju terus, sampai pada saat tidak ada tetangga yang belum dikunjungi, maka akan mundur sekali untuk mencari nodes tetangga yang belum dikunjungi. DFS akan melakukan hal tersebut sampai semua nodes telah dikunjungi.
 
@@ -258,9 +256,9 @@ int main() {
 https://csacademy.com/lesson/breadth_first_search <br />
 https://csacademy.com/lesson/depth_first_search <br />
 
-# Minimum Spanning Tree
+## Minimum Spanning Tree
 
-## Penjelasan
+### Penjelasan
 
 Sebelum membahas *Minimum Spanning Tree* atau MST, kita akan membahas apa itu Spanning Tree.
 
@@ -275,7 +273,7 @@ Sedangkan *Minimum Spanning Tree* adalah Spanning Tree dari sebuah weighted grap
 
 Untuk mengimplementasikan MST, terdapat 2 algoritma yaitu *Prim's Algoritm* dan *Kruskal's Algorithm*. Namun yang akan kita bahas saat ini adalah *Prim's Algorithm*.
 
-## Prim's Algorithm
+### Prim's Algorithm
 
 *Prim's Algorithm* adalah algoritma greedy untuk mencari MST. Dalam Prim, kita mulai spanning tree dari posisi awal, yaitu pada edge yang paling kecil, lalu akan menambah edge yang terikat pada spanning tree yang sedang bertumbuh.
 
@@ -287,7 +285,7 @@ Langkah Algoritma :
 ![m5-mst-prim](https://github.com/user-attachments/assets/6c5fdcae-e6ff-485d-b4a5-b71af7637703)
 > Sumber gambar: [medium.com](https://medium.com/analytics-vidhya/minimum-spanning-tree-prim-3f32445ce854)
 
-## Implementasi MST Prim's Algorithm
+### Implementasi MST Prim's Algorithm
 
 Fungsi minKey
 ```cpp
@@ -355,13 +353,13 @@ Penjelasan kode :
         - `key[v] = graph[u][v]` : Update nilai key menjadi weight dari edge node `u` dengan `v`
 - Cetak MST
 
-## Referensi
+### Referensi
 - https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
 - https://www.programiz.com/dsa/prim-algorithm
 
-# Shortest Path
+## Shortest Path
 
-## Penjelasan
+### Penjelasan
 
 Pada permasalahan graph, Shortest Path Problem merupakan pencarian path dari 2 vertex pada suatu graph yang mempunyai penjumlahan weight yang paling minimum. Permasalahan ini dapat diselesaikan dengan mudah menggunakan BFS apabila semua edge mempunyai weight 1. Namun, pada permasalahan kali ini, weight dapat bernilai berapapun. Terdapat banyak sekali implementasi untuk penyelesaian Shortest Path Problem, diantaranya Dijkstra, Bellman–Ford, Floyd–Warshall. Namun, yang akan kita bahas saat ini adalah Dijkstra’s Algorithm.
 
@@ -369,7 +367,7 @@ Misalkan kita diminta untuk mencari jalur tercepat dari sebuah graph. Jalur ters
 
 Semisal semua edge memiliki weight yang sama (misal 1), atau bentuk graphnya itu unweighted, maka masalah tersebut dapat diselesaikan menggunakan bfs. Namun jika weight dari tiap edge bervariasi, maka bfs tidak dapat digunakan. Oleh karena itu diperlukan algoritma shortest path untuk menangani masalah ini.
 
-## Dijkstra's Algorithm
+### Dijkstra's Algorithm
 
 Langkah algoritma : 
 - Buat sebuah sptSet (shortest path tree set)
@@ -392,7 +390,7 @@ Ket : INF adalah infinite (tak hingga)
 
 https://github.com/user-attachments/assets/c110a063-cab2-4899-8a73-11d2d8829d2d
 
-## Implementasi SPT Dijkstra's Algorithm
+### Implementasi SPT Dijkstra's Algorithm
 
 fungsi minDistance
 ```cpp
@@ -444,7 +442,7 @@ void dijkstra(int graph[V][V], int src)
 }
 ```
 
-## Referensi
+### Referensi
 - https://www.geeksforgeeks.org/c-program-for-dijkstras-shortest-path-algorithm-greedy-algo-7/
 - https://cplusplus.com/reference/stl/ <br />
 - https://cses.fi/book/book.pdf <br />
