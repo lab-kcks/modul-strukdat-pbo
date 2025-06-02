@@ -156,7 +156,10 @@ https://csacademy.com/lesson/graph_representation
 
 Pada BFS, penelusuran node pada graf dilakukan lapis demi lapis. Semakin dekat suatu node dengan node awal, node tersebut akan dikunjungi terlebih dahulu.
 
-https://github.com/user-attachments/assets/3d227862-e3b7-40a2-a7a7-886bb1359a8b
+
+https://github.com/user-attachments/assets/d7ae470b-b472-4bf9-b759-9d07cbe296a9
+
+
 
 Dalam pemrograman C++, BFS biasa diimplementasikan dengan STL *******queue*******, dimana *****queue***** akan menyimpan daftar node yang akan dikunjungi. Tahap setiap node ditambahkan ke dalam *****queue***** adalah:
 
