@@ -149,74 +149,304 @@ https://csacademy.com/lesson/graph_representation
 * https://cses.fi/book/book.pdf
 * https://csacademy.com/lesson/introduction_to_graphs
 
-
-
-
 ## Graph Traversal
-### DFS
-DFS atau *Depth First Search* adalah metode yang digunakan untuk mencari jalur agar dapat menghindari cycle pada graph. Bedanya dengan BFS adalah DFS melakukan traversal hingga ke vertex paling 'dalam'.
 
-DFS memanfaatkan **stack** & mengkategorikan vertex pada graph menjadi 2 kategori:
+## **Breadth-First Search**
 
-1. Visited
-2. Not Visited
+Pada BFS, penelusuran node pada graf dilakukan lapis demi lapis. Semakin dekat suatu node dengan node awal, node tersebut akan dikunjungi terlebih dahulu.
 
-Cara Kerja DFS:
+https://github.com/user-attachments/assets/3d227862-e3b7-40a2-a7a7-886bb1359a8b
 
-1. Dimulai dengan meletakkan vertex awal dari graph pada stack (push).
-2. Ambil node yang berada paling bawah (pop) lalu tambahkan vertex ke list *visited*.
-3. Cari tetangga dari node yang berada di paling bawah. Apabila tidak ada di list *visited*, masukkan ke dalam stack (push).
-4. Ulangi langkah 2 - 3 hingga seluruh node sudah dikunjungi
+Dalam pemrograman C++, BFS biasa diimplementasikan dengan STL *******queue*******, dimana *****queue***** akan menyimpan daftar node yang akan dikunjungi. Tahap setiap node ditambahkan ke dalam *****queue***** adalah:
 
-Berikut adalah ilustrasi dari penggunaan DFS.
+1. BFS akan mengunjungi satu node terlebih dahulu
+2. node yang sedang dikunjungi akan dihapus dari *****queue*****
+3. dari node tersebut akan dimasukan tetangga-tetangga node yang belum dikunjungi
+4. Lakukan terus sampai tidak ditemukan node yang belum dikunjungi
 
-![image](https://user-images.githubusercontent.com/77750276/201640404-1090310d-1144-4eaa-af84-08ab2d87dabd.png)
+### Implementation BFS
 
-![image](https://user-images.githubusercontent.com/77750276/201640433-4379380f-39b2-4a80-82a2-1266a875618b.png)
+```cpp
+#include <bits/stdc++.h>
 
-![image](https://user-images.githubusercontent.com/77750276/201640448-ff680965-4b1c-4a1b-98be-59faa0a288d2.png)
+using namespace std;
 
-![image](https://user-images.githubusercontent.com/77750276/201640463-ef03631d-1af5-4406-bba3-f51fc1bae5d5.png)
+int main() {
+	int n = 6;
+	vector<vector<int>> adj(n);
+	vector<bool> visited(n);
 
-![image](https://user-images.githubusercontent.com/77750276/201640489-65fcd18c-d769-4e50-a0eb-003754d88fde.png)
+	/*
+	 * Define adjacency list and read in problem-specific input
+	 *
+	 * In this example, we've provided "dummy input" that's
+	 * reflected in the GIF above to help illustrate the
+	 * order of the recursive calls.
+	 */
+	adj[0] = {1, 2, 4};
+	adj[1] = {3, 4};
+	adj[2] = {5};
 
+	for (int i = 0; i < n; i++) {
+		// iterate over all connected components in the graph
+		if (!visited[i]) {
+			queue<int> q;
+			q.push(i);
+			visited[i] = true;
+			while (!q.empty()) {
+				int current_node = q.front();
+				cout<< current_node<< " ";
+				q.pop();
+				for (int neighbor : adj[current_node]) {
+					if (!visited[neighbor]) {
+						visited[neighbor] = true;
+						q.push(neighbor);
+					}
+				}
+			}
+		}
+	}
+}
+```
 
-> Sumber gambar: [programiz.com](https://www.programiz.com/dsa/graph-dfs)
-https://github.com/user-attachments/assets/4914b497-8724-42eb-a9c6-abe51cc715cf
+## Depth-First Search
 
-### BFS
-BFS atau *Breadth First Search* adalah metode pencarian jalur agar tidak ada 1 node yang sama terulang (untuk menghindari cycle) pada graph. BFS akan melakukan traversal untuk setiap layer dari graph. Layer 1 -> Layer 2 -> dst hingga selesai.
+Pada DFS, penelusuran node pada graf dilakukan dengan cara mengunjungi node secara rekursif (mengunjungi nodes tetangga yang belum dikunjungi) dan backtracking (mundur jika tidak ada nodes tetangga yang belum dikunjungi). Untuk lebih sederhananya adalah DFS akan bergerak maju terus, sampai pada saat tidak ada tetangga yang belum dikunjungi, maka akan mundur sekali untuk mencari nodes tetangga yang belum dikunjungi. DFS akan melakukan hal tersebut sampai semua nodes telah dikunjungi.
 
-BFS bekerja dengan mengimplementasikan **queue**. BFS biasanya membagi *vertex* pada graph menjadi 2 kategori:
+https://github.com/user-attachments/assets/b7fb7015-9d19-40e3-ac48-a008e90a5fd3
 
-1. Visited
-2. Not Visited
+Disini DFS menggunakan **************rekursi************** ************fungsi************ dalam menjalankan programmnya, dimana setiap fungsi akan mempresentasikan setiap node yang akan mencoba mengunjungi node lain lalu jika node tersebut belum pernah dikunjungi maka fungsi node yang belum dikunjungi dijalankan. 
 
-Cara Kerja BFS:
+### Implementation DFS
 
-1. Dimulai dengan meletakkan vertex awal dari graph di queue paling belakang (enqueue)
-2. Ambil node yang berada paling depan (deque) lalu tambahkan vertex ke list *visited*.
-3. Cari tetangga dari node yang berada di queue paling depan. Apabila tidak ada di list *visited*, masukkan ke dalam list queue paling belakang (enqueue).
-4. Ulangi langkah 2 - 3 hingga seluruh node sudah dikunjungi.
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
 
-Berikut adalah ilustrasi dari penggunaan BFS.
+int n = 6;
+vector<vector<int>> adj(n);
+vector<bool> visited(n);
 
-![image](https://user-images.githubusercontent.com/77750276/201640865-76d9b5f8-305b-44eb-94a1-034258c20fe8.png)
+void dfs(int current_node) {
+	if (visited[current_node]) { return; }
+    cout<< current_node<<" ";
+	visited[current_node] = true;
 
-![image](https://user-images.githubusercontent.com/77750276/201640879-2ce58772-e759-4dd8-b110-c756183c6f86.png)
+	for (int neighbor : adj[current_node]) { dfs(neighbor); }
+}
 
-![image](https://user-images.githubusercontent.com/77750276/201640906-b08abe69-7e1f-43d4-8f32-2492fb86d13e.png)
+int main() {
+	/*
+	 * Define adjacency list and read in problem-specific input
+	 *
+	 * In this example, we've provided "dummy input" that's
+	 * reflected in the GIF above to help illustrate the
+	 * order of the recursive calls.
+	 */
+	adj[0] = {1, 2, 4};
+	adj[1] = {3, 4};
+	adj[2] = {5};
 
-![image](https://user-images.githubusercontent.com/77750276/201640940-ce496e76-bd80-48b7-9275-c79feaa07a9b.png)
-
-![image](https://user-images.githubusercontent.com/77750276/201640959-84a19607-0dc1-448f-b5f7-a2550d6b06a6.png)
-
-> Sumber gambar: [programiz.com](https://www.programiz.com/dsa/graph-bfs)
-https://github.com/user-attachments/assets/5c084a10-f2d7-4ac6-a900-cbf6287daf33
+	for (int i = 0; i < n; i++) {
+		// iterate over all connected components in the graph
+		if (!visited[i]) { dfs(i); }
+	}
+}
+```
 
 > interactive visualization <br />
 https://csacademy.com/lesson/breadth_first_search <br />
 https://csacademy.com/lesson/depth_first_search <br />
+
+# Minimum Spanning Tree
+
+## Penjelasan
+
+Sebelum membahas *Minimum Spanning Tree* atau MST, kita akan membahas apa itu Spanning Tree.
+
+Spanning Tree adalah sub-graph dari undirected graph yang semua node-nya terhubung dengan jumlah edge seminimal mungkin. <br>
+Misal terdapat sebuah graph. Jumlah edge dari Spanning Tree pasti berjumlah node dikurangi 1. Misal jumlah node adalah `n`, maka jumlah edge adalah `(n-1)`.
+
+Sedangkan *Minimum Spanning Tree* adalah Spanning Tree dari sebuah weighted graph sehingga weight yang dihasilkan seminimal mungkin.
+
+![](img/m5-G.jpg)
+> Sumber gambar: [hackerearth.com](https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/tutorial/)
+
+Untuk mengimplementasikan MST, terdapat 2 algoritma yaitu *Prim's Algoritm* dan *Kruskal's Algorithm*. Namun yang akan kita bahas saat ini adalah *Prim's Algorithm*.
+
+## Prim's Algorithm
+
+*Prim's Algorithm* adalah algoritma greedy untuk mencari MST. Dalam Prim, kita mulai spanning tree dari posisi awal, yaitu pada edge yang paling kecil, lalu akan menambah edge yang terikat pada spanning tree yang sedang bertumbuh.
+
+Langkah Algoritma :
+- Ambil node dari tree (biasanya node pertama)
+- Temukan semua edge yang menghubungkan tree ke node baru, temukan minimumnya dan tambahkan ke MST dengan catatan, edge tersebut tidak membuat cycle pada MST yang sedang dibentuk 
+- Ulangi langkah sebelumnya hingga semua node terhubung
+
+![mst-prim](img/m5-mst-prim.png)
+> Sumber gambar: [medium.com](https://medium.com/analytics-vidhya/minimum-spanning-tree-prim-3f32445ce854)
+
+## Implementasi MST Prim's Algorithm
+
+Fungsi minKey
+```cpp
+int minKey(int key[], bool mstSet[])
+{
+    // Initialize min value
+    int min = INT_MAX, min_index;
+
+    for (int v = 0; v < V; v++)
+        if (mstSet[v] == false && key[v] < min)
+            min = key[v], min_index = v;
+
+    return min_index;
+}
+``` 
+Penjelasan kode : 
+- Inisialisasi variabel `min` dan `min_index`
+- Lakukan loop untuk setiap edge
+    - Cek jika node belum masuk ke MST dan nilai key node kurang dari `min`
+    - Ubah nilai `min` dan `min_index`
+- Kembalikan node yang belum dimasukkan ke MST dan memiliki key yang paling rendah
+
+Fungsi utama adalah sebagai berikut
+```cpp
+void primMST(int graph[V][V])
+{
+    int parent[V];
+    int key[V];
+    bool mstSet[V];
+
+    for (int i = 0; i < V; i++)
+        key[i] = INT_MAX, mstSet[i] = false;
+
+    key[0] = 0;
+    parent[0] = -1; 
+
+    for (int count = 0; count < V - 1; count++)
+    {
+        int u = minKey(key, mstSet);
+        mstSet[u] = true;
+
+        for (int v = 0; v < V; v++)
+            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v])
+                parent[v] = u, key[v] = graph[u][v];
+    }
+    printMST(parent, graph);
+}
+```
+Penjelasan kode : 
+- `parent[]` : Menyimpan hasil MST. Dideklarasikan bahwa `V` adalah jumlah node
+- `key[]` : Menyimpan nilai key dari tiap edge dari node yang terhubung dengan node di MST. Nantinya key ini akan berguna untuk mencari edge dengan nilai minimum
+- `mstSet[]` : Sebagai tanda untuk node yang belum/sudah terhubung dengan MST.
+- Inisialisasi nilai variabel `key` dan `mstSet`
+- `key[0] = 0` : Menandakan kita mulai dari node ke-0
+- `parent[0] = -1` :  Menandakan node ke-0 adalah root dari MST, sehingga ia tidak mempunyai parent node
+- Lakukan loop untuk setiap node
+    - `int u = minKey(key, mstSet)` : Ambil node dari `minKey()`
+    - `mstSet[u] = true` : Menandakan node `u` sudah di masukkan ke MST
+    - Lakukan loop untuk setiap edge
+        - Cek beberapa hal berikut : <br> 
+        node `u` dan `v` memiliki weight (tersambung), <br>
+        node tersebut belum masuk ke MST, <br>
+        weight edge lebih kecil dari key node-nya
+        - `parent[v] = u` : Menandakan node `v` memiliki parent yaitu `u`
+        - `key[v] = graph[u][v]` : Update nilai key menjadi weight dari edge node `u` dengan `v`
+- Cetak MST
+
+## Referensi
+- https://github.com/AlproITS/StrukturData/wiki/Modul-5-(Minimum-Spanning-Tree)
+- https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
+- https://www.programiz.com/dsa/prim-algorithm
+
+# Shortest Path
+
+## Penjelasan
+
+Pada permasalahan graph, Shortest Path Problem merupakan pencarian path dari 2 vertex pada suatu graph yang mempunyai penjumlahan weight yang paling minimum. Permasalahan ini dapat diselesaikan dengan mudah menggunakan BFS apabila semua edge mempunyai weight 1. Namun, pada permasalahan kali ini, weight dapat bernilai berapapun. Terdapat banyak sekali implementasi untuk penyelesaian Shortest Path Problem, tapi yang akan kita bahas saat ini adalah Dijkstra’s Algorithm.
+
+*Shortest Path* adalah algoritma yang menemukan jalur minimum dari satu node ke node lainnya. Terdapat beberapa algoritma untuk mencari shortest path. Namun pada kali ini, kita akan membahas algoritma Dijkstra atau *Dijkstra's Algorithm*.
+
+Misalkan kita diminta untuk mencari jalur tercepat dari sebuah graph. Jalur tersebut dari node satu ke ujungnya (misal). Mengapa menggunakan *Shortest Path*? Mengapa tidak menggunakan bfs untuk menyelesaikan masalah ini?
+
+Semisal semua edge memiliki weight yang sama (misal 1), atau bentuk graphnya itu unweighted, maka masalah tersebut dapat diselesaikan menggunakan bfs. Namun jika weight dari tiap edge bervariasi, maka bfs tidak dapat digunakan. Oleh karena itu diperlukan algoritma shortest path untuk menangani masalah ini.
+
+## Dijkstra's Algorithm
+
+Langkah algoritma : 
+- Buat sebuah sptSet (shortest path tree set)
+- Tetapkan nilai jarak ke semua node dalam graph. Inisialisasi semua nilai sebagai INFINITE. Ubah nilai jarak untuk node awal menjadi 0
+- Ketika sptSet belum menyertakan semua node : 
+    - Ambil node (misal, u) yang belum disertakan kedalam sptSet dan memiliki nilai jarak yang minimum
+    - Masukkan node u kedalam sptSet
+    - Ubah jarak dari semua node terdekat. Untuk mengubah nilai jarak, iterasi semua node: <br> 
+    (Untuk setiap node (misal v), jika jumlah dari nilai jarak dari sumber ke node u ditambah dengan weight dari edge node u dan v, jika kurang dari nilai jarak sumber ke node v, update nilai jarak v)
+
+Berikut adalah ilustrasi dijkstra
+
+![](img/m5-D.png)
+> Sumber gambar: [researchgate.com](https://www.researchgate.net/figure/a-Network-topology-b-Steps-of-Dijkstra-algorithm_fig1_271518595)
+
+Ket : INF adalah infinite (tak hingga)
+
+![](img/m5-D2.png)
+
+## Implementasi SPT Dijkstra's Algorithm
+
+fungsi minDistance
+```cpp
+int minDistance(int dist[], bool sptSet[])
+{
+    int min = INT_MAX, min_index;
+
+    for (int v = 0; v < V; v++)
+        if (sptSet[v] == false && dist[v] <= min)
+            min = dist[v], min_index = v;
+
+    // return node yang belum dimasukkan ke SPT dan bernilai minimum
+    return min_index;
+}
+```
+
+fungsi utama
+```cpp
+void dijkstra(int graph[V][V], int src)
+{
+    // array output, dist[i] akan mengandung
+    // jarak dari src ke i
+    int dist[V];
+
+    // akan true jika node sudah masuk ke SPT atau jarak
+    // minimum dari src ke i sudah final
+    bool sptSet[V];
+
+    // inisialisasi
+    for (int i = 0; i < V; i++)
+        dist[i] = INT_MAX, sptSet[i] = false;
+
+    // jarak dari node src ke src itu sendiri adalah 0
+    dist[src] = 0;
+
+    // shortest path utk tiap node
+    for (int count = 0; count < V - 1; count++)
+    {
+        int u = minDistance(dist, sptSet);
+        sptSet[u] = true;
+
+        // ubah value jarak berdasarkan node u 
+        for (int v = 0; v < V; v++)
+            if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v])
+                dist[v] = dist[u] + graph[u][v];
+    }
+
+    printSolution(dist);
+}
+```
+
+## Referensi
+- https://github.com/AlproITS/StrukturData/wiki/Modul-5-(Shortest-Path)
+- https://www.geeksforgeeks.org/c-program-for-dijkstras-shortest-path-algorithm-greedy-algo-7/
+
 
 Application of graph traversal
 
